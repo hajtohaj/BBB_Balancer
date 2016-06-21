@@ -1,0 +1,40 @@
+/*
+ * This is a template-generated file from BoneScript
+ * sysfs path:	/sys/class/gpio/gpio87/
+ * sysfs path:	/sys/class/gpio/gpio89/
+ */
+
+/dts-v1/;
+/plugin/;
+
+/{
+    compatible = "ti,beaglebone", "ti,beaglebone-black";
+    version     = "00A0";
+
+    exclusive-use =
+        "P8.21";
+	
+    fragment@0 {
+        target = <&am33xx_pinmux>;
+        __overlay__ {
+            BBB_P8_21: RIP_GPIO {
+                pinctrl-single,pins = <
+					0x080 0x17 /* P8_21_OUT */
+		>;
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&ocp>;
+        __overlay__ {
+            BBB_P8_21_pinmux {
+                compatible = "bone-pinmux-helper";
+                status = "okay";
+                pinctrl-names = "default";
+                pinctrl-0 = <&BBB_P8_21>;
+            };
+        };
+    };
+};
+
