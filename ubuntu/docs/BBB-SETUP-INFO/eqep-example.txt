@@ -1,0 +1,12 @@
+# Based on https://github.com/Teknoman117/beaglebot.git
+# git clone https://github.com/Teknoman117/beaglebot.git
+# cd beaglebot/encoders/dts/
+# cp bone_eqep2b-00A0.dtbo /lib/firmware/
+
+# echo bone_eqep2b > /sys/devices/platform/bone_capemgr/slots
+# cat /sys/devices/platform/bone_capemgr/slots
+# cd /sys/devices/platform/ocp/48304000.epwmss/48304180.eqep
+# cat enabled 
+# cat position 
+# echo -4 > /sys/devices/platform/bone_capemgr/slots
+
