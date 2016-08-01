@@ -3,7 +3,7 @@ import time
 
 class Gyro:
     CTRL9_XL_ADDRESS = 0x18
-    CTRL9_XL_ENABLE_X =  0x8
+    CTRL9_XL_ENABLE_X = 0x80
     CTRL9_XL_ENABLE_Y = 0x10
     CTRL9_XL_ENABLE_Z = 0x10
 
