@@ -34,10 +34,10 @@ class Gyro:
         self.bus.write_byte_data(self.gyro_address, CTRL7_G, CTRL7_G_G_HM_MODE | status)
 
     def disable_high_performance_mode(self):
-        status = self.bus.read_byte(CTRL7_G)
+        status = self.bus.read_byte_data(self.gyro_address, CTRL7_G)
         self.bus.write_byte_data(self.gyro_address, self.gyro_address, CTRL7_G, (~ CTRL7_G_G_HM_MODE) | status)
 
 if __name__ == "__main__":
     g = Gyro()
     g.device_enable()
-    g.disable_high_performance_mode()
+    g.enable_high_performance_mode()
