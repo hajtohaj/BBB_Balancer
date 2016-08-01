@@ -21,6 +21,12 @@ CTRL2_G_ODR_G3 = 0x80
 CTRL2_G_13HZ = CTRL2_G_ODR_G0
 CTRL2_G_26HZ = CTRL2_G_ODR_G1
 CTRL2_G_52HZ = CTRL2_G_ODR_G0 | CTRL2_G_ODR_G1
+STATUS_REG = 0x1E
+STATUS_REG_XLDA = 0x01
+STATUS_REG_GDA = 0x02
+STATUS_REG_TDA = 0x04
+STATUS_REG_EV_BOOT = 0x08
+
 
 class Gyro:
 
@@ -44,8 +50,15 @@ class Gyro:
         status = self.bus.read_byte_data(self.gyro_address, CTRL2_G)
         self.bus.write_byte_data(self.gyro_address, CTRL2_G, data_rate | (0xf & status))
 
+    def get_data_ready_status(self):
+        return self.bus.read_byte_data(self.gyro_address, STATUS_REG)
+
+    def is_data_ready(self):
+        return self.get_data_ready_status() & STATUS_REG_GDA > 0
+
 if __name__ == "__main__":
     g = Gyro()
     g.device_enable()
     g.enable_high_performance_mode()
     g.set_output_data_rate(CTRL2_G_13HZ)
+    print(g.is_data_ready())
