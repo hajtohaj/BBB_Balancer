@@ -8,15 +8,16 @@ CTRL10_C_FUNC_EN = 0x04
 CTRL10_C_Xen_G = 0x08
 CTRL10_C_Yen_G = 0x10
 CTRL10_C_Zen_G = 0x20
-CTRL1_XL = 0x10
-CTRL1_XL_BW_XL0 = 0x01
-CTRL1_XL_BW_XL1 = 0x02
-CTRL1_XL_FS_XL0 = 0x04
-CTRL1_XL_FS_XL1 = 0x08
-CTRL1_XL_ODR_XL0 = 0x10
-CTRL1_XL_ODR_XL1 = 0x20
-CTRL1_XL_ODR_XL2 = 0x40
-CTRL1_XL_ODR_XL3 = 0x80
+CTRL7_G = 0x16
+CTRL7_G_G_HM_MODE = 0x80
+CTRL2_G = 0x11
+CTRL2_G_FS_125 = 0x02
+CTRL2_G_FS_G0 = 0x04
+CTRL2_G_FS_G1 = 0x08
+CTRL2_G_ODR_G0 = 0x10
+CTRL2_G_ODR_G1 = 0x20
+CTRL2_G_ODR_G2 = 0x40
+CTRL2_G_ODR_G3 = 0x80
 
 class Gyro:
 
@@ -25,9 +26,18 @@ class Gyro:
         self.gyro_address = gyro_address
         self.bus = smbus.SMBus(2)
 
-    def enable(self):
+    def device_enable(self):
         self.bus.write_byte_data(self.gyro_address, CTRL10_C, CTRL10_C_Xen_G | CTRL10_C_Yen_G | CTRL10_C_Zen_G)
+
+    def enable_high_performance_mode(self):
+        status = self.bus.read_byte(CTRL7_G)
+        self.bus.write_byte_data(self.gyro_address, CTRL7_G, CTRL7_G_G_HM_MODE | status)
+
+    def disable_high_performance_mode(self):
+        status = self.bus.read_byte(CTRL7_G)
+        self.bus.write_byte_data(self.gyro_address, CTRL7_G, (~ CTRL7_G_G_HM_MODE) | status)
 
 if __name__ == "__main__":
     g = Gyro()
-    g.enable()
+    g.device_enable()
+    g.disable_high_performance_mode()
