@@ -54,7 +54,7 @@ class Gyro:
         return self.bus.read_byte_data(self.gyro_address, STATUS_REG)
 
     def is_data_ready(self):
-        return self.get_data_ready_status() & STATUS_REG_XLDA > 0
+        return self.get_data_ready_status() & STATUS_REG_GDA > 0
 
 if __name__ == "__main__":
     g = Gyro()
