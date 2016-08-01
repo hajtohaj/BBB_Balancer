@@ -1,4 +1,4 @@
-Homepage: https://www.pololu.com/product/2738
+﻿Homepage: https://www.pololu.com/product/2738
 Nazwa: MinIMU-9 v5 Gyro, Accelerometer, and Compass (LSM6DS33 and LIS3MDL Carrier)
 wyprowadzenia:
 				VDD: 3.3 V regulator output or low-voltage logic power supply, depending on VIN. When VIN is supplied and greater than 3.3 V, VDD is a regulated 3.3 V output that can supply up to approximately 150 mA to external components. Alternatively, when interfacing with a 2.5 V to 3.3 V system, VIN can be left disconnected and power can be supplied directly to VDD. Never supply voltage to VDD when VIN is connected, and never supply more than 3.6 V to VDD.
@@ -67,13 +67,39 @@ MinIMU-9 v5 <---> BBB i2c2
 
 	Reading temperature from command line
 		#Read OUT_TEMP_L 0x20
-		i2cget -y 2 0x6b 0x21
+		i2cget -y 2 0x6b 0x20
 		#read OUT_TEMP_L 0x21
 		i2cget -y 2 0x6b 0x21
 
+		If both the accelerometer and the gyroscope sensors are in Power-Down mode, the temperature sensor is off.
+
 		to get the value of a tempearature you need to concatenate both 8 bits values to get one 16bit 2's complement
-		divide it by temperatur sensor resolution (0xF) and convert to decimal number from 2's complement binary
+		divide it by temperatur sensor resolution (16) and convert to decimal number from 2's complement binary and add 25 as 0 offset
+
+    		zero_offset = 25
+		resolution = 16
+		addr = 0x6b
+		temp_first_reg = 0x20
+		raw_temp = bus.read_word_data(addr, temp_first_reg)
+    		if (raw_temp >= 0x8000):
+        		base_temp = -((65535 - raw_temp) + 1)
+    		else:
+        		base_temp = val
+		temp = base_temp/resolution  + zero_offset
 		
+		def get_temp():
+			zero_offset = 25
+			resolution = 16
+			addr = 0x6b
+			temp_first_reg = 0x20
+			raw_temp = bus.read_word_data(addr, temp_first_reg)
+			if (raw_temp >= 0x8000):
+					base_temp = -((65535 - raw_temp) + 1)
+			else:
+					base_temp = val
+			temp = base_temp/resolution  + zero_offset
+			return temp
+
 Reading the bus in project:
 	To read i2c under ubuntu use smbus python library: https://pypi.python.org/pypi/smbus-cffi/
 	Example code:
