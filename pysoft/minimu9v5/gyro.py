@@ -91,7 +91,7 @@ class Gyro:
 
     def set_hp_filter_bandwidth(self, bandwidth):
         register = CTRL7_G
-        self.update_register_value(self, register, CTRL7_G_HPCF_mask, bandwidth)
+        self.update_register_value(register, CTRL7_G_HPCF_mask, bandwidth)
 
     def enable_hp_filter(self):
         register = CTRL7_G
@@ -107,7 +107,7 @@ class Gyro:
 
     def set_output_data_rate(self, data_rate):
         register = CTRL2_G
-        self.update_register_value(self, register, CTRL2_G_ODR_mask, data_rate)
+        self.update_register_value(register, CTRL2_G_ODR_mask, data_rate)
 
     def get_data_ready_status(self):
         return self.bus.read_byte_data(self.gyro_address, STATUS_REG)
@@ -123,7 +123,7 @@ class Gyro:
         return int_val
 
     def get_X(self):
-        raw_data =  self.bus.read_word_data(self.gyro_address, OUTX_L_G)
+        raw_data = self.bus.read_word_data(self.gyro_address, OUTX_L_G)
         return self.binary_to_int(raw_data)
 
     def get_Y(self):
@@ -140,7 +140,6 @@ if __name__ == "__main__":
     g.enable_high_performance_mode()
     g.set_output_data_rate(CTRL2_G_ODR_13_0000HZ)
     g.set_hp_filter_bandwidth(CTRL7_G_HPCF_16_3200HZ)
-    print(g.is_data_ready())
+    g.enable_hp_filter()
+    g.reset_hp_filter()
     print(g.get_X())
-    print(g.get_Y())
-    print(g.get_Z())
