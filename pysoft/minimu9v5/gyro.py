@@ -58,6 +58,10 @@ class Gyro:
         status = self.bus.read_byte_data(self.gyro_address, CTRL7_G)
         self.bus.write_byte_data(self.gyro_address, CTRL7_G, bandwidth | (0xff & status))
 
+    def enable_hp_filterh(self):
+        status = self.bus.read_byte_data(self.gyro_address, CTRL7_G)
+        self.bus.write_byte_data(self.gyro_address, CTRL7_G, CTRL7_G_HP_G_EN | (0xff & status))
+
     def set_output_data_rate(self, data_rate=CTRL2_G_13HZ):
         status = self.bus.read_byte_data(self.gyro_address, CTRL2_G)
         self.bus.write_byte_data(self.gyro_address, CTRL2_G, data_rate | (0xff & status))
