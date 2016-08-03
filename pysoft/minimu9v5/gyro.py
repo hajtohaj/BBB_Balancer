@@ -10,6 +10,9 @@ CTRL10_C_Yen_G = 0x10
 CTRL10_C_Zen_G = 0x20
 CTRL7_G = 0x16
 CTRL7_G_G_HM_MODE = 0x80
+CTRL7_G_HPCF_G0 = 0x10
+CTRL7_G_HPCF_G1 = 0x20
+CTRL7_G_HP_G_EN = 0x40
 CTRL2_G = 0x11
 CTRL2_G_FS_125 = 0x02
 CTRL2_G_FS_G0 = 0x04
@@ -51,9 +54,14 @@ class Gyro:
         status = self.bus.read_byte_data(self.gyro_address, CTRL7_G)
         self.bus.write_byte_data(self.gyro_address, CTRL7_G,  CTRL7_G_G_HM_MODE | status)
 
+    def set_hp_filter_bandwidth(self, bandwidth=(CTRL7_G_HPCF_G1 | CTRL7_G_HPCF_G0)):
+        status = self.bus.read_byte_data(self.gyro_address, CTRL7_G)
+        self.bus.write_byte_data(self.gyro_address, CTRL7_G, bandwidth | (0xff & status))
+
     def set_output_data_rate(self, data_rate=CTRL2_G_13HZ):
         status = self.bus.read_byte_data(self.gyro_address, CTRL2_G)
-        self.bus.write_byte_data(self.gyro_address, CTRL2_G, data_rate | (0xf & status))
+        self.bus.write_byte_data(self.gyro_address, CTRL2_G, data_rate | (0xff & status))
+
 
     def get_data_ready_status(self):
         return self.bus.read_byte_data(self.gyro_address, STATUS_REG)
@@ -85,6 +93,7 @@ if __name__ == "__main__":
     g.enable()
     g.enable_high_performance_mode()
     g.set_output_data_rate(CTRL2_G_13HZ)
+    g.set_hp_filter_bandwidth(CTRL7_G_HPCF_G1 | CTRL7_G_HPCF_G0)
     print(g.is_data_ready())
     print(g.get_X())
     print(g.get_Y())
