@@ -126,6 +126,7 @@ if __name__ == "__main__":
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
+
     print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x(), g.get_y(), g.get_z()))
 
     g.set_fifo_decimation_factor('No decimation')
