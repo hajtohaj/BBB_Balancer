@@ -110,9 +110,9 @@ class Gyro:
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
         numb_of_samples = self.get_number_of_samples_in_fifo()
-        val = 0
+        val = []
         for x in range(numb_of_samples):
-            val += self.bus.read_word_data(self.gyro_address, register)
+            val.append(self.bus.read_word_data(self.gyro_address, register))
         return val
 
 
@@ -132,4 +132,4 @@ if __name__ == "__main__":
     g.set_fifo_odr('13Hz')
     g.set_fifo_mode('Continuous')
     print(g.get_number_of_samples_in_fifo())
-    g.get_data_from_fifo()
+    print(g.get_data_from_fifo())
