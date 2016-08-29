@@ -103,18 +103,18 @@ class Gyro:
         register = 0x3A  # FIFO_STATUS1
         bits = '0000000000000000'
         mask = '1111000000000000'
-        print(time.clock())
         raw_data = self.bus.read_word_data(self.gyro_address, register)
-        print(time.clock())
         val =  (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
-        print(time.clock())
         return val
 
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
         numb_of_samples = self.get_number_of_samples_in_fifo()
+        val = 0
         for x in range(numb_of_samples):
-            self.bus.read_word_data(self.gyro_address, register)
+            val += self.bus.read_word_data(self.gyro_address, register)
+        return val
+
 
 if __name__ == "__main__":
     buss_address = 2
@@ -132,7 +132,4 @@ if __name__ == "__main__":
     g.set_fifo_odr('13Hz')
     g.set_fifo_mode('Continuous')
     print(g.get_number_of_samples_in_fifo())
-    time.sleep(1)
-    print(g.get_number_of_samples_in_fifo())
     g.get_data_from_fifo()
-    print("end")
