@@ -133,6 +133,7 @@ class Gyro:
             val[self.get_fifo_pattern()] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
         return val
 
+
 if __name__ == "__main__":
     buss_address = 2
     address = 0x6b
@@ -148,6 +149,7 @@ if __name__ == "__main__":
 
     g.set_fifo_decimation_factor('No decimation')
     g.set_fifo_odr('13Hz')
+    g.set_fifo_mode('Bypas')
     g.set_fifo_mode('Continuous')
     print(g.get_fifo_samples_count())
     while 1:
