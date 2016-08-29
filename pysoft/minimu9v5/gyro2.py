@@ -26,44 +26,44 @@ class Gyro:
 
     def __set_bits(self, register, mask, bits):
         current_value = self.bus.read_byte_data(self.gyro_address, register)
-        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        new_value = (current_value & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
         if current_value != new_value:
             self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def set_high_performance_mode(self):
         register = 0x16  # CTRL7_G
         bits = '00000000'  # G_HM_MODE
-        mask = '01111111'
+        mask = '10000000'
         self.__set_bits(register, mask, bits)
 
     def set_odr(self, odr):
         register = 0x11  # CTRL2_G
         bits = self.ODR[odr]  # ODR_G
-        mask = '00001111'
+        mask = '11110000'
         self.__set_bits(register, mask, bits)
 
     def set_hp_filter(self, bandwidth):
         register = 0x16  # CTRL7_G
         bits = self.HP_FILTER_BANDWIDTH[bandwidth]  # HPCF_G
-        mask = '11001111'
+        mask = '00110000'
         self.__set_bits(register, mask, bits)
 
     def enable_axes(self, axes):
         register = 0x19  # CTRL10_C
         bits = self.AXES[axes]  # Zen_G,  Yen_G,  Xen_G
-        mask = '11000111'
+        mask = '00111000'
         self.__set_bits(register, mask, bits)
 
     def enable_hp_filter(self):
         register = 0x16  # CTRL7_G
         bits = '01000000'  # HP_G_EN
-        mask = '10111111'
+        mask = '01000000'
         self.__set_bits(register, mask, bits)
 
     def reset_hp_filter(self):
         register = 0x16  # CTRL7_G
         bits = '00001000'  # HP_G_RST
-        mask = '11110111'
+        mask = '00001000'
         self.__set_bits(register, mask, bits)
 
     def get_x(self):
@@ -84,21 +84,27 @@ class Gyro:
     def set_fifo_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
         bits = self.FIFO_DECIMATION[decimation]  # DEC_FIFO _GYRO[2:0]
-        mask = '11000111'
+        mask = '00111000'
         self.__set_bits(register, mask, bits)
 
     def set_fifo_odr(self, fifo_odr):
         register = 0x0A  # FIFO_CTRL5
         bits = self.FIFO_ODR[fifo_odr]  # DEC_FIFO _GYRO[2:0]
-        mask = '10000111'
+        mask = '01111000'
         self.__set_bits(register, mask, bits)
 
     def set_fifo_mode(self, fifo_mode):
         register = 0x0A  # FIFO_CTRL5
         bits = self.FIFO_MODE[fifo_mode]  # DEC_FIFO _GYRO[2:0]
-        mask = '11111000'
+        mask = '00000111'
         self.__set_bits(register, mask, bits)
 
+    def get_number_of_samples_in_fifo(self):
+        register = 0x3A  # FIFO_STATUS1
+        bits = '0000000000000000'
+        mask = '1111000000000000'
+        raw_data = self.bus.read_word_data(self.gyro_address, register)
+        return (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
 
 if __name__ == "__main__":
     buss_address = 2
@@ -115,4 +121,6 @@ if __name__ == "__main__":
     g.set_fifo_decimation_factor('No decimation')
     g.set_fifo_odr('13Hz')
     g.set_fifo_mode('Continuous')
-
+    print(g.get_number_of_samples_in_fifo())
+    time.sleep(1)
+    print(g.get_number_of_samples_in_fifo())
