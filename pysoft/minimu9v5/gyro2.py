@@ -103,8 +103,12 @@ class Gyro:
         register = 0x3A  # FIFO_STATUS1
         bits = '0000000000000000'
         mask = '1111000000000000'
+        print(time.clock())
         raw_data = self.bus.read_word_data(self.gyro_address, register)
-        return (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
+        print(time.clock())
+        val =  (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
+        print(time.clock())
+        return val
 
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
