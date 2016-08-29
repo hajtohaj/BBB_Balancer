@@ -114,17 +114,6 @@ class Gyro:
         val = raw_data
         return val
 
-    # def get_data_from_fifo(self):
-    #     register = 0x3E  # FIFO_DATA_OUT_L
-    #     numb_of_samples = self.get_fifo_samples_count()
-    #     pat = []
-    #     val = []
-    #     for x in range(numb_of_samples):
-    #         pat.append(self.get_fifo_pattern())
-    #         val.append(self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register)))
-    #     return len(val), len(pat)
-
-
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
         numb_of_samples = self.get_fifo_samples_count()
