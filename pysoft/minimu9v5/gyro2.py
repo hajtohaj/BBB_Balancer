@@ -2,7 +2,6 @@ import smbus
 import time
 
 
-
 class Gyro:
 
     G_ODR = {'PowerDown': '00000000', '13Hz': '00010000', '26Hz': '00100000', '52Hz': '00110000', '104Hz': '01000000'}
@@ -56,7 +55,27 @@ class Gyro:
         new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
         self.bus.write_byte_data(self.gyro_address, register, new_value)
 
+    def twos_complement_to_dec16(self, raw_value):
+        if (raw_value >= 0x8000):
+                int_val = -((65535 - raw_value) + 1)
+        else:
+                int_val = raw_value
+        return int_val
 
+    def get_x(self):
+        register = 0x22  # OUTX_L_G
+        raw_data = self.bus.read_word_data(self.gyro_address, register)
+        return self.twos_complement_to_dec16(raw_data)
+
+    def get_y(self):
+        register = 0x24  # OUTX_L_G
+        raw_data = self.bus.read_word_data(self.gyro_address, register)
+        return self.twos_complement_to_dec16(raw_data)
+
+    def get_z(self):
+        register = 0x26  # OUTX_L_G
+        raw_data = self.bus.read_word_data(self.gyro_address, register)
+        return self.twos_complement_to_dec16(raw_data)
 
 if __name__ == "__main__":
     buss_address = 2
@@ -68,4 +87,4 @@ if __name__ == "__main__":
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
-
+    print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x, g.get_y, g.get_z))
