@@ -121,7 +121,7 @@ class Gyro:
         for x in range(numb_of_samples):
             pat.append(self.get_fifo_pattern())
             val.append(self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register)))
-        return val, pat
+        return len(val), len(pat)
 
 
 if __name__ == "__main__":
@@ -141,5 +141,4 @@ if __name__ == "__main__":
     g.set_fifo_odr('13Hz')
     g.set_fifo_mode('Continuous')
     print(g.get_fifo_samples_count())
-    print("aaa")
     print(g.get_data_from_fifo())
