@@ -130,7 +130,11 @@ class Gyro:
         numb_of_samples = self.get_fifo_samples_count()
         val = {}
         for x in range(numb_of_samples):
-            val[str(self.get_fifo_pattern())] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+            fifo_pattern = self.get_fifo_pattern()
+            if fifo_pattern in val.keys():
+                val[fifo_pattern] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+            else:
+                 val[fifo_pattern] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
         return val
 
 
