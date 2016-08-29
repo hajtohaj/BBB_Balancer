@@ -108,7 +108,8 @@ class Gyro:
 
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
-        for x in range(4000):
+        numb_of_samples = self.get_number_of_samples_in_fifo()
+        for x in range(numb_of_samples):
             self.bus.read_word_data(self.gyro_address, register)
 
 if __name__ == "__main__":
