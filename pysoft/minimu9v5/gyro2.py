@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     g = Gyro(buss_address, gyro_address)
     g.enable_axes('XYZ')
-    g.set_output_data_rate('13Hz')
+    g.set_ODR('13Hz')
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
