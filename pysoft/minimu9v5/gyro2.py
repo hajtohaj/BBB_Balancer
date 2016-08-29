@@ -123,7 +123,6 @@ class Gyro:
             val.append(self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register)))
         return len(val), len(pat)
 
-
 if __name__ == "__main__":
     buss_address = 2
     address = 0x6b
