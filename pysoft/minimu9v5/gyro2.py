@@ -17,43 +17,55 @@ class Gyro:
         register = 0x16  # CTRL7_G
         bits = '00000000'  # G_HM_MODE
         mask = '01111111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def set_ODR(self, odr):
         register = 0x11  # CTRL2_G
         bits = self.G_ODR[odr]  # ODR_G
         mask = '00001111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def set_hp_filter(self, bandwidth):
         register = 0x16  # CTRL7_G
         bits = self.HP_FILTER_BANDWIDTH[bandwidth]  # HPCF_G
         mask = '11001111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def enable_axes(self, axes):
         register = 0x19  # CTRL10_C
         bits = self.AXES[axes]  # Zen_G,  Yen_G,  Xen_G
         mask = '11000111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def enable_hp_filter(self):
         register = 0x16  # CTRL7_G
         bits = '01000000'  # HP_G_EN
         mask = '10111111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def reset_hp_filter(self):
         register = 0x16  # CTRL7_G
         bits = '00001000'  # HP_G_RST
         mask = '11110111'
-        new_value = (self.bus.read_byte_data(self.gyro_address, register) & int(mask, 2)) | int(bits, 2)
-        self.bus.write_byte_data(self.gyro_address, register, new_value)
+        current_value = self.bus.read_byte_data(self.gyro_address, register)
+        new_value = (current_value & int(mask, 2)) | int(bits, 2)
+        if current_value != new_value:
+            self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def twos_complement_to_dec16(self, raw_value):
         if (raw_value >= 0x8000):
@@ -87,4 +99,4 @@ if __name__ == "__main__":
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
-    print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x, g.get_y, g.get_z))
+    print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x(), g.get_y(), g.get_z()))
