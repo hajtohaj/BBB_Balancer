@@ -99,21 +99,29 @@ class Gyro:
         mask = '00000111'
         self.__set_bits(register, mask, bits)
 
-    def get_number_of_samples_in_fifo(self):
+    def get_fifo_samples_count(self):
         register = 0x3A  # FIFO_STATUS1
         bits = '0000000000000000'
         mask = '1111000000000000'
         raw_data = self.bus.read_word_data(self.gyro_address, register)
-        val =  (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
+        val = (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
+        return val
+
+    def get_fifo_pattern(self):
+        register = 0x3C  # FIFO_STATUS3
+        raw_data = self.bus.read_word_data(self.gyro_address, register)
+        val = raw_data
         return val
 
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
-        numb_of_samples = self.get_number_of_samples_in_fifo()
+        numb_of_samples = self.get_fifo_samples_count()
+        pat = []
         val = []
         for x in range(numb_of_samples):
+            pat.append(self.get_fifo_pattern())
             val.append(self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register)))
-        return val
+        return val, pat
 
 
 if __name__ == "__main__":
@@ -132,6 +140,6 @@ if __name__ == "__main__":
     g.set_fifo_decimation_factor('No decimation')
     g.set_fifo_odr('13Hz')
     g.set_fifo_mode('Continuous')
-    print(g.get_number_of_samples_in_fifo())
+    print(g.get_fifo_samples_count())
     print("aaa")
     print(g.get_data_from_fifo())
