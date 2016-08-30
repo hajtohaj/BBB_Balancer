@@ -195,4 +195,4 @@ if __name__ == "__main__":
     print(g.get_fifo_samples_count())
     while 1:
         print(g.get_data_from_fifo())
-        time.sleep(0.035)
+        time.sleep(0.1)
