@@ -34,25 +34,25 @@ class Gyro:
         register = 0x1E  # STATUS_REG
         mask = '00001000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_tda(self):
         register = 0x1E  # STATUS_REG
         mask = '00000100'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_gda(self):
         register = 0x1E  # STATUS_REG
         mask = '00000010'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_xlda(self):
         register = 0x1E  # STATUS_REG
         mask = '00000001'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def set_high_performance_mode(self):
         register = 0x16  # CTRL7_G
@@ -135,25 +135,25 @@ class Gyro:
         register = 0x3B  # FIFO_STATUS2
         mask = '10000000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_fifo_over_run(self):
         register = 0x3B  # FIFO_STATUS1
         mask = '01000000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_fifo_full(self):
         register = 0x3B  # FIFO_STATUS1
         mask = '00100000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def is_fifo_empty(self):
         register = 0x3B  # FIFO_STATUS1
         mask = '00010000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & mask) != 0
+        return (raw_data & int(mask, 2)) != 0
 
     def get_fifo_pattern(self):
         register = 0x3C  # FIFO_STATUS3
