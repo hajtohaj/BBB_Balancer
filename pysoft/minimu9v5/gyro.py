@@ -5,12 +5,12 @@ import time
 class Gyro:
 
     ODR = {'PowerDown': '00000000', '13Hz': '00010000', '26Hz': '00100000', '52Hz': '00110000', '104Hz': '01000000'}
-    HP_FILTER_BANDWIDTH = {'0.0081Hz': '00000000', '0.0324Hz': '00010000', '2.07Hz': '00100000', '16.32Hz': '00110000'}
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
-    FIFO_DECIMATION = {'Not in FIFO': '00000000', 'No decimation': '00001000', '2': '00010000', '3': '000110000',
-                       '4': '00100000', '8': '00101000', '16': '00110000', '32': '00111000'}
+    HP_FILTER_BANDWIDTH = {'0.0081Hz': '00000000', '0.0324Hz': '00010000', '2.07Hz': '00100000', '16.32Hz': '00110000'}
     FIFO_ODR = {'Disabled': '00000000', '13Hz': '00001000', '26Hz': '00010000', '52Hz': '00011000', '104Hz': '00100000'}
     FIFO_MODE = {'Bypas': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
+    FIFO_DECIMATION = {'Not in FIFO': '00000000', 'No decimation': '00001000', '2': '00010000', '3': '000110000',
+                       '4': '00100000', '8': '00101000', '16': '00110000', '32': '00111000'}
 
     def __init__(self, bus_id, gyro_address):
         self.bus_id = bus_id
@@ -29,6 +29,30 @@ class Gyro:
         new_value = (current_value & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
         if current_value != new_value:
             self.bus.write_byte_data(self.gyro_address, register, new_value)
+
+    def is_ev_boot(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00001000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_tda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000100'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_gda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000010'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_xlda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000001'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
 
     def set_high_performance_mode(self):
         register = 0x16  # CTRL7_G
@@ -105,26 +129,50 @@ class Gyro:
         mask = '1111000000000000'
         raw_data = self.bus.read_word_data(self.gyro_address, register)
         val = (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
-
         return val
+
+    def is_fifo_fth(self):
+        register = 0x3B  # FIFO_STATUS2
+        mask = '10000000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_fifo_over_run(self):
+        register = 0x3B  # FIFO_STATUS1
+        mask = '01000000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_fifo_full(self):
+        register = 0x3B  # FIFO_STATUS1
+        mask = '00100000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
+
+    def is_fifo_empty(self):
+        register = 0x3B  # FIFO_STATUS1
+        mask = '00010000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & mask) != 0
 
     def get_fifo_pattern(self):
         register = 0x3C  # FIFO_STATUS3
-        raw_data = self.bus.read_word_data(self.gyro_address, register)
-        val = raw_data
-        return val
+        return self.bus.read_word_data(self.gyro_address, register)
 
     def get_data_from_fifo(self):
         register = 0x3E  # FIFO_DATA_OUT_L
-        numb_of_samples = self.get_fifo_samples_count()
-        val = {}
-        for x in range(numb_of_samples):
+        if self.is_fifo_full():
+            numb_of_samples = 4096
+        else:
+            numb_of_samples = self.get_fifo_samples_count()
+        fifo_data = {}
+        for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
-            if fifo_pattern in val.keys():
-                val[fifo_pattern] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+            if fifo_pattern in fifo_data.keys():
+                fifo_data[fifo_pattern] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
             else:
-                 val[fifo_pattern] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
-        return val
+                fifo_data[fifo_pattern] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+        return fifo_data
 
 
 if __name__ == "__main__":
