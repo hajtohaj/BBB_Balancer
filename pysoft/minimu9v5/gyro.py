@@ -181,7 +181,7 @@ if __name__ == "__main__":
 
     g = Gyro(buss_address, address)
     g.enable_axes('XYZ')
-    g.set_odr('13Hz')
+    g.set_odr('26Hz')
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x(), g.get_y(), g.get_z()))
 
     g.set_fifo_decimation_factor('No decimation')
-    g.set_fifo_odr('13Hz')
+    g.set_fifo_odr('26Hz')
     g.set_fifo_mode('Bypas')
     g.set_fifo_mode('Continuous')
     print(g.get_fifo_samples_count())
