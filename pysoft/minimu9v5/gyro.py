@@ -29,7 +29,7 @@ class Gyro:
 
     def set_full_scale_selection(self, full_scale):
         register = 0x11  # CTRL2_G
-        bits = self.FULL_SCALE_SELECTION[full_scale]  # ODR_G
+        bits = self.FULL_SCALE_SELECTION[full_scale]  # FS_G_[2:0]
         mask = '00001110'
         self.__set_bits(register, mask, bits)
 
@@ -116,17 +116,17 @@ class Gyro:
         raw_data = self.bus.read_word_data(self.gyro_address, register)
         return self.__twos_complement_to_dec16(raw_data)
 
-    def is_ev_boot(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00001000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
+    # def is_ev_boot(self):
+    #     register = 0x1E  # STATUS_REG
+    #     mask = '00001000'
+    #     raw_data = self.bus.read_byte_data(self.gyro_address, register)
+    #     return (raw_data & int(mask, 2)) != 0
 
-    def is_tda(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00000100'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
+    # def is_tda(self):
+    #     register = 0x1E  # STATUS_REG
+    #     mask = '00000100'
+    #     raw_data = self.bus.read_byte_data(self.gyro_address, register)
+    #     return (raw_data & int(mask, 2)) != 0
 
     def is_gda(self):
         register = 0x1E  # STATUS_REG
@@ -134,11 +134,11 @@ class Gyro:
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
         return (raw_data & int(mask, 2)) != 0
 
-    def is_xlda(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00000001'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
+    # def is_xlda(self):
+    #     register = 0x1E  # STATUS_REG
+    #     mask = '00000001'
+    #     raw_data = self.bus.read_byte_data(self.gyro_address, register)
+    #     return (raw_data & int(mask, 2)) != 0
 
 if __name__ == "__main__":
     buss_id = 2
@@ -158,5 +158,6 @@ if __name__ == "__main__":
             time.sleep(0.5)
     except KeyboardInterrupt:
         g.disable_hp_filter()
+        g.set_hp_filter_hz(0.0081)
         g.set_odr_hz(0)
         g.disable_axes('XYZ')

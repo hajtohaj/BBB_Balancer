@@ -53,7 +53,7 @@ class Fifo:
         mask = '00000111'
         self.__set_bits(register, mask, bits)
 
-    def get_samples_count(self):
+    def get_sample_count(self):
         register = 0x3A  # FIFO_STATUS1
         bits = '0000000000000000'
         mask = '1111000000000000'
@@ -94,7 +94,7 @@ class Fifo:
         if self.is_full():
             numb_of_samples = 4096
         else:
-            numb_of_samples = self.get_samples_count()
+            numb_of_samples = self.get_sample_count()
         fifo_data = dict()
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
@@ -124,4 +124,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         f.set_mode('Bypass')
         f.set_gyro_decimation_factor(0)
-        f.set_odr_hz(26)
+        f.set_odr_hz(0)
