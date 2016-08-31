@@ -68,17 +68,17 @@ class Minimu():
         else:
             return dict(X=0, Y=0, Z=0)
 
-    def print_angles_degrees(self):
+    def print_angles_radians(self):
         print("Degrees: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.angles['X'],
                                                                         self.angles['Y'], self.angles['Z']))
 
-    def __degree_to_radian(self, degrees):
-        return degrees * 3.14159265/180
+    def __radian_to_degree(self, rad):
+        return rad * 180 / 3.14159265
 
-    def print_angles_radians(self):
-            print("Radians: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.__degree_to_radian(self.angles['X']),
-                                                                self.__degree_to_radian(self.angles['Y']),
-                                                                self.__degree_to_radian(self.angles['Z'])))
+    def print_angles_degrees(self):
+            print("Radians: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.__radian_to_degree(self.angles['X']),
+                                                                            self.__radian_to_degree(self.angles['Y']),
+                                                                            self.__radian_to_degree(self.angles['Z'])))
 
 
 if __name__ == "__main__":
@@ -92,8 +92,8 @@ if __name__ == "__main__":
     try:
         while 1:
             print("Last reading: {0}".format(mm.read_gyro()))
-            mm.print_angles_degrees()
             mm.print_angles_radians()
+            mm.print_angles_degrees()
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
