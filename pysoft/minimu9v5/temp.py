@@ -4,6 +4,9 @@ import time
 
 class Temp:
 
+    OFFSET = 25  # Degrees
+    RESOLUTION = 16.0  # 1/16 degree
+
     def __init__(self, bus_id, temp_address):
         self.bus_id = bus_id
         self.temp_address = temp_address
@@ -24,7 +27,7 @@ class Temp:
     def get_temperature(self):
         register = 0x20  # OUT_TEMP_L
         raw_data = self.bus.read_word_data(self.temp_address, register)
-        return (self.__twos_complement_to_dec16(raw_data) + 25*16) / 16.0
+        return (self.__twos_complement_to_dec16(raw_data) + self.OFFSET * self.RESOLUTION) / self.RESOLUTION
 
     def is_tda(self):
         register = 0x1E  # STATUS_REG
