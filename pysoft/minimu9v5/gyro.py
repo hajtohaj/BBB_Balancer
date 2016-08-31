@@ -6,6 +6,7 @@ class Gyro:
 
     ODR = {'PowerDown': '00000000', '13Hz': '00010000', '26Hz': '00100000', '52Hz': '00110000', '104Hz': '01000000'}
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
+    FULL_SCALE_SELECTION = {125: '00000010', 245: '00000000', 500: '00000100', 1000: '00001000', 2000: '00001100'}
     HP_FILTER_BANDWIDTH = {'0.0081Hz': '00000000', '0.0324Hz': '00010000', '2.07Hz': '00100000', '16.32Hz': '00110000'}
     FIFO_ODR = {'Disabled': '00000000', '13Hz': '00001000', '26Hz': '00010000', '52Hz': '00011000', '104Hz': '00100000'}
     FIFO_MODE = {'Bypas': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
@@ -30,29 +31,21 @@ class Gyro:
         if current_value != new_value:
             self.bus.write_byte_data(self.gyro_address, register, new_value)
 
-    def is_ev_boot(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00001000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
+    def set_full_scale(self, full_scale):
+        register = 0x11  # CTRL2_G
+        bits = self.FULL_SCALE_SELECTION[full_scale]  # ODR_G
+        mask = '00001110'
+        self.__set_bits(register, mask, bits)
 
-    def is_tda(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00000100'
+    def get_full_scale(self):
+        register = 0x11  # CTRL2_G
+        mask = '00001110'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def is_gda(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00000010'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def is_xlda(self):
-        register = 0x1E  # STATUS_REG
-        mask = '00000001'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
+        fs_bits = raw_data & mask
+        for k in self.FULL_SCALE_SELECTION.keys():
+            if int(self.FULL_SCALE_SELECTION[k], 2) == fs_bits:
+                return k
+        return  -1
 
     def set_high_performance_mode(self):
         register = 0x16  # CTRL7_G
@@ -104,6 +97,30 @@ class Gyro:
         register = 0x26  # OUTX_L_G
         raw_data = self.bus.read_word_data(self.gyro_address, register)
         return self.__twos_complement_to_dec16(raw_data)
+
+    def is_ev_boot(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00001000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & int(mask, 2)) != 0
+
+    def is_tda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000100'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & int(mask, 2)) != 0
+
+    def is_gda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000010'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & int(mask, 2)) != 0
+
+    def is_xlda(self):
+        register = 0x1E  # STATUS_REG
+        mask = '00000001'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        return (raw_data & int(mask, 2)) != 0
 
     def set_fifo_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
@@ -159,7 +176,7 @@ class Gyro:
         register = 0x3C  # FIFO_STATUS3
         return self.bus.read_word_data(self.gyro_address, register)
 
-    def get_data_from_fifo(self):
+    def get_fifo_data(self):
         register = 0x3E  # FIFO_DATA_OUT_L
         if self.is_fifo_full():
             numb_of_samples = 4096
@@ -181,19 +198,21 @@ if __name__ == "__main__":
     address = 0x6b
 
     g = Gyro(buss_address, address)
+    g.set_full_scale(245)
+    print(g.get_full_scale())
     g.enable_axes('XYZ')
     g.set_odr('26Hz')
     g.set_hp_filter('16.32Hz')
     g.enable_hp_filter()
     g.reset_hp_filter()
 
-    print("X: {0}, Y: {1}, Z: '{2}".format(g.get_x(), g.get_y(), g.get_z()))
-
     g.set_fifo_decimation_factor('No decimation')
     g.set_fifo_odr('26Hz')
     g.set_fifo_mode('Bypas')
     g.set_fifo_mode('Continuous')
-    print(g.get_fifo_samples_count())
-    while 1:
-        print(g.get_data_from_fifo())
-        time.sleep(0.1)
+    try:
+        while 1:
+            print(g.get_fifo_data())
+            time.sleep(1)
+    except KeyboardInterrupt:
+        pass
