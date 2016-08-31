@@ -18,12 +18,12 @@ class Gyro:
         self.gyro_address = gyro_address
         self.bus = smbus.SMBus(self.bus_id)
 
-    def __twos_complement_to_dec16(self, raw_value):
+    @staticmethod
+    def __twos_complement_to_dec16(raw_value):
         if raw_value >= 0x8000:
-                int_val = -((65535 - raw_value) + 1)
+            return -((65535 - raw_value) + 1)
         else:
-                int_val = raw_value
-        return int_val
+            return raw_value
 
     def __set_bits(self, register, mask, bits):
         current_value = self.bus.read_byte_data(self.gyro_address, register)
@@ -182,14 +182,15 @@ class Gyro:
             numb_of_samples = 4096
         else:
             numb_of_samples = self.get_fifo_samples_count()
-        print(numb_of_samples)
-        fifo_data = {}
+        fifo_data = dict(QTY=numb_of_samples)
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
             if fifo_pattern in fifo_data.keys():
-                fifo_data[fifo_pattern] += self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+                fifo_data[fifo_pattern] += self.__twos_complement_to_dec16(
+                    self.bus.read_word_data(self.gyro_address, register))
             else:
-                fifo_data[fifo_pattern] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.gyro_address, register))
+                fifo_data[fifo_pattern] = self.__twos_complement_to_dec16(
+                    self.bus.read_word_data(self.gyro_address, register))
         return fifo_data
 
 
@@ -198,8 +199,7 @@ if __name__ == "__main__":
     address = 0x6b
 
     g = Gyro(buss_address, address)
-    g.set_full_scale(500)
-    print("FS: {0}".format(g.get_full_scale()))
+    g.set_full_scale(245)
     g.enable_axes('XYZ')
     g.set_odr('26Hz')
     g.set_hp_filter('16.32Hz')
