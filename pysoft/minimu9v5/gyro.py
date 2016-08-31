@@ -8,10 +8,6 @@ class Gyro:
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
     FULL_SCALE_SELECTION = {125: '00000010', 245: '00000000', 500: '00000100', 1000: '00001000', 2000: '00001100'}
     HP_FILTER_BANDWIDTH_HZ = {0.0081: '00000000', 0.0324: '00010000', 2.07: '00100000', 16.32: '00110000'}
-    FIFO_ODR_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000'}
-    FIFO_MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
-    FIFO_DECIMATION_FACTOR = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
-                              4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
 
     def __init__(self, bus_id, gyro_address):
         self.bus_id = bus_id
@@ -132,83 +128,11 @@ class Gyro:
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
         return (raw_data & int(mask, 2)) != 0
 
-    def set_fifo_decimation_factor(self, decimation):
-        register = 0x08  # FIFO_CTRL3
-        bits = self.FIFO_DECIMATION_FACTOR[decimation]  # DEC_FIFO _GYRO[2:0]
-        mask = '00111000'
-        self.__set_bits(register, mask, bits)
-
-    def set_fifo_odr_hz(self, fifo_odr):
-        register = 0x0A  # FIFO_CTRL5
-        bits = self.FIFO_ODR_HZ[fifo_odr]  # DEC_FIFO _GYRO[2:0]
-        mask = '01111000'
-        self.__set_bits(register, mask, bits)
-
-    def set_fifo_mode(self, fifo_mode):
-        register = 0x0A  # FIFO_CTRL5
-        bits = self.FIFO_MODE[fifo_mode]  # DEC_FIFO _GYRO[2:0]
-        mask = '00000111'
-        self.__set_bits(register, mask, bits)
-
-    def get_fifo_samples_count(self):
-        register = 0x3A  # FIFO_STATUS1
-        bits = '0000000000000000'
-        mask = '1111000000000000'
-        raw_data = self.bus.read_word_data(self.gyro_address, register)
-        val = (raw_data & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
-        return val
-
-    def is_fifo_fth(self):
-        register = 0x3B  # FIFO_STATUS2
-        mask = '10000000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def is_fifo_over_run(self):
-        register = 0x3B  # FIFO_STATUS1
-        mask = '01000000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def is_fifo_full(self):
-        register = 0x3B  # FIFO_STATUS1
-        mask = '00100000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def is_fifo_empty(self):
-        register = 0x3B  # FIFO_STATUS1
-        mask = '00010000'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        return (raw_data & int(mask, 2)) != 0
-
-    def get_fifo_pattern(self):
-        register = 0x3C  # FIFO_STATUS3
-        return self.bus.read_word_data(self.gyro_address, register)
-
-    def get_fifo_data(self):
-        register = 0x3E  # FIFO_DATA_OUT_L
-        if self.is_fifo_full():
-            numb_of_samples = 4096
-        else:
-            numb_of_samples = self.get_fifo_samples_count()
-        fifo_data = dict()
-        for sample_idx in range(numb_of_samples):
-            fifo_pattern = self.get_fifo_pattern()
-            if fifo_pattern in fifo_data.keys():
-                fifo_data[fifo_pattern] = (fifo_data[fifo_pattern][0] + self.__twos_complement_to_dec16(
-                    self.bus.read_word_data(self.gyro_address, register)), fifo_data[fifo_pattern][1] + 1)
-            else:
-                fifo_data[fifo_pattern] = (self.__twos_complement_to_dec16(
-                    self.bus.read_word_data(self.gyro_address, register)), 1)
-        return fifo_data
-
-
 if __name__ == "__main__":
-    buss_address = 2
+    buss_id = 2
     address = 0x6b
 
-    g = Gyro(buss_address, address)
+    g = Gyro(buss_id, address)
     g.set_full_scale_selection(245)
     g.enable_axes('XYZ')
     g.set_odr_hz(26)
@@ -216,13 +140,9 @@ if __name__ == "__main__":
     g.enable_hp_filter()
     g.reset_hp_filter()
 
-    g.set_fifo_decimation_factor(1)
-    g.set_fifo_odr_hz(26)
-    g.set_fifo_mode('Bypass')
-    g.set_fifo_mode('Continuous')
     try:
         while 1:
-            print(g.get_fifo_data())
-            time.sleep(1)
+            print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
+            time.sleep(0.5)
     except KeyboardInterrupt:
         pass
