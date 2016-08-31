@@ -10,8 +10,8 @@ class Gyro:
     HP_FILTER_BANDWIDTH_HZ = {0.0081: '00000000', 0.0324: '00010000', 2.07: '00100000', 16.32: '00110000'}
     FIFO_ODR_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000'}
     FIFO_MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
-    FIFO_DECIMATION = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
-                       4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
+    FIFO_DECIMATION_FACTOR = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
+                              4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
 
     def __init__(self, bus_id, gyro_address):
         self.bus_id = bus_id
@@ -134,7 +134,7 @@ class Gyro:
 
     def set_fifo_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
-        bits = self.FIFO_DECIMATION[decimation]  # DEC_FIFO _GYRO[2:0]
+        bits = self.FIFO_DECIMATION_FACTOR[decimation]  # DEC_FIFO _GYRO[2:0]
         mask = '00111000'
         self.__set_bits(register, mask, bits)
 
@@ -192,7 +192,7 @@ class Gyro:
             numb_of_samples = 4096
         else:
             numb_of_samples = self.get_fifo_samples_count()
-        fifo_data = dict(QTY=numb_of_samples)
+        fifo_data = dict(Count=numb_of_samples)
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
             if fifo_pattern in fifo_data.keys():
@@ -201,6 +201,7 @@ class Gyro:
             else:
                 fifo_data[fifo_pattern] = self.__twos_complement_to_dec16(
                     self.bus.read_word_data(self.gyro_address, register))
+        fifo_data['Count'] /= len(fifo_data)
         return fifo_data
 
 
