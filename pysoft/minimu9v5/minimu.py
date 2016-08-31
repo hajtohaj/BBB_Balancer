@@ -2,9 +2,6 @@ from gyro import Gyro
 from fifo import Fifo
 import time
 
-buss_id = 2
-address = 0x6b
-
 
 class Minimu():
 
