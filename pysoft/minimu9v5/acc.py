@@ -159,14 +159,6 @@ if __name__ == "__main__":
     address = 0x6b
 
     a = Acc(buss_id, address)
-
-    # filter settings
-    a.deselect_lpf2()
-    a.select_hp_slop_filter()
-    a.set_hp_cutoff_ratio(9)
-    a.enable_hp_lpf2_filters()
-    a.disable_embedded_functionalities()
-
     a.set_full_scale_selection(2)
     a.enable_axes('XYZ')
     a.set_odr_hz(13)
