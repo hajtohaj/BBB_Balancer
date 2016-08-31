@@ -157,7 +157,8 @@ if __name__ == "__main__":
             print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
             time.sleep(0.5)
     except KeyboardInterrupt:
-        g.disable_hp_filter()
-        g.set_hp_filter_hz(0.0081)
-        g.set_odr_hz(0)
+        pass
+        # g.disable_hp_filter()
+        # g.set_hp_filter_hz(0.0081)
+        # g.set_odr_hz(0)
         # g.disable_axes('XYZ')
