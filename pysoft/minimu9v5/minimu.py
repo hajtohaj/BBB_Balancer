@@ -80,8 +80,9 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            mm.read_gyro()
-            mm.print_angles_radians()
+            print("Last reading: {0}".format(mm.read_gyro()))
+            print("Radians: {0}".format(mm.print_angles_radians()))
+            print("Degrees: {0}".format(mm.print_angles_degrees()))
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
