@@ -31,20 +31,20 @@ class Gyro:
         if current_value != new_value:
             self.bus.write_byte_data(self.gyro_address, register, new_value)
 
-    def set_full_scale(self, full_scale):
+    def set_full_scale_selection(self, full_scale):
         register = 0x11  # CTRL2_G
         bits = self.FULL_SCALE_SELECTION[full_scale]  # ODR_G
         mask = '00001110'
         self.__set_bits(register, mask, bits)
 
-    def get_full_scale(self):
+    def get_full_scale_selection(self):
         register = 0x11  # CTRL2_G
         mask = '00001110'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        fs_bits = raw_data & int(mask, 2)
-        for k in self.FULL_SCALE_SELECTION.keys():
-            if int(self.FULL_SCALE_SELECTION[k], 2) == fs_bits:
-                return k
+        fss_bits = raw_data & int(mask, 2)
+        for fss in self.FULL_SCALE_SELECTION.keys():
+            if int(self.FULL_SCALE_SELECTION[fss], 2) == fss_bits:
+                return fss
         return -1
 
     def set_high_performance_mode(self):
@@ -53,13 +53,23 @@ class Gyro:
         mask = '10000000'
         self.__set_bits(register, mask, bits)
 
-    def set_odr(self, odr):
+    def set_odr_hz(self, odr):
         register = 0x11  # CTRL2_G
         bits = self.ODR_HZ[odr]  # ODR_G
         mask = '11110000'
         self.__set_bits(register, mask, bits)
 
-    def set_hp_filter(self, bandwidth):
+    def get_odr_hz(self):
+        register = 0x11  # CTRL2_G
+        mask = '11110000'
+        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        odr_bits = raw_data & int(mask, 2)
+        for odr in self.ODR_HZ.keys():
+            if int(self.ODR_HZ[odr], 2) == odr_bits:
+                return odr
+        return -1
+
+    def set_hp_filter_hz(self, bandwidth):
         register = 0x16  # CTRL7_G
         bits = self.HP_FILTER_BANDWIDTH_HZ[bandwidth]  # HPCF_G
         mask = '00110000'
@@ -128,7 +138,7 @@ class Gyro:
         mask = '00111000'
         self.__set_bits(register, mask, bits)
 
-    def set_fifo_odr(self, fifo_odr):
+    def set_fifo_odr_hz(self, fifo_odr):
         register = 0x0A  # FIFO_CTRL5
         bits = self.FIFO_ODR_HZ[fifo_odr]  # DEC_FIFO _GYRO[2:0]
         mask = '01111000'
@@ -199,15 +209,15 @@ if __name__ == "__main__":
     address = 0x6b
 
     g = Gyro(buss_address, address)
-    g.set_full_scale(245)
+    g.set_full_scale_selection(245)
     g.enable_axes('XYZ')
-    g.set_odr(26)
-    g.set_hp_filter(16.32)
+    g.set_odr_hz(26)
+    g.set_hp_filter_hz(16.32)
     g.enable_hp_filter()
     g.reset_hp_filter()
 
     g.set_fifo_decimation_factor(1)
-    g.set_fifo_odr(26)
+    g.set_fifo_odr_hz(26)
     g.set_fifo_mode('Bypass')
     g.set_fifo_mode('Continuous')
     try:
