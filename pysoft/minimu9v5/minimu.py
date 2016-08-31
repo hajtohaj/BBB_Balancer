@@ -28,7 +28,6 @@ class Minimu():
         self.gyro.enable_hp_filter()
         self.gyro.reset_hp_filter()
 
-    @staticmethod  # IDE upiera sie ze to jest static
     def disable_gyro(self):
         self.gyro.disable_hp_filter()
         self.gyro.set_hp_filter_hz(0.0081)
