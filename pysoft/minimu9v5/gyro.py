@@ -104,6 +104,7 @@ class Gyro:
     def get_x(self):
         register = 0x22  # OUTX_L_G
         raw_data = self.bus.read_word_data(self.gyro_address, register)
+        print(raw_data, self.__twos_complement_to_dec16(raw_data))
         return self.__twos_complement_to_dec16(raw_data)
 
     def get_y(self):
