@@ -9,8 +9,8 @@ class Minimu():
     GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 16.32
     GYRO_OFFSET = 0
-    GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767 / ODR_HZ
-    GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768 / ODR_HZ
+    GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767.0 / ODR_HZ
+    GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768.0 / ODR_HZ
 
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
