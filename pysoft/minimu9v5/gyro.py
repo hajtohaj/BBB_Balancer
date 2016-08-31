@@ -4,14 +4,14 @@ import time
 
 class Gyro:
 
-    ODR = {'PowerDown': '00000000', '13Hz': '00010000', '26Hz': '00100000', '52Hz': '00110000', '104Hz': '01000000'}
+    ODR_HZ = {0: '00000000', 13: '00010000', 26: '00100000', 52: '00110000', 104: '01000000'}
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
     FULL_SCALE_SELECTION = {125: '00000010', 245: '00000000', 500: '00000100', 1000: '00001000', 2000: '00001100'}
-    HP_FILTER_BANDWIDTH = {'0.0081Hz': '00000000', '0.0324Hz': '00010000', '2.07Hz': '00100000', '16.32Hz': '00110000'}
-    FIFO_ODR = {'Disabled': '00000000', '13Hz': '00001000', '26Hz': '00010000', '52Hz': '00011000', '104Hz': '00100000'}
-    FIFO_MODE = {'Bypas': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
-    FIFO_DECIMATION = {'Not in FIFO': '00000000', 'No decimation': '00001000', '2': '00010000', '3': '000110000',
-                       '4': '00100000', '8': '00101000', '16': '00110000', '32': '00111000'}
+    HP_FILTER_BANDWIDTH_HZ = {0.0081: '00000000', 0.0324: '00010000', 2.07: '00100000', 16.32: '00110000'}
+    FIFO_ODR_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000'}
+    FIFO_MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
+    FIFO_DECIMATION = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
+                       4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
 
     def __init__(self, bus_id, gyro_address):
         self.bus_id = bus_id
@@ -55,13 +55,13 @@ class Gyro:
 
     def set_odr(self, odr):
         register = 0x11  # CTRL2_G
-        bits = self.ODR[odr]  # ODR_G
+        bits = self.ODR_HZ[odr]  # ODR_G
         mask = '11110000'
         self.__set_bits(register, mask, bits)
 
     def set_hp_filter(self, bandwidth):
         register = 0x16  # CTRL7_G
-        bits = self.HP_FILTER_BANDWIDTH[bandwidth]  # HPCF_G
+        bits = self.HP_FILTER_BANDWIDTH_HZ[bandwidth]  # HPCF_G
         mask = '00110000'
         self.__set_bits(register, mask, bits)
 
@@ -130,7 +130,7 @@ class Gyro:
 
     def set_fifo_odr(self, fifo_odr):
         register = 0x0A  # FIFO_CTRL5
-        bits = self.FIFO_ODR[fifo_odr]  # DEC_FIFO _GYRO[2:0]
+        bits = self.FIFO_ODR_HZ[fifo_odr]  # DEC_FIFO _GYRO[2:0]
         mask = '01111000'
         self.__set_bits(register, mask, bits)
 
@@ -201,14 +201,14 @@ if __name__ == "__main__":
     g = Gyro(buss_address, address)
     g.set_full_scale(245)
     g.enable_axes('XYZ')
-    g.set_odr('26Hz')
-    g.set_hp_filter('16.32Hz')
+    g.set_odr(26)
+    g.set_hp_filter(16.32)
     g.enable_hp_filter()
     g.reset_hp_filter()
 
-    g.set_fifo_decimation_factor('No decimation')
-    g.set_fifo_odr('26Hz')
-    g.set_fifo_mode('Bypas')
+    g.set_fifo_decimation_factor(1)
+    g.set_fifo_odr(26)
+    g.set_fifo_mode('Bypass')
     g.set_fifo_mode('Continuous')
     try:
         while 1:
