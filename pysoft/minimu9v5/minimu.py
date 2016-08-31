@@ -59,13 +59,13 @@ class Minimu():
         return self.angles
 
     def print_angles_degrees(self):
-        print("Degrees: X: {0:.12f},  Y: {0:.12f}, Z:  {0:.12f}".format(self.angles['X'], self.angles['Y'], self.angles['Z']))
+        print("Degrees: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.angles['X'], self.angles['Y'], self.angles['Z']))
 
     def __degree_to_radian(self, degrees):
         return degrees * 3.14159265/180
 
     def print_angles_radians(self):
-            print("Radians: X: {0:.12f},  Y: {0:.12f}, Z:  {0:.12f}".format(self.__degree_to_radian(self.angles['X']),
+            print("Radians: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.__degree_to_radian(self.angles['X']),
                                                                 self.__degree_to_radian(self.angles['Y']),
                                                                 self.__degree_to_radian(self.angles['Z'])))
 
@@ -81,7 +81,6 @@ if __name__ == "__main__":
     try:
         while 1:
             print("Last reading: {0}".format(mm.read_gyro()))
-            mm.print_angles_radians()
             mm.print_angles_degrees()
             time.sleep(1)
     except KeyboardInterrupt:
