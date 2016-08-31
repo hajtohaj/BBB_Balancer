@@ -9,7 +9,7 @@ class Acc:
                            208: '01010000', 416: '01100000', 833: '01110000', 1660: '10000000',
                            3330: '10010000', 6660: '10100000'}
     FULL_SCALE_SELECTION = {2: '00000000', 4: '00001000', 8: '00001100', 16: '00000100'}
-    # HP_FILTER_BANDWIDTH_HZ = {0.0081: '00000000', 0.0324: '00010000', 2.07: '00100000', 16.32: '00110000'}
+    HP_CUTOFF_RATIO = {9: '01000000', 50: '00000000', 100: '00100000', 400: '01100000'}
 
     def __init__(self, bus_id, acc_address):
         self.bus_id = bus_id
@@ -79,6 +79,60 @@ class Acc:
         mask = '00111000'
         self.__set_bits(register, mask, bits)
 
+    def select_lpf2(self):
+        register = 0x17  # CTRL8_XL
+        bits = '10000000'  # LPF2_XL_EN
+        mask = '10000000'
+        self.__set_bits(register, mask, bits)
+
+    def deselect_lpf2(self):
+        register = 0x17  # CTRL8_XL
+        bits = '00000000'  # LPF2_XL_EN
+        mask = '10000000'
+        self.__set_bits(register, mask, bits)
+
+    def select_hp_slop_filter(self):
+        register = 0x17  # CTRL8_XL
+        bits = '00000100'  # HP_SLOPE_XL_EN
+        mask = '00000100'
+        self.__set_bits(register, mask, bits)
+
+    def deselect_hp_slop_filter(self):
+        register = 0x17  # CTRL8_XL
+        bits = '00000000'  # HP_SLOPE_XL_EN
+        mask = '00000100'
+        self.__set_bits(register, mask, bits)
+
+    def set_hp_cutoff_ratio(self, cutoff_ratio):
+        register = 0x17  # CTRL8_XL
+        bits = self.HP_CUTOFF_RATIO[cutoff_ratio]  # HPCF_XL[1:0]
+        mask = '01100000'
+        self.__set_bits(register, mask, bits)
+
+    def enable_hp_lpf2_filters(self):
+        register = 0x58  # TAP_CFG
+        bits = '00010000'  # SLOP_FDS
+        mask = '00010000'
+        self.__set_bits(register, mask, bits)
+
+    def disable_hp_lpf2_filters(self):
+        register = 0x58  # TAP_CFG
+        bits = '00000000'  # SLOP_FDS
+        mask = '00010000'
+        self.__set_bits(register, mask, bits)
+
+    def enable_embedded_functionalities(self):
+        register = 0x19  # CTRL10_C
+        bits = '00000100'  # FUNC_EN
+        mask = '00000100'
+        self.__set_bits(register, mask, bits)
+
+    def disable_embedded_functionalities(self):
+        register = 0x19  # CTRL10_C
+        bits = '00000000'   # FUNC_EN
+        mask = '00000100'
+        self.__set_bits(register, mask, bits)
+
     def get_x(self):
         register = 0x28  # OUTX_L_XL
         raw_data = self.bus.read_word_data(self.acc_address, register)
@@ -105,6 +159,14 @@ if __name__ == "__main__":
     address = 0x6b
 
     a = Acc(buss_id, address)
+
+    # filter settings
+    a.deselect_lpf2()
+    a.select_hp_slop_filter()
+    a.set_hp_cutoff_ratio(9)
+    a.enable_hp_lpf2_filters()
+    a.disable_embedded_functionalities()
+
     a.set_full_scale_selection(2)
     a.enable_axes('XYZ')
     a.set_odr_hz(13)
