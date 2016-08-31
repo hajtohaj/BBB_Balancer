@@ -196,7 +196,7 @@ class Gyro:
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
             if fifo_pattern in fifo_data.keys():
-                fifo_data[fifo_pattern][0] += (fifo_data[fifo_pattern][0] + self.__twos_complement_to_dec16(
+                fifo_data[fifo_pattern] = (fifo_data[fifo_pattern][0] + self.__twos_complement_to_dec16(
                     self.bus.read_word_data(self.gyro_address, register)), fifo_data[fifo_pattern][1] + 1)
             else:
                 fifo_data[fifo_pattern] = (self.__twos_complement_to_dec16(
