@@ -128,13 +128,6 @@ class Gyro:
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
         return (raw_data & int(mask, 2)) != 0
 
-    @staticmethod
-    def disable(self):
-        g.disable_hp_filter()
-        g.set_hp_filter_hz(0.0081)
-        g.set_odr_hz(0)
-        g.disable_axes('XYZ')
-
 if __name__ == "__main__":
     buss_id = 2
     address = 0x6b
@@ -153,5 +146,7 @@ if __name__ == "__main__":
             time.sleep(0.5)
     except KeyboardInterrupt:
         pass
-        # g.disable()
-
+        # g.disable_hp_filter()
+        # g.set_hp_filter_hz(0.0081)
+        # g.set_odr_hz(0)
+        # g.disable_axes('XYZ')

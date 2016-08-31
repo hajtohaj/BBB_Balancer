@@ -16,6 +16,12 @@ def fifo_disable(self):
     self.set_gyro_decimation_factor(0)
     self.set_odr_hz(0)
 
+def disable(self):
+    g.disable_hp_filter()
+    g.set_hp_filter_hz(0.0081)
+    g.set_odr_hz(0)
+    g.disable_axes('XYZ')
+
 g = Gyro(buss_id, address)
 g.set_full_scale_selection(245)
 g.enable_axes('XYZ')
