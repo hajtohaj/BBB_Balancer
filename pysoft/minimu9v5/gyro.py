@@ -192,7 +192,7 @@ class Gyro:
             numb_of_samples = 4096
         else:
             numb_of_samples = self.get_fifo_samples_count()
-        fifo_data = dict(Count=numb_of_samples)
+        fifo_data = dict()
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
             if fifo_pattern in fifo_data.keys():
@@ -201,7 +201,7 @@ class Gyro:
             else:
                 fifo_data[fifo_pattern] = self.__twos_complement_to_dec16(
                     self.bus.read_word_data(self.gyro_address, register))
-        fifo_data['Count'] /= len(fifo_data)
+        fifo_data['Count'] = numb_of_samples / len(fifo_data)
         return fifo_data
 
 
