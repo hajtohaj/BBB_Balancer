@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print("Temperature: {0}".format(t.get_temperature()))
+            print("Temperature: {0:.2f}, Raw value: {1}".format(t.get_temperature(), t.get_temperature_raw()))
             time.sleep(0.5)
     except KeyboardInterrupt:
         pass
