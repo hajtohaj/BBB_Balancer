@@ -59,9 +59,9 @@ class Minimu():
             self.angles['X'] += self.to_angle(data[0][0], data[0][1])
             self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
             self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
-            return {'X': round(self.to_angle(data[0][0], data[0][1]), 2),
-                    'Y': round(self.to_angle(data[1][0], data[1][1]), 2),
-                    'Z': round(self.to_angle(data[2][0], data[2][1]), 2)}
+            return {'X': self.to_angle(data[0][0], data[0][1]),
+                    'Y': self.to_angle(data[1][0], data[1][1]),
+                    'Z': self.to_angle(data[2][0], data[2][1])}
         else:
             return dict(X=0, Y=0, Z=0)
 
