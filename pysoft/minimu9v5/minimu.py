@@ -56,9 +56,9 @@ class Minimu():
     def read_gyro(self):
         data = self.fifo.get_data()
         if data:
-            self.angles['X'] += self.to_angle(data[0][0], data[0][1])
-            self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
-            self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
+            self.angles['X'] += round(self.to_angle(data[0][0], data[0][1]),2)
+            self.angles['Y'] += round(self.to_angle(data[1][0], data[1][1]),2)
+            self.angles['Z'] += round(self.to_angle(data[2][0], data[2][1]),2)
             return {'X': self.to_angle(data[0][0], data[0][1]), 'Y': self.to_angle(data[1][0], data[1][1]),
                     'Z': self.to_angle(data[2][0], data[2][1])}
         else:
