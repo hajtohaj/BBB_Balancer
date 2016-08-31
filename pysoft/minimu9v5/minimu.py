@@ -40,8 +40,9 @@ class Minimu():
         self.fifo.set_odr_hz(self.ODR)
         self.fifo.set_mode('Continuous')
         self.fifo.get_data()  # discard first sample
+        time.sleep(0.25)
         self.fifo.get_data()  # discard second sample
-        self.fifo.get_data()  # discard third sample
+        time.sleep(0.25)
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
