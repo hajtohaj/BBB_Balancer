@@ -19,7 +19,7 @@ class Temp:
     def get_temperature_raw(self):
         register = 0x20  # OUT_TEMP_L
         raw_data = self.bus.read_word_data(self.temp_address, register)
-        return self.__twos_complement_to_dec16(raw_data) - 25*16
+        return self.__twos_complement_to_dec16(raw_data)
 
     def get_temperature(self):
         register = 0x20  # OUT_TEMP_L
