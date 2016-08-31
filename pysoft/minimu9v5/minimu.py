@@ -5,6 +5,17 @@ import time
 buss_id = 2
 address = 0x6b
 
+class Minimu():
+
+    def __init__(self, bus_id, address):
+        pass
+
+
+def fifo_disable(self):
+    self.set_mode('Bypass')
+    self.set_gyro_decimation_factor(0)
+    self.set_odr_hz(0)
+
 g = Gyro(buss_id, address)
 g.set_full_scale_selection(245)
 g.enable_axes('XYZ')
@@ -23,6 +34,4 @@ try:
         print(f.get_data())
         time.sleep(1)
 except KeyboardInterrupt:
-    f.set_mode('Bypass')
-    f.set_gyro_decimation_factor(0)
-    f.set_odr_hz(0)
+    f.disable()
