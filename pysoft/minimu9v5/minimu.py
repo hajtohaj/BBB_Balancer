@@ -5,23 +5,22 @@ import time
 
 class Minimu():
 
-    ODR = 52
+    ODR_HZ = 52
     GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 16.32
     GYRO_OFFSET = 0
-    GYRO_POSITIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32767
-    GYRO_NEGATIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32768
+    GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767 / ODR_HZ
+    GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768 / ODR_HZ
 
     def __init__(self, bus_id, address):
         self.gyro = Gyro(buss_id, address)
         self.fifo = Fifo(buss_id, address)
         self.angles = dict(X=0, Y=0, Z=0)
 
-
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.GYRO_FULL_SCALE)
         self.gyro.enable_axes('XYZ')
-        self.gyro.set_odr_hz(self.ODR)
+        self.gyro.set_odr_hz(self.ODR_HZ)
         self.gyro.set_hp_filter_hz(self.GYRO_HP_BANDWIDTH)
         self.gyro.enable_hp_filter()
         self.gyro.reset_hp_filter()
@@ -34,7 +33,7 @@ class Minimu():
 
     def setup_fifo(self):
         self.fifo.set_gyro_decimation_factor(1)
-        self.fifo.set_odr_hz(self.ODR)
+        self.fifo.set_odr_hz(self.ODR_HZ)
         self.fifo.set_mode('Continuous')
         self.fifo.get_data()  # discard first sample
         time.sleep(0.25)
@@ -56,6 +55,7 @@ class Minimu():
         data = self.fifo.get_data()
         print(data)
         if data:
+            print(data[0][0], data[0][1])
             self.angles['X'] += self.to_angle(data[0][0], data[0][1])
             self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
             self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
