@@ -5,39 +5,84 @@ import time
 buss_id = 2
 address = 0x6b
 
+
 class Minimu():
 
+    ODR = 26
+    GYRO_FULL_SCALE = 245
+    GYRO_HP_BANDWIDTH = 16.32
+    GYRO_OFFSET = 0.5
+    GYRO_POSITIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32767
+    GYRO_NEGATIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32768
+
     def __init__(self, bus_id, address):
-        pass
+        self.gyro = Gyro(buss_id, address)
+        self.fifo = Fifo(buss_id, address)
+        self.angles = dict(X=0, Y=0, Z=0)
+
+    def setup_gyro(self):
+        self.gyro.set_full_scale_selection(self.GYRO_FULL_SCALE)
+        self.gyro.enable_axes('XYZ')
+        self.gyro.set_odr_hz(self.ODR)
+        self.gyro.set_hp_filter_hz(self.GYRO_HP_BANDWIDTH)
+        self.gyro.enable_hp_filter()
+        self.gyro.reset_hp_filter()
+
+    @staticmethod  # IDE upiera sie ze to jest static
+    def disable_gyro(self):
+        self.gyro.disable_hp_filter()
+        self.gyro.set_hp_filter_hz(0.0081)
+        self.gyro.set_odr_hz(0)
+        self.gyro.disable_axes('XYZ')
+
+    def setup_fifo(self):
+        self.fifo.set_gyro_decimation_factor(1)
+        self.fifo.set_odr_hz(self.ODR)
+        self.fifo.set_mode('Continuous')
+
+    def disable_fifo(self):
+        self.fifo.set_mode('Bypass')
+        self.fifo.set_gyro_decimation_factor(0)
+        self.fifo.set_odr_hz(0)
+
+    def to_angle(self, sample_sum, sample_count):
+        if sample_sum >= 0:
+            return sample_sum * self.GYRO_POSITIVE_FACTOR + sample_count * self.GYRO_OFFSET
+        else:
+            return sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET
+
+    def read_gyro(self):
+        data = self.fifo.get_data()
+        self.angles['X'] += self.to_angle(data[0][0], data[0][1])
+        self.angles['X'] += self.to_angle(data[1][0], data[1][1])
+        self.angles['X'] += self.to_angle(data[2][0], data[2][1])
+        return self.angles
+
+    def print_angles_degrees(self):
+        print("X: {0:.2f},  Y: {0:.2f}, Z:  {0:.2f}".format(self.angles['X'], self.angles['Y'], self.angles['Z']))
+
+    def __degree_to_radian(self, degrees):
+        return degrees * 3.14159265/180
+
+    def print_angles_radians(self):
+            print("X: {0:.2f},  Y: {0:.2f}, Z:  {0:.2f}".format(self.__degree_to_radian(self.angles['X']),
+                                                                self.__degree_to_radian(self.angles['Y']),
+                                                                self.__degree_to_radian(self.angles['Z'])))
 
 
-def fifo_disable(self):
-    self.set_mode('Bypass')
-    self.set_gyro_decimation_factor(0)
-    self.set_odr_hz(0)
+if __name__ == "__main__":
+    buss_id = 2
+    fifo_address = 0x6b
 
-def disable(self):
-    g.disable_hp_filter()
-    g.set_hp_filter_hz(0.0081)
-    g.set_odr_hz(0)
-    g.disable_axes('XYZ')
+    mm = Minimu(buss_id, fifo_address)
+    mm.setup_gyro()
+    mm.setup_fifo()
 
-g = Gyro(buss_id, address)
-g.set_full_scale_selection(245)
-g.enable_axes('XYZ')
-g.set_odr_hz(26)
-g.set_hp_filter_hz(16.32)
-g.enable_hp_filter()
-g.reset_hp_filter()
-
-f = Fifo(buss_id, address)
-f.set_gyro_decimation_factor(1)
-f.set_odr_hz(26)
-f.set_mode('Continuous')
-
-try:
-    while 1:
-        print(f.get_data())
-        time.sleep(1)
-except KeyboardInterrupt:
-    f.disable()
+    try:
+        while 1:
+            mm.read_gyro()
+            mm.print_angles_radians()
+            time.sleep(1)
+    except KeyboardInterrupt:
+        mm.disable_fifo()
+        mm.disable_gyro()
