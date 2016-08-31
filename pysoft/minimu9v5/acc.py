@@ -148,9 +148,9 @@ class Acc:
         raw_data = self.bus.read_word_data(self.acc_address, register)
         return self.__twos_complement_to_dec16(raw_data)
 
-    def is_tda(self):
+    def is_xlda(self):
         register = 0x1E  # STATUS_REG
-        mask = '00000100'
+        mask = '00000001'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
         return (raw_data & int(mask, 2)) != 0
 
