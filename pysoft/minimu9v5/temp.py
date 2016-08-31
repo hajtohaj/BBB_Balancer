@@ -42,9 +42,8 @@ if __name__ == "__main__":
     t = Temp(buss_id, address)
 
     try:
-        print("INFO: Temperature sensor is off if both the accelerometer "
-              "and the gyroscope sensors are in Power-Down mode.")
-        print
+        print("\nINFO: Temperature sensor is off if both the accelerometer "
+              "and the gyroscope sensors are in Power-Down mode.\n")
         while 1:
             print("Temperature: {0:.2f}, Raw value: {1}".format(t.get_temperature(), t.get_temperature_raw()))
             time.sleep(0.5)
