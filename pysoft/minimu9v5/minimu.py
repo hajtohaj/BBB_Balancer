@@ -11,7 +11,7 @@ class Minimu():
     ODR = 26
     GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 16.32
-    GYRO_OFFSET = 0.5
+    GYRO_OFFSET = 0.73
     GYRO_POSITIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32767
     GYRO_NEGATIVE_FACTOR = 1.0 / ODR * GYRO_FULL_SCALE / 32768
 
@@ -85,4 +85,4 @@ if __name__ == "__main__":
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
-        mm.disable_gyro()
+        #mm.disable_gyro()
