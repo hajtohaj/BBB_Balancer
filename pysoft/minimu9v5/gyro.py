@@ -192,7 +192,7 @@ class Gyro:
             numb_of_samples = 4096
         else:
             numb_of_samples = self.get_fifo_samples_count()
-        fifo_data = dict(Count=numb_of_samples)
+        fifo_data = dict()
         for sample_idx in range(numb_of_samples):
             fifo_pattern = self.get_fifo_pattern()
             if fifo_pattern in fifo_data.keys():
