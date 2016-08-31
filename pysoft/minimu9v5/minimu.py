@@ -20,6 +20,7 @@ class Minimu():
         self.fifo = Fifo(buss_id, address)
         self.angles = dict(X=0, Y=0, Z=0)
 
+
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.GYRO_FULL_SCALE)
         self.gyro.enable_axes('XYZ')
@@ -38,6 +39,8 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_odr_hz(self.ODR)
         self.fifo.set_mode('Continuous')
+        self.fifo.get_data()  # discard first sample
+        self.fifo.get_data()  # discard second sample
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -57,10 +60,13 @@ class Minimu():
             self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
             self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
         return {'X': self.to_angle(data[0][0], data[0][1]), 'Y': self.to_angle(data[1][0], data[1][1]),
-                'Z': self.to_angle(data[2][0], data[2][1])}
+                    'Z': self.to_angle(data[2][0], data[2][1])}
+        # else:
+        #     return dict(X=0, Y=0, Z=0)
 
     def print_angles_degrees(self):
-        print("Degrees: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.angles['X'], self.angles['Y'], self.angles['Z']))
+        print("Degrees: X: {0:.12f},  Y: {1:.12f}, Z:  {2:.12f}".format(self.angles['X'],
+                                                                        self.angles['Y'], self.angles['Z']))
 
     def __degree_to_radian(self, degrees):
         return degrees * 3.14159265/180
