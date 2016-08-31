@@ -4,10 +4,12 @@ import time
 
 class Fifo:
 
-    FIFO_ODR_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000'}
-    FIFO_MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110', }
-    FIFO_DECIMATION_FACTOR = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
+    MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110'}
+    OUTPUT_DATA_RATE_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000'}
+    GYRO_DECIMATION_FACTOR = {0: '00000000', 1: '00001000', 2: '00010000', 3: '000110000',
                               4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
+    ACC_DECIMATION_FACTOR = {0: '00000000', 1: '00000001', 2: '00000010', 3: '00000011',
+                             4: '00000100', 8: '00000101', 16: '00000110', 32: '00000111'}
 
     def __init__(self, bus_id, address):
         self.bus_id = bus_id
@@ -29,19 +31,25 @@ class Fifo:
 
     def set_gyro_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
-        bits = self.FIFO_DECIMATION_FACTOR[decimation]  # DEC_FIFO_GYRO_[2:0]
+        bits = self.GYRO_DECIMATION_FACTOR[decimation]  # DEC_FIFO_GYRO_[2:0]
         mask = '00111000'
+        self.__set_bits(register, mask, bits)
+
+    def set_acc_decimation_factor(self, decimation):
+        register = 0x08  # FIFO_CTRL3
+        bits = self.ACC_DECIMATION_FACTOR[decimation]  # DEC_FIFO_XL[2:0]
+        mask = '00000111'
         self.__set_bits(register, mask, bits)
 
     def set_odr_hz(self, fifo_odr):
         register = 0x0A  # FIFO_CTRL5
-        bits = self.FIFO_ODR_HZ[fifo_odr]  # ODR_FIFO_[3:0]
+        bits = self.OUTPUT_DATA_RATE_HZ[fifo_odr]  # ODR_FIFO_[3:0]
         mask = '01111000'
         self.__set_bits(register, mask, bits)
 
     def set_mode(self, fifo_mode):
         register = 0x0A  # FIFO_CTRL5
-        bits = self.FIFO_MODE[fifo_mode]  # FIFO_MODE_[2:0]
+        bits = self.MODE[fifo_mode]  # FIFO_MODE_[2:0]
         mask = '00000111'
         self.__set_bits(register, mask, bits)
 
@@ -107,11 +115,13 @@ if __name__ == "__main__":
 
     f.set_gyro_decimation_factor(1)
     f.set_odr_hz(26)
-    f.set_mode('Bypass')
     f.set_mode('Continuous')
+
     try:
         while 1:
             print(f.get_data())
             time.sleep(1)
     except KeyboardInterrupt:
-        pass
+        f.set_mode('Bypass')
+        f.set_gyro_decimation_factor(0)
+        f.set_odr_hz(26)

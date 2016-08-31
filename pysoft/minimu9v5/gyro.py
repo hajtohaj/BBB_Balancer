@@ -4,8 +4,8 @@ import time
 
 class Gyro:
 
-    ODR_HZ = {0: '00000000', 13: '00010000', 26: '00100000', 52: '00110000', 104: '01000000'}
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
+    OUTPUT_DATA_RATE_HZ = {0: '00000000', 13: '00010000', 26: '00100000', 52: '00110000', 104: '01000000'}
     FULL_SCALE_SELECTION = {125: '00000010', 245: '00000000', 500: '00000100', 1000: '00001000', 2000: '00001100'}
     HP_FILTER_BANDWIDTH_HZ = {0.0081: '00000000', 0.0324: '00010000', 2.07: '00100000', 16.32: '00110000'}
 
@@ -51,7 +51,7 @@ class Gyro:
 
     def set_odr_hz(self, odr):
         register = 0x11  # CTRL2_G
-        bits = self.ODR_HZ[odr]  # ODR_G
+        bits = self.OUTPUT_DATA_RATE_HZ[odr]  # ODR_G
         mask = '11110000'
         self.__set_bits(register, mask, bits)
 
@@ -60,8 +60,8 @@ class Gyro:
         mask = '11110000'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
         odr_bits = raw_data & int(mask, 2)
-        for odr in self.ODR_HZ.keys():
-            if int(self.ODR_HZ[odr], 2) == odr_bits:
+        for odr in self.OUTPUT_DATA_RATE_HZ.keys():
+            if int(self.OUTPUT_DATA_RATE_HZ[odr], 2) == odr_bits:
                 return odr
         return -1
 
@@ -77,9 +77,21 @@ class Gyro:
         mask = '00111000'
         self.__set_bits(register, mask, bits)
 
+    def disable_axes(self, axes):
+        register = 0x19  # CTRL10_C
+        bits = "{0:b}".format(~int(self.AXES[axes], 2))  # Zen_G,  Yen_G,  Xen_G
+        mask = '00111000'
+        self.__set_bits(register, mask, bits)
+
     def enable_hp_filter(self):
         register = 0x16  # CTRL7_G
         bits = '01000000'  # HP_G_EN
+        mask = '01000000'
+        self.__set_bits(register, mask, bits)
+
+    def disable_hp_filter(self):
+        register = 0x16  # CTRL7_G
+        bits = '00000000'  # HP_G_EN
         mask = '01000000'
         self.__set_bits(register, mask, bits)
 
@@ -145,4 +157,6 @@ if __name__ == "__main__":
             print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
             time.sleep(0.5)
     except KeyboardInterrupt:
-        pass
+        g.disable_hp_filter()
+        g.set_odr_hz(0)
+        g.disable_axes('XYZ')
