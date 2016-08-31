@@ -6,7 +6,7 @@ import time
 class Minimu():
 
     ODR_HZ = 52
-    GYRO_FULL_SCALE = 500
+    GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 16.32
     GYRO_OFFSET = 0
     GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767.0 / ODR_HZ
