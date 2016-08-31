@@ -133,7 +133,7 @@ if __name__ == "__main__":
     address = 0x6b
 
     g = Gyro(buss_id, address)
-    g.set_full_scale_selection(245)
+    g.set_full_scale_selection(2000)
     g.enable_axes('XYZ')
     g.set_odr_hz(13)
     g.set_hp_filter_hz(16.32)
