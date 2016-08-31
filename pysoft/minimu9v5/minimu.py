@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print("Last reading: {0:.12f}".format(mm.read_gyro()))
+            print("Last reading: {0}".format(mm.read_gyro()))
             mm.print_angles_degrees()
             mm.print_angles_radians()
             time.sleep(1)
