@@ -198,8 +198,8 @@ if __name__ == "__main__":
     address = 0x6b
 
     g = Gyro(buss_address, address)
-    g.set_full_scale(245)
-    print(g.get_full_scale())
+    g.set_full_scale(500)
+    print("FS: {0}".format(g.get_full_scale()))
     g.enable_axes('XYZ')
     g.set_odr('26Hz')
     g.set_hp_filter('16.32Hz')
