@@ -41,11 +41,11 @@ class Gyro:
         register = 0x11  # CTRL2_G
         mask = '00001110'
         raw_data = self.bus.read_byte_data(self.gyro_address, register)
-        fs_bits = raw_data & mask
+        fs_bits = raw_data & int(mask, 2)
         for k in self.FULL_SCALE_SELECTION.keys():
             if int(self.FULL_SCALE_SELECTION[k], 2) == fs_bits:
                 return k
-        return  -1
+        return -1
 
     def set_high_performance_mode(self):
         register = 0x16  # CTRL7_G
