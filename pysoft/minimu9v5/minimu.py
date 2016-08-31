@@ -45,14 +45,8 @@ class Minimu():
 
     def to_angle(self, sample_sum, sample_count):
         if sample_sum >= 0:
-            print(sample_sum)
-            print(self.GYRO_POSITIVE_FACTOR)
-            print(sample_sum * self.GYRO_POSITIVE_FACTOR + sample_count * self.GYRO_OFFSET)
             return sample_sum * self.GYRO_POSITIVE_FACTOR + sample_count * self.GYRO_OFFSET
         else:
-            print(sample_sum)
-            print(self.GYRO_NEGATIVE_FACTOR)
-            print(sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET)
             return sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET
 
     def read_gyro(self):
