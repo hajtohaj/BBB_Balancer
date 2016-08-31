@@ -106,6 +106,10 @@ class Fifo:
                     self.bus.read_word_data(self.address, register)), 1)
         return fifo_data
 
+    def disable(self):
+        self.set_mode('Bypass')
+        self.set_gyro_decimation_factor(0)
+        self.set_odr_hz(0)
 
 if __name__ == "__main__":
     buss_id = 2
@@ -122,6 +126,4 @@ if __name__ == "__main__":
             print(f.get_data())
             time.sleep(1)
     except KeyboardInterrupt:
-        f.set_mode('Bypass')
-        f.set_gyro_decimation_factor(0)
-        f.set_odr_hz(0)
+        f.disable(0)
