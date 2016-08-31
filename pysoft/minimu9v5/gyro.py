@@ -135,7 +135,7 @@ if __name__ == "__main__":
     g = Gyro(buss_id, address)
     g.set_full_scale_selection(245)
     g.enable_axes('XYZ')
-    g.set_odr_hz(26)
+    g.set_odr_hz(13)
     g.set_hp_filter_hz(16.32)
     g.enable_hp_filter()
     g.reset_hp_filter()
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     try:
         while 1:
             print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
-            time.sleep(0.5)
+            time.sleep(0.035)
     except KeyboardInterrupt:
         pass
         # g.disable_hp_filter()
