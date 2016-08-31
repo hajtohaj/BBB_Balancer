@@ -160,4 +160,4 @@ if __name__ == "__main__":
         g.disable_hp_filter()
         g.set_hp_filter_hz(0.0081)
         g.set_odr_hz(0)
-        g.disable_axes('XYZ')
+        # g.disable_axes('XYZ')
