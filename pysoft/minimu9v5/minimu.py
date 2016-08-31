@@ -7,7 +7,7 @@ class Minimu():
 
     ODR_HZ = 52
     GYRO_FULL_SCALE = 245
-    GYRO_HP_BANDWIDTH = 2.07  #16.32
+    GYRO_HP_BANDWIDTH = 16.32
     GYRO_OFFSET = 0
     GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767 / ODR_HZ
     GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768 / ODR_HZ
@@ -37,8 +37,6 @@ class Minimu():
         self.fifo.set_mode('Continuous')
         self.fifo.get_data()  # discard first sample
         time.sleep(0.25)
-        # self.fifo.get_data()  # discard second sample
-        # time.sleep(0.25)
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -87,7 +85,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print("Last reading: {0}".format(mm.read_gyro()))
+            print("Last reading: {0:.12f}".format(mm.read_gyro()))
             mm.print_angles_degrees()
             mm.print_angles_radians()
             time.sleep(1)
