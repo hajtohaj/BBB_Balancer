@@ -55,7 +55,7 @@ class Minimu():
         data = self.fifo.get_data()
         print(data)
         if data:
-            print(data[0][0], data[0][1])
+            print(data[0][0])
             self.angles['X'] += self.to_angle(data[0][0], data[0][1])
             self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
             self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
