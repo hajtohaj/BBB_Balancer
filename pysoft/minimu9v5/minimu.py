@@ -35,8 +35,8 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_odr_hz(self.ODR_HZ)
         self.fifo.set_mode('Continuous')
-        self.fifo.get_data()  # discard first sample
-        self.fifo.get_data()  # discard second sample
+        print(self.fifo.get_data())  # discard first sample
+        print(self.fifo.get_data())  # discard second sample
         time.sleep(0.25)
 
     def disable_fifo(self):
@@ -52,7 +52,7 @@ class Minimu():
 
     def read_gyro(self):
         data = self.fifo.get_data()
-        print(data)
+        print("D", data)
         if data:
             x = self.to_angle(data[0][0], data[0][1])
             y = self.to_angle(data[1][0], data[1][1])
