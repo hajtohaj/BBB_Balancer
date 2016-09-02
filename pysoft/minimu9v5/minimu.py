@@ -56,9 +56,9 @@ class Minimu():
         data = self.fifo.get_data()
         print(data)
         if data:
-            x = round(self.to_angle(data[0][0], data[0][1]), self.GYRO_ROUNDING_NDIGITS)
-            y = round(self.to_angle(data[1][0], data[1][1]), self.GYRO_ROUNDING_NDIGITS)
-            z = round(self.to_angle(data[2][0], data[2][1]), self.GYRO_ROUNDING_NDIGITS)
+            x = self.to_angle((data[0][0]/100)*100, (data[0][1]/100)*100)
+            y = self.to_angle((data[1][0]/100)*100, (data[1][1]/100)*100)
+            z = self.to_angle((data[2][0]/100)*100, (data[2][1]/100)*100)
             self.angles['X'] += x
             self.angles['Y'] += y
             self.angles['Z'] += z
