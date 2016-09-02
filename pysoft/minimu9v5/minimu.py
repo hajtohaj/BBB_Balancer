@@ -28,7 +28,6 @@ class Minimu():
     def disable_gyro(self):
         self.gyro.set_odr_hz(0)
         self.gyro.disable_axes('XYZ')
-        self.gyro.disable_hp_filter()
         self.gyro.set_hp_filter_hz(0.0081)
         self.gyro.disable_hp_filter()
         self.gyro.reset_hp_filter()
