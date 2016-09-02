@@ -42,9 +42,9 @@ class Minimu():
         time.sleep(0.25)
 
     def disable_fifo(self):
-        self.fifo.set_mode('Bypass')
         self.fifo.set_gyro_decimation_factor(0)
         self.fifo.set_odr_hz(0)
+        self.fifo.set_mode('Bypass')
 
     def to_angle(self, sample_sum, sample_count):
         if sample_sum >= 0:
