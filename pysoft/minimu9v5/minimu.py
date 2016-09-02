@@ -68,7 +68,7 @@ class Minimu():
                                                                         self.angles['Y'], self.angles['Z']))
 
     @staticmethod
-    def __degree_to_radian(self, degrees):
+    def __degree_to_radian(degrees):
         return degrees * 3.14159265/180
 
     def print_angles_radians(self):
