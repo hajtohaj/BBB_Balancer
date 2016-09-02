@@ -46,7 +46,7 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(0)
         self.fifo.set_odr_hz(0)
 
-    def to_angle(self, sample_sum, sample_count):
+    def to_angle(self, sample_sum):
         if sample_sum >= 0:
             return sample_sum * self.gyro_positive_factor
         else:
