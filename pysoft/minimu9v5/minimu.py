@@ -95,5 +95,5 @@ if __name__ == "__main__":
             mm.print_angles_radians()
             time.sleep(1)
     except KeyboardInterrupt:
-        mm.disable_fifo()
         mm.disable_gyro()
+        mm.disable_fifo()
