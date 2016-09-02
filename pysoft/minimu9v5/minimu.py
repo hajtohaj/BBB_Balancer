@@ -26,17 +26,20 @@ class Minimu():
         self.gyro.reset_hp_filter()
 
     def disable_gyro(self):
-        self.gyro.disable_hp_filter()
-        self.gyro.set_hp_filter_hz(0.0081)
         self.gyro.set_odr_hz(0)
         self.gyro.disable_axes('XYZ')
+        self.gyro.disable_hp_filter()
+        self.gyro.set_hp_filter_hz(0.0081)
+        self.gyro.disable_hp_filter()
+        self.gyro.reset_hp_filter()
+
 
     def setup_fifo(self):
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_odr_hz(self.ODR_HZ)
         self.fifo.set_mode('Continuous')
-        print(self.fifo.get_data())  # discard first sample
-        print(self.fifo.get_data())  # discard second sample
+        self.fifo.get_data()  # discard first sample
+        self.fifo.get_data()  # discard second sample
         time.sleep(0.25)
 
     def disable_fifo(self):
