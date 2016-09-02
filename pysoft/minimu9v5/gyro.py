@@ -24,8 +24,7 @@ class Gyro:
     def __set_bits(self, register, mask, bits):
         current_value = self.bus.read_byte_data(self.gyro_address, register)
         new_value = (current_value & ~int(mask, 2)) | (int(bits, 2) & int(mask, 2))
-        if current_value != new_value:
-            self.bus.write_byte_data(self.gyro_address, register, new_value)
+        self.bus.write_byte_data(self.gyro_address, register, new_value)
 
     def set_full_scale_selection(self, full_scale):
         register = 0x11  # CTRL2_G
@@ -137,16 +136,16 @@ if __name__ == "__main__":
     g.enable_axes('XYZ')
     g.set_odr_hz(26)
     g.set_hp_filter_hz(0.0324)
-    g.enable_hp_filter()
-    g.reset_hp_filter()
+    # g.enable_hp_filter()
+    # g.reset_hp_filter()
 
     try:
         while 1:
             print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
             time.sleep(0.035)
     except KeyboardInterrupt:
-        g.disable_hp_filter()
-        g.reset_hp_filter()
+        # g.disable_hp_filter()
+        # g.reset_hp_filter()
         g.set_hp_filter_hz(0.0081)
         g.set_odr_hz(0)
         g.disable_axes('XYZ')
