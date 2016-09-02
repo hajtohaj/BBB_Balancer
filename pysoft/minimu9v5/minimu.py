@@ -36,9 +36,9 @@ class Minimu():
         self.fifo.get_data()  # discard first samples
         time.sleep(1)
         data = self.fifo.get_data()  # discard first samples
-        self.gyro_offset_x = data[0][0]/data[0][1]
-        self.gyro_offset_y = data[1][0] + data[1][1]
-        self.gyro_offset_z = data[2][0] + data[2][1]
+        self.gyro_offset_x = data[0][0] / data[0][1]
+        self.gyro_offset_y = data[1][0] / data[1][1]
+        self.gyro_offset_z = data[2][0] / data[2][1]
         print(self.gyro_offset_x, self.gyro_offset_y, self.gyro_offset_z)
 
     def disable_fifo(self):
