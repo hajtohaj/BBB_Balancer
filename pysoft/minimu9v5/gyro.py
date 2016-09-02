@@ -136,16 +136,16 @@ if __name__ == "__main__":
     g.enable_axes('XYZ')
     g.set_odr_hz(26)
     g.set_hp_filter_hz(0.0324)
-    # g.enable_hp_filter()
-    # g.reset_hp_filter()
+    g.enable_hp_filter()
+    g.reset_hp_filter()
 
     try:
         while 1:
             print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
             time.sleep(0.035)
     except KeyboardInterrupt:
-        # g.disable_hp_filter()
-        # g.reset_hp_filter()
+        g.disable_hp_filter()
+        g.reset_hp_filter()
         g.set_hp_filter_hz(0.0081)
         g.set_odr_hz(0)
         g.disable_axes('XYZ')
