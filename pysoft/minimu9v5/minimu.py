@@ -8,6 +8,7 @@ class Minimu():
     ODR_HZ = 52
     GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 0.0324
+    GYRO_ROUNDING_NDIGITS = 2
     GYRO_OFFSET = 0
     GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767.0 / ODR_HZ
     GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768.0 / ODR_HZ
@@ -51,15 +52,17 @@ class Minimu():
             return sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET
 
     def read_gyro(self):
+        self.GYRO_ROUNDING_NDIGITS = 2
         data = self.fifo.get_data()
         print(data)
         if data:
-            self.angles['X'] += self.to_angle(data[0][0], data[0][1])
-            self.angles['Y'] += self.to_angle(data[1][0], data[1][1])
-            self.angles['Z'] += self.to_angle(data[2][0], data[2][1])
-            return {'X': self.to_angle(data[0][0], data[0][1]),
-                    'Y': self.to_angle(data[1][0], data[1][1]),
-                    'Z': self.to_angle(data[2][0], data[2][1])}
+            x = round(self.to_angle(data[0][0], data[0][1]), self.GYRO_ROUNDING_NDIGITS)
+            y = round(self.to_angle(data[1][0], data[1][1]), self.GYRO_ROUNDING_NDIGITS)
+            z = round(self.to_angle(data[2][0], data[2][1]), self.GYRO_ROUNDING_NDIGITS)
+            self.angles['X'] += x
+            self.angles['Y'] += y
+            self.angles['Z'] += z
+            return {'X': x, 'Y': y, 'Z': z}
         else:
             return dict(X=0, Y=0, Z=0)
 
