@@ -45,6 +45,7 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(0)
         self.fifo.set_odr_hz(0)
         self.fifo.set_mode('Bypass')
+        self.fifo.get_data()  # discard second sample
 
     def to_angle(self, sample_sum, sample_count):
         if sample_sum >= 0:
