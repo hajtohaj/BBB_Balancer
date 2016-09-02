@@ -4,41 +4,42 @@ import time
 
 
 class Minimu():
-
-    ODR_HZ = 52
-    GYRO_FULL_SCALE = 245
-    GYRO_HP_BANDWIDTH = 0.0324
-    GYRO_ROUNDING_NDIGITS = 2
-    GYRO_OFFSET = 0.5
-    GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767.0 / ODR_HZ
-    GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768.0 / ODR_HZ
+    MAX_POSITIVE_16 = 32767.0
+    MIN_NEGATIVE_16 = 32768.0
 
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
         self.fifo = Fifo(buss_id, address)
         self.angles = dict(X=0, Y=0, Z=0)
+        self.gyro_offset_x = 0
+        self.gyro_offset_y = 0
+        self.gyro_offset_z = 0
+        self.odr_hz = 104
+        self.gyro_full_scale = 245
+        self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16 / self.odr_hz
+        self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16 / self.odr_hz
 
     def setup_gyro(self):
-        self.gyro.set_full_scale_selection(self.GYRO_FULL_SCALE)
+        self.gyro.set_full_scale_selection(self.gyro_full_scale)
         self.gyro.enable_axes('XYZ')
-        self.gyro.set_odr_hz(self.ODR_HZ)
-        self.gyro.set_hp_filter_hz(self.GYRO_HP_BANDWIDTH)
-        self.gyro.enable_hp_filter()
-        self.gyro.reset_hp_filter()
+        self.gyro.set_odr_hz(self.odr_hz)
 
     def disable_gyro(self):
-        self.gyro.disable_hp_filter()
-        self.gyro.set_hp_filter_hz(0.0081)
         self.gyro.set_odr_hz(0)
         self.gyro.disable_axes('XYZ')
 
     def setup_fifo(self):
         self.fifo.set_gyro_decimation_factor(1)
-        self.fifo.set_odr_hz(self.ODR_HZ)
+        self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_mode('Continuous')
-        time.sleep(1)
+        time.sleep(0.1)
         self.fifo.get_data()  # discard first samples
-
+        time.sleep(1)
+        data = self.fifo.get_data()  # discard first samples
+        self.gyro_offset_x = data[0][0]/data[0][1]
+        self.gyro_offset_y = data[1][0] + data[1][1]
+        self.gyro_offset_z = data[2][0] + data[2][1]
+        print(self.gyro_offset_x, self.gyro_offset_y, self.gyro_offset_z)
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -47,19 +48,16 @@ class Minimu():
 
     def to_angle(self, sample_sum, sample_count):
         if sample_sum >= 0:
-            #return sample_sum * self.GYRO_POSITIVE_FACTOR + sample_count * self.GYRO_OFFSET
-            return (sample_sum  + sample_count * self.GYRO_OFFSET)* self.GYRO_POSITIVE_FACTOR
+            return sample_sum * self.gyro_positive_factor
         else:
-            #return sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET
-            return (sample_sum + sample_count * self.GYRO_OFFSET) * self.GYRO_NEGATIVE_FACTOR
+            return sample_sum * self.gyro_negative_factor
 
     def read_gyro(self):
         data = self.fifo.get_data()
-        print(data)
         if data:
-            x = round(self.to_angle(data[0][0], data[0][1]), self.GYRO_ROUNDING_NDIGITS)
-            y = round(self.to_angle(data[1][0], data[1][1]), self.GYRO_ROUNDING_NDIGITS)
-            z = round(self.to_angle(data[2][0], data[2][1]), self.GYRO_ROUNDING_NDIGITS)
+            x = self.to_angle(data[0][0] + data[0][1] * self.gyro_offset_x)
+            y = self.to_angle(data[1][0] + data[1][1] * self.gyro_offset_y)
+            z = self.to_angle(data[2][0] + data[2][1] * self.gyro_offset_z)
             self.angles['X'] += x
             self.angles['Y'] += y
             self.angles['Z'] += z
@@ -94,7 +92,7 @@ if __name__ == "__main__":
             print("Last reading: {0}".format(mm.read_gyro()))
             mm.print_angles_degrees()
             mm.print_angles_radians()
-            time.sleep(1)
+            time.sleep(0.1)
     except KeyboardInterrupt:
         mm.disable_fifo()
         mm.disable_gyro()
