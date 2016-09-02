@@ -137,6 +137,7 @@ if __name__ == "__main__":
     g.enable_axes('XYZ')
     g.set_odr_hz(26)
     g.set_hp_filter_hz(0.0324)
+    g.disable_hp_filter()
     g.enable_hp_filter()
     g.reset_hp_filter()
 
