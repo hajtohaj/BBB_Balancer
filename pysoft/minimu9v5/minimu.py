@@ -23,7 +23,7 @@ class Minimu():
         self.gyro.set_odr_hz(self.ODR_HZ)
         self.gyro.set_hp_filter_hz(self.GYRO_HP_BANDWIDTH)
         self.gyro.enable_hp_filter()
-        # self.gyro.reset_hp_filter()
+        self.gyro.reset_hp_filter()
 
     def disable_gyro(self):
         self.gyro.disable_hp_filter()
@@ -93,5 +93,6 @@ if __name__ == "__main__":
             mm.print_angles_radians()
             time.sleep(1)
     except KeyboardInterrupt:
-        mm.disable_fifo()
-        mm.disable_gyro()
+        pass
+        #mm.disable_fifo()
+        #mm.disable_gyro()
