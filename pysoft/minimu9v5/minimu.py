@@ -37,8 +37,8 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_odr_hz(self.ODR_HZ)
         self.fifo.set_mode('Continuous')
-        self.fifo.get_data()  # discard first sample
-        self.fifo.get_data()  # discard second sample
+        print(self.fifo.get_data())  # discard first sample
+        print(self.fifo.get_data())  # discard second sample
         time.sleep(0.25)
 
     def disable_fifo(self):
@@ -96,5 +96,6 @@ if __name__ == "__main__":
             mm.print_angles_radians()
             time.sleep(1)
     except KeyboardInterrupt:
-        mm.disable_gyro()
-        mm.disable_fifo()
+        pass
+        # mm.disable_gyro()
+        # mm.disable_fifo()
