@@ -14,7 +14,7 @@ class Minimu():
         self.gyro_offset_x = 0
         self.gyro_offset_y = 0
         self.gyro_offset_z = 0
-        self.odr_hz = 104
+        self.odr_hz = 208
         self.gyro_full_scale = 245
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16 / self.odr_hz
         self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16 / self.odr_hz
