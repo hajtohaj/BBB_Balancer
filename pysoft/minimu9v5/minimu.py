@@ -9,7 +9,7 @@ class Minimu():
     GYRO_FULL_SCALE = 245
     GYRO_HP_BANDWIDTH = 2.07
     GYRO_ROUNDING_NDIGITS = 2
-    GYRO_OFFSET = 0
+    GYRO_OFFSET = 0.5
     GYRO_POSITIVE_FACTOR = GYRO_FULL_SCALE / 32767.0 / ODR_HZ
     GYRO_NEGATIVE_FACTOR = GYRO_FULL_SCALE / 32768.0 / ODR_HZ
 
@@ -52,7 +52,6 @@ class Minimu():
             return sample_sum * self.GYRO_NEGATIVE_FACTOR + sample_count * self.GYRO_OFFSET
 
     def read_gyro(self):
-        self.GYRO_ROUNDING_NDIGITS = 2
         data = self.fifo.get_data()
         print(data)
         if data:
