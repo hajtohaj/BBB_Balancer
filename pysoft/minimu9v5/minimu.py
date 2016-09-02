@@ -58,9 +58,9 @@ class Minimu():
             x = self.to_angle(data[0][0] - data[0][1] * self.gyro_offset_x)
             y = self.to_angle(data[1][0] - data[1][1] * self.gyro_offset_y)
             z = self.to_angle(data[2][0] - data[2][1] * self.gyro_offset_z)
-            self.angles['X'] += x
-            self.angles['Y'] += y
-            self.angles['Z'] += z
+            self.angles['X'] += round(x, 2)
+            self.angles['Y'] += round(y, 2)
+            self.angles['Z'] += round(z, 2)
             return {'X': x, 'Y': y, 'Z': z}
         else:
             return dict(X=0, Y=0, Z=0)
