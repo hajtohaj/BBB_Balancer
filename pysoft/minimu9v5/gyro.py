@@ -135,7 +135,7 @@ if __name__ == "__main__":
     g = Gyro(buss_id, address)
     g.set_full_scale_selection(245)
     g.enable_axes('XYZ')
-    g.set_odr_hz(13)
+    g.set_odr_hz(26)
     g.set_hp_filter_hz(0.0324)
     g.enable_hp_filter()
     g.reset_hp_filter()
