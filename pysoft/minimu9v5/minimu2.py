@@ -36,9 +36,8 @@ class Minimu():
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_mode('Continuous')
-        # time.sleep(1)
-        # data = self.fifo.get_data()  # discard first samples
-        # print(data)
+        time.sleep(1)
+        print(self.fifo.get_data())  # discard first samples
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
