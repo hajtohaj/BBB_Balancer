@@ -28,7 +28,6 @@ class Minimu():
         time.sleep(1)
         self.gyro.set_odr_hz(self.odr_hz)
 
-
     def disable_gyro(self):
         self.gyro.set_odr_hz(0)
         self.gyro.disable_axes(self.gyro_axes)
@@ -55,6 +54,7 @@ class Minimu():
 
     def read_gyro(self):
         data = self.fifo.get_data()
+        print(data)
         if data:
             x = self.to_angle(data[0][0])
             y = self.to_angle(data[1][0])
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     try:
         while 1:
             mm.read_gyro()
-            mm.print_angles_degrees()
+            # mm.print_angles_degrees()
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
