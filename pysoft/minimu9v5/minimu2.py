@@ -19,11 +19,12 @@ class Minimu():
         self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16 / self.odr_hz
 
     def setup_gyro(self):
+
+        self.gyro.set_hp_filter_hz(self.gyro_hp_filter_bdwt)
+        self.gyro.enable_hp_filter()
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
         self.gyro.enable_axes(self.gyro_axes)
         self.gyro.set_odr_hz(1660)
-        self.gyro.set_hp_filter_hz(self.gyro_hp_filter_bdwt)
-        self.gyro.enable_hp_filter()
         time.sleep(1)
         self.gyro.set_odr_hz(self.odr_hz)
         self.gyro.reset_hp_filter()
