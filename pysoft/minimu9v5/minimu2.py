@@ -12,7 +12,7 @@ class Minimu():
         self.fifo = Fifo(buss_id, address)
         self.gyro_full_scale = 245
         self.odr_hz = 416
-        self.gyro_hp_filter_bdwt = 0.0324
+        self.gyro_hp_filter_bdwt = 2.07
         self.gyro_axes = 'X'
         self.angles = dict(X=0, Y=0, Z=0)
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16 / self.odr_hz
