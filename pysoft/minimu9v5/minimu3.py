@@ -15,13 +15,13 @@ class Minimu():
         self.fifo = Fifo(buss_id, address)
         self.gyro_full_scale = 245
         self.gyro_odr_hz = 104
-        self.gyro_axes = 'XYZ'
+        self.gyro_axes = 'X'
         self.gyro_angles = dict(X=0, Y=0, Z=0)
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16
         self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16
         self.acc_full_scale = 2
         self.acc_odr_hz = self.gyro_odr_hz
-        self.acc_axes = 'XYZ'
+        self.acc_axes = 'YZ'
         self.acc_positive_factor = self.acc_full_scale / self.MAX_POSITIVE_16
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
 
@@ -69,7 +69,7 @@ class Minimu():
         acc_y = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[4]]
         acc_z = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[5]]
         acc_pitch = [math.atan2(y, z) for y, z in zip(acc_y, acc_z)]
-        return [(x,y) for x,y in zip(gyro_pitch, acc_pitch)]
+        return [(x, y) for x, y in zip(gyro_pitch, acc_pitch)]
 
 
 if __name__ == "__main__":
