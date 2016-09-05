@@ -91,22 +91,34 @@ class Fifo:
         register = 0x3C  # FIFO_STATUS3
         return self.bus.read_word_data(self.address, register)
 
-    def get_data(self):
+    def get_data(self, pattern_size):
         register = 0x3E  # FIFO_DATA_OUT_L
+        numb_of_samples = self.get_sample_count()
         if self.is_full():
             numb_of_samples = 4096
-        else:
-            numb_of_samples = self.get_sample_count()
-        fifo_data = dict()
-        for sample_idx in range(numb_of_samples):
-            fifo_pattern = self.get_fifo_pattern()
-            if fifo_pattern in fifo_data.keys():
-                fifo_data[fifo_pattern] = (fifo_data[fifo_pattern][0] + self.__twos_complement_to_dec16(
-                    self.bus.read_word_data(self.address, register)), fifo_data[fifo_pattern][1] + 1)
-            else:
-                fifo_data[fifo_pattern] = (self.__twos_complement_to_dec16(
-                    self.bus.read_word_data(self.address, register)), 1)
+        next_sample_pattern = self.get_fifo_pattern()
+        fifo_data = dict((k, []) for k in range(pattern_size))
+        for i in range(numb_of_samples):
+            fifo_data[next_sample_pattern].append(self.__twos_complement_to_dec16(self.bus.read_word_data(self.address, register)))
+            next_sample_pattern = (next_sample_pattern + 1) % pattern_size
         return fifo_data
+
+    # def get_data(self):
+    #     register = 0x3E  # FIFO_DATA_OUT_L
+    #     if self.is_full():
+    #         numb_of_samples = 4096
+    #     else:
+    #         numb_of_samples = self.get_sample_count()
+    #     fifo_data = dict()
+    #     for sample_idx in range(numb_of_samples):
+    #         fifo_pattern = self.get_fifo_pattern()
+    #         if fifo_pattern in fifo_data.keys():
+    #             fifo_data[fifo_pattern] = (fifo_data[fifo_pattern][0] + self.__twos_complement_to_dec16(
+    #                 self.bus.read_word_data(self.address, register)), fifo_data[fifo_pattern][1] + 1)
+    #         else:
+    #             fifo_data[fifo_pattern] = (self.__twos_complement_to_dec16(
+    #                 self.bus.read_word_data(self.address, register)), 1)
+    #     return fifo_data
 
 
 if __name__ == "__main__":
