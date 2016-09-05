@@ -69,7 +69,7 @@ class Minimu():
         gyro_pitch = [d * self.gyro_positive_factor * radian_factor if d >= 0 else d * self.gyro_negative_factor * radian_factor for d in data[0]]
         acc_y = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[4]]
         acc_z = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[5]]
-        acc_pitch = [math.atan2(z,y) for y,z in zip(acc_y, acc_z)]
+        acc_pitch = [math.atan2(z, y) for y, z in zip(acc_y, acc_z)]
         return {'GP': gyro_pitch, 'AP': acc_pitch}
 
 
