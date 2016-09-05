@@ -59,7 +59,8 @@ class Minimu():
             return sample_sum * self.gyro_negative_factor
 
     def read_gyro(self):
-        data = self.fifo.get_data(6)
+        fifo_pattern_size = 6
+        data = self.fifo.get_data(fifo_pattern_size)
         return data
 
 
