@@ -25,7 +25,6 @@ class Minimu():
         self.acc_positive_factor = self.acc_full_scale / self.MAX_POSITIVE_16
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
 
-
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
         self.gyro.enable_axes(self.gyro_axes)
@@ -67,10 +66,10 @@ class Minimu():
         data = self.fifo.get_data(fifo_pattern_size)
         radian_factor = 3.14159265359 / 180.0
         gyro_pitch = [d * self.gyro_positive_factor * radian_factor if d >= 0 else d * self.gyro_negative_factor * radian_factor for d in data[0]]
-        acc_y = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[4]]
-        acc_z = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[5]]
-        acc_pitch = [math.atan2(z, y) for y, z in zip(acc_y, acc_z)]
-        return zip(gyro_pitch, acc_pitch)
+        acc_y = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[4]]
+        acc_z = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[5]]
+        acc_pitch = [math.atan2(y, z) for y, z in zip(acc_y, acc_z)]
+        return [zip(gyro_pitch, acc_pitch)]
 
 
 
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     try:
         while 1:
             print(mm.read())
-            time.sleep(0.1)
+            time.sleep(2)
     except KeyboardInterrupt:
         mm.disable_fifo()
         mm.disable_gyro()
