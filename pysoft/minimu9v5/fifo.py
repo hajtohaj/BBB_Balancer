@@ -103,7 +103,7 @@ class Fifo:
             next_sample_pattern = (next_sample_pattern + 1) % pattern_size
         return fifo_data
 
-    # def get_data(self):
+    # def get_data2(self):
     #     register = 0x3E  # FIFO_DATA_OUT_L
     #     if self.is_full():
     #         numb_of_samples = 4096

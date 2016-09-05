@@ -16,11 +16,14 @@ class Minimu():
         self.gyro_odr_hz = 104
         self.gyro_axes = 'XYZ'
         self.gyro_angles = dict(X=0, Y=0, Z=0)
-        self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16 / self.gyro_odr_hz
-        self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16 / self.gyro_odr_hz
+        self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16
+        self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16
         self.acc_full_scale = 2
         self.acc_odr_hz = self.gyro_odr_hz
         self.acc_axes = 'XYZ'
+        self.acc_positive_factor = self.acc_full_scale / self.MAX_POSITIVE_16
+        self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
+
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
@@ -61,7 +64,11 @@ class Minimu():
     def read_gyro(self):
         fifo_pattern_size = 6
         data = self.fifo.get_data(fifo_pattern_size)
-        return data
+        radian_factor = 3.14159265359 / 180
+        pitch = [d * self.gyro_positive_factor * radian_factor if d >= 0 else d * self.gyro_negative_factor * radian_factor for d in data[0]]
+        y = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[4]]
+        z = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[5]]
+        return {'P': pitch, 'Y': y, 'Z': z}
 
 
 if __name__ == "__main__":
