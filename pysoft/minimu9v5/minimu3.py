@@ -51,7 +51,7 @@ class Minimu():
         self.fifo.set_odr_hz(self.gyro_odr_hz)
         self.fifo.set_mode('Continuous')
         time.sleep(0.2)
-        self.fifo.get_data(self.fifo_pattern_size)
+        print(len(self.fifo.get_data(self.fifo_pattern_size)[0]))
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
