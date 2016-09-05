@@ -72,7 +72,6 @@ class Minimu():
         return [zip(gyro_pitch, acc_pitch)]
 
 
-
 if __name__ == "__main__":
     buss_id = 2
     fifo_address = 0x6b
