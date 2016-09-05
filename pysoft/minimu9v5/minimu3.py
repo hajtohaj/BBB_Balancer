@@ -2,6 +2,7 @@ from gyro import Gyro
 from acc import Acc
 from fifo import Fifo
 import time
+import math
 
 
 class Minimu():
@@ -61,14 +62,16 @@ class Minimu():
         else:
             return sample_sum * self.gyro_negative_factor
 
-    def read_gyro(self):
+    def read(self):
         fifo_pattern_size = 6
         data = self.fifo.get_data(fifo_pattern_size)
-        radian_factor = 3.14159265359 / 180
-        pitch = [d * self.gyro_positive_factor * radian_factor if d >= 0 else d * self.gyro_negative_factor * radian_factor for d in data[0]]
-        y = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[4]]
-        z = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[5]]
-        return {'P': pitch, 'Y': y, 'Z': z}
+        radian_factor = 3.14159265359 / 180.0
+        gyro_pitch = [d * self.gyro_positive_factor * radian_factor if d >= 0 else d * self.gyro_negative_factor * radian_factor for d in data[0]]
+        acc_y = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[4]]
+        acc_z = [d * self.acc_positive_factor * radian_factor if d >= 0 else d * self.acc_negative_factor * radian_factor for d in data[5]]
+        acc_pitch = [math.atan2(z,y) for y,z in zip(acc_y, acc_z)]
+        return {'GP': gyro_pitch, 'AP': acc_pitch}
+
 
 
 if __name__ == "__main__":
@@ -82,7 +85,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print(mm.read_gyro())
+            print(mm.read())
             time.sleep(0.1)
     except KeyboardInterrupt:
         mm.disable_fifo()
