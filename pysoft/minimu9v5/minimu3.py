@@ -76,7 +76,7 @@ class Minimu():
         for a in acc_pitch: self.angles['A'] += a
 
         for g, a in zip(gyro_pitch, acc_pitch):
-            self.angles['C'] = 0.98*(self.angles['C'] + g * 1.0 / self.gyro_odr_hz) + 0.02 * a
+            self.angles['C'] = 0.97*(self.angles['C'] + g * 1.0 / self.gyro_odr_hz) + 0.03 * a
 
         return (self.angles['A'], self.angles['G'], self.angles['C'])
 
