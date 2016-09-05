@@ -69,6 +69,7 @@ if __name__ == "__main__":
 
     mm = Minimu(buss_id, fifo_address)
     mm.setup_gyro()
+    mm.setup_acc()
     mm.setup_fifo()
 
     try:
