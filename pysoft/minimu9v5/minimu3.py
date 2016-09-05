@@ -69,7 +69,7 @@ class Minimu():
         acc_y = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[4]]
         acc_z = [d * self.acc_positive_factor if d >= 0 else d * self.acc_negative_factor for d in data[5]]
         acc_pitch = [math.atan2(y, z) for y, z in zip(acc_y, acc_z)]
-        return [zip(gyro_pitch, acc_pitch)]
+        return [(x,y) for x,y in zip(gyro_pitch, acc_pitch)]
 
 
 if __name__ == "__main__":
