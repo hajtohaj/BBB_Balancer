@@ -13,7 +13,7 @@ class Minimu():
         self.acc = Acc(buss_id, address)
         self.fifo = Fifo(buss_id, address)
         self.gyro_full_scale = 245
-        self.gyro_odr_hz = 208
+        self.gyro_odr_hz = 104
         self.gyro_axes = 'XYZ'
         self.gyro_angles = dict(X=0, Y=0, Z=0)
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16 / self.gyro_odr_hz
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     try:
         while 1:
             print(mm.read_gyro())
-            time.sleep(1)
+            time.sleep(0.1)
     except KeyboardInterrupt:
         mm.disable_fifo()
         mm.disable_gyro()
