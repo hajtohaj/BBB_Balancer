@@ -1,4 +1,4 @@
 # BBB_Balancer
 
-Może kiedyż tu posprzątam :-)
+Może kiedyś tu posprzątam...
 
