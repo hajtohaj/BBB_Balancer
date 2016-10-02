@@ -128,12 +128,13 @@ if __name__ == "__main__":
     f = Fifo(buss_id, fifo_address)
 
     f.set_gyro_decimation_factor(1)
+    f.set_acc_decimation_factor(1)
     f.set_odr_hz(26)
     f.set_mode('Continuous')
 
     try:
         while 1:
-            print(f.get_data())
+            print(f.get_data(6))
             time.sleep(1)
     except KeyboardInterrupt:
         f.set_mode('Bypass')
