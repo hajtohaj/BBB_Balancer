@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     f.set_gyro_decimation_factor(1)
     f.set_acc_decimation_factor(1)
-    f.set_odr_hz(26)
+    f.set_odr_hz(13)
     f.set_mode('Continuous')
 
     try:
