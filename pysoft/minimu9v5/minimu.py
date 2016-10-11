@@ -63,7 +63,7 @@ class Minimu():
 
     def read(self):
         data = self.fifo.get_data()
-        return data[0:5]
+        return data
 
 
 if __name__ == "__main__":
