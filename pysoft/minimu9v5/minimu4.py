@@ -13,7 +13,7 @@ class Minimu():
         self.gyro = Gyro(buss_id, address)
         self.acc = Acc(buss_id, address)
         self.fifo = Fifo(buss_id, address)
-        self.odr = 104
+        self.odr_hz = 104
         self.gyro_full_scale = 245
         self.gyro_axes = 'X'
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16
@@ -27,7 +27,7 @@ class Minimu():
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
         self.gyro.enable_axes(self.gyro_axes)
-        self.gyro.set_odr_hz(self.odr)
+        self.gyro.set_odr_hz(self.odr_hz)
 
     def disable_gyro(self):
         self.gyro.set_odr_hz(0)
@@ -45,7 +45,7 @@ class Minimu():
     def setup_fifo(self):
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
-        self.fifo.set_odr_hz(self.odr)
+        self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_mode('Continuous')
         time.sleep(0.2)
 
