@@ -36,7 +36,7 @@ class Minimu():
     def setup_acc(self):
         self.acc.set_full_scale_selection(self.acc_full_scale)
         self.acc.enable_axes(self.acc_axes)
-        self.acc.set_odr_hz(self.acc_odr_hz)
+        self.acc.set_odr_hz(self.odr_hz)
 
     def disable_acc(self):
         self.acc.set_odr_hz(0)
