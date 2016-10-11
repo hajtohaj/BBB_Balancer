@@ -63,7 +63,7 @@ class Minimu():
 
     def read(self):
         data = self.fifo.get_data()
-        return data
+        return data[0:5]
 
 
 if __name__ == "__main__":
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            dd = np.array(mm.read()[0:5])
+            dd = np.array(mm.read())
             print(dd)
             time.sleep(2)
     except KeyboardInterrupt:
