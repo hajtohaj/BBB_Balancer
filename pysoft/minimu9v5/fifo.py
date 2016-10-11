@@ -173,7 +173,7 @@ class Fifo:
             if next_sample_pattern_idx == pattern_size -1:
                 fifo_data.append(fifo_record)
                 fifo_record = [None for x in self.fifo_pattern]
-            next_sample_pattern_idx = (next_sample_pattern_idx + 1) % pattern_size
+            next_sample_pattern_idx = (next_sample_pattern_idx + 1) % (pattern_size +1)
         return fifo_data
 
 if __name__ == "__main__":
