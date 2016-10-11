@@ -3,6 +3,8 @@ import time
 
 
 def gcd(x, y):
+   if x == 0: x=1
+   if y == 0: y=1
    while(y):
        x, y = y, x % y
    return x
@@ -11,6 +13,8 @@ def gcd3(x, y, z):
    return gcd(x, gcd(y,z))
 
 def lcm(x, y):
+   if x == 0: x=1
+   if y == 0: y=1
    lcm = (x*y)//gcd(x,y)
    return lcm
 
