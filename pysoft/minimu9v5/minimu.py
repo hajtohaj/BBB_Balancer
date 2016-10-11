@@ -79,7 +79,7 @@ if __name__ == "__main__":
         while 1:
             dd = np.array(mm.read())
             print(dd)
-            time.sleep(2)
+            time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
         mm.disable_gyro()
