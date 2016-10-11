@@ -15,11 +15,11 @@ class Minimu():
         self.fifo = Fifo(buss_id, address)
         self.odr_hz = 104
         self.gyro_full_scale = 245
-        self.gyro_axes = 'X'
+        self.gyro_axes = 'XYZ'
         self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16
         self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16
         self.acc_full_scale = 2
-        self.acc_axes = 'YZ'
+        self.acc_axes = 'XYZ'
         self.acc_positive_factor = self.acc_full_scale / self.MAX_POSITIVE_16
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.fifo_pattern_size = 6
