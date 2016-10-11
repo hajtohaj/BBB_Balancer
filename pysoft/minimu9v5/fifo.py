@@ -63,7 +63,7 @@ class Fifo:
         fifo_pattern = [None for x in range(rec_size * lcm3(*dec_f))]
         for record_id in range(lcm3(*dec_f)):
             for dec_f_idx in range(len(dec_f)):
-                if record_id % dec_f[dec_f_idx] == 0:
+                if dec_f[dec_f_idx] and record_id % dec_f[dec_f_idx] == 0:
                     fifo_pattern[record_id * rec_size + dec_f_idx * 3 + 0] = sample_index
                     fifo_pattern[record_id * rec_size + dec_f_idx * 3 + 1] = sample_index + 1
                     fifo_pattern[record_id * rec_size + dec_f_idx * 3 + 2] = sample_index + 2
