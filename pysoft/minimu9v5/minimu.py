@@ -2,7 +2,7 @@ from gyro import Gyro
 from acc import Acc
 from fifo import Fifo
 import time
-import math
+import numpy as np
 
 
 class Minimu():
@@ -77,9 +77,8 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            data =mm.read()
-            for d in data:
-                print(d[0:5])
+            dd = np.array(mm.read()[0:5])
+            print(dd)
             time.sleep(2)
     except KeyboardInterrupt:
         mm.disable_fifo()
