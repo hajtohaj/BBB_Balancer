@@ -24,7 +24,7 @@ class Minimu():
         self.odr_hz = 104
 
     def calculate_noise(self, gyro_data):
-        return np.hstack((np.mean(gyro_data, axis=0) , np.var(gyro_data, axis=0)))
+        return np.hstack((np.nanmean(gyro_data, axis=0) , np.nanvar(gyro_data, axis=0)))
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
