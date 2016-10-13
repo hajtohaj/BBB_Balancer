@@ -50,6 +50,7 @@ class Minimu():
         self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_mode('Continuous')
         time.sleep(0.2)
+        print(self.fifo.__twos_complement_to_dec16(self.fifo.bus.read_word_data(self.fifo.address, self.fifo.register)))
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
