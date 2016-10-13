@@ -159,7 +159,7 @@ class Fifo:
         for sample_id in range(numb_of_samples):
             i = self.fifo_pattern.index(next_sample_pattern_idx) % rec_size
             fifo_record[i] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.address, register))
-            if next_sample_pattern_idx == pattern_size -1:
+            if next_sample_pattern_idx == pattern_size:
                 fifo_data.append(fifo_record)
                 fifo_record = [None for x in self.fifo_pattern]
             next_sample_pattern_idx = (next_sample_pattern_idx + 1) % (pattern_size +1)
