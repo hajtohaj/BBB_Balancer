@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            dd = np.array(mm.read())
+            dd = np.array(mm.read(), dtype=np.float)
             noise = mm.calculate_noise(dd)
             print(noise)
             time.sleep(1)
