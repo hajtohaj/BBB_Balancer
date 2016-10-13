@@ -151,7 +151,7 @@ class Acc:
     def is_xlda(self):
         register = 0x1E  # STATUS_REG
         mask = '00000001'
-        raw_data = self.bus.read_byte_data(self.gyro_address, register)
+        raw_data = self.bus.read_byte_data(self.acc_address, register)
         return (raw_data & int(mask, 2)) != 0
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 
-class Minimu():
+class Minimu:
     MAX_POSITIVE_16 = 32767.0
     MIN_NEGATIVE_16 = 32768.0
 
@@ -24,7 +24,7 @@ class Minimu():
         self.odr_hz = 104
 
     def calculate_noise(self, gyro_data):
-        return np.vstack((np.nanmean(gyro_data, axis=0) , np.nanvar(gyro_data, axis=0)))
+        return np.vstack((np.nanmean(gyro_data, axis=0), np.nanvar(gyro_data, axis=0)))
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)

@@ -3,23 +3,30 @@ import time
 
 
 def gcd(x, y):
-   if x == 0: x=1
-   if y == 0: y=1
-   while(y):
-       x, y = y, x % y
-   return x
+    if x == 0:
+        x = 1
+    if y == 0:
+        y = 1
+    while y:
+        x, y = y, x % y
+    return x
+
 
 def gcd3(x, y, z):
-   return gcd(x, gcd(y,z))
+    return gcd(x, gcd(y, z))
+
 
 def lcm(x, y):
-   if x == 0: x=1
-   if y == 0: y=1
-   lcm = (x*y)//gcd(x,y)
-   return lcm
+    if x == 0:
+        x = 1
+    if y == 0:
+        y = 1
+    lcm = (x*y)//gcd(x, y)
+    return lcm
+
 
 def lcm3(x, y, z):
-   return lcm(x,lcm(y,z))
+    return lcm(x, lcm(y, z))
 
 
 class Fifo:
@@ -34,13 +41,13 @@ class Fifo:
                              4: '00000100', 8: '00000101', 16: '00000110', 32: '00000111'}
 
     PEDO_DECIMATION_FACTOR = {0: '00000000', 1: '00001000', 2: '00010000', 3: '00011000',
-                             4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
+                              4: '00100000', 8: '00101000', 16: '00110000', 32: '00111000'}
 
     def __init__(self, bus_id, address):
         self.bus_id = bus_id
         self.address = address
         self.bus = smbus.SMBus(self.bus_id)
-        self.decimation_factors = [0, 0, 0] # Gyro, Acc, Pedo
+        self.decimation_factors = [0, 0, 0]  # Gyro, Acc, Pedo
         self.fifo_pattern = []
 
     @staticmethod
@@ -58,7 +65,7 @@ class Fifo:
 
     def _calculate_fifo_pattern(self):
         dec_f = self.decimation_factors
-        rec_size = 3 * len(dec_f) # Gx Gy Gz Ax AY AZ S1 S2 S3
+        rec_size = 3 * len(dec_f)  # Gx Gy Gz Ax AY AZ S1 S2 S3
         sample_index = 0
         fifo_pattern = [None for x in range(rec_size * lcm3(*dec_f))]
         for record_id in range(lcm3(*dec_f)):
@@ -80,7 +87,6 @@ class Fifo:
         self.__set_bits(register, mask, bits)
         self.decimation_factors[0] = decimation
         self._calculate_fifo_pattern()
-
 
     def set_acc_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
@@ -162,7 +168,7 @@ class Fifo:
             if next_sample_pattern_idx == pattern_size:
                 fifo_data.append(fifo_record)
                 fifo_record = [None for x in self.fifo_pattern]
-            next_sample_pattern_idx = (next_sample_pattern_idx + 1) % (pattern_size +1)
+            next_sample_pattern_idx = (next_sample_pattern_idx + 1) % (pattern_size + 1)
         return fifo_data
 
 if __name__ == "__main__":
