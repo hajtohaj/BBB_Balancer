@@ -55,7 +55,7 @@ class Minimu:
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
         self.calculate_noise(np.array(self.read(),dtype=np.float))
-        time.sleep(1) # gyro needs this (checked experymentaly)
+        time.sleep(1)
         self.calculate_noise(np.array(self.read(),dtype=np.float))
 
     def disable_fifo(self):

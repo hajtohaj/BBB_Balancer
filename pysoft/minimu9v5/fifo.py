@@ -80,6 +80,13 @@ class Fifo:
     def _get_pattern_size(self):
         return len([x for x in self.fifo_pattern if x])
 
+    def _get_record_size(self):
+        df = self.decimation_factors
+        for x in range(2,-1,-1):
+            if df[x] == 0:
+                df.pop()
+        return len(df)
+
     def set_gyro_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
         bits = self.GYRO_DECIMATION_FACTOR[decimation]  # DEC_FIFO_GYRO_[2:0]
@@ -157,17 +164,17 @@ class Fifo:
         numb_of_samples = self.get_sample_count()
         if self.is_full():
             numb_of_samples = 4096
-        rec_size = 3 * len(self.decimation_factors)
+        rec_size = 3 * self._get_record_size()
         next_sample_pattern_idx = self.get_fifo_pattern_index()
         pattern_size = self._get_pattern_size()
         fifo_data = []
-        fifo_record = [None for x in self.fifo_pattern]
+        fifo_record = [None for x in range(rec_size)]
         for sample_id in range(numb_of_samples):
             i = self.fifo_pattern.index(next_sample_pattern_idx) % rec_size
             fifo_record[i] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.address, register))
             if next_sample_pattern_idx == pattern_size:
                 fifo_data.append(fifo_record)
-                fifo_record = [None for x in self.fifo_pattern]
+                fifo_record = [None for x in range(rec_size)]
             next_sample_pattern_idx = (next_sample_pattern_idx + 1) % (pattern_size + 1)
         return fifo_data
 
