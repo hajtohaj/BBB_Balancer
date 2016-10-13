@@ -54,6 +54,7 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
+        time.sleep(0.2)
         self.read() # discard first samples
         time.sleep(1)
         self.calculate_noise(np.array(self.read(),dtype=np.float))
@@ -89,7 +90,7 @@ if __name__ == "__main__":
         while 1:
             dd = np.array(mm.read(), dtype=np.float)
             print(dd)
-            time.sleep(1)
+            time.sleep(0.5)
     except KeyboardInterrupt:
         print(mm.mean)
         print(mm.variance)
