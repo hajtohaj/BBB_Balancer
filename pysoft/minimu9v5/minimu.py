@@ -54,9 +54,10 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        self.calculate_noise(np.array(self.read(),dtype=np.float))
+        self.read() # discard first samples
         time.sleep(1)
         self.calculate_noise(np.array(self.read(),dtype=np.float))
+
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -88,8 +89,6 @@ if __name__ == "__main__":
         while 1:
             dd = np.array(mm.read(), dtype=np.float)
             print(dd)
-            noise = mm.calculate_noise(dd)
-            print(noise)
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()

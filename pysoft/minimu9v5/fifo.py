@@ -81,11 +81,10 @@ class Fifo:
         return len([x for x in self.fifo_pattern if x])
 
     def _get_record_size(self):
-        df = list(self.decimation_factors)
         for x in range(2,-1,-1):
-            if df[x] == 0:
-                df.pop()
-        return len(df)
+            if self.decimation_factors[x]:
+                return x+1
+        return 0
 
     def set_gyro_decimation_factor(self, decimation):
         register = 0x08  # FIFO_CTRL3
