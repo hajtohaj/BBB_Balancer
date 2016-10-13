@@ -86,10 +86,8 @@ if __name__ == "__main__":
     try:
         while 1:
             dd = np.array(mm.read())
-            print(dd[:,0:6])
-            noise = mm.calculate_noise(dd[1:, 0:6])
-            print(noise[0])
-            print(noise[1])
+            noise = mm.calculate_noise(dd)
+            print(noise)
             time.sleep(1)
     except KeyboardInterrupt:
         mm.disable_fifo()
