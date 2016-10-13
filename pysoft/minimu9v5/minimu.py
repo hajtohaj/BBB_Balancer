@@ -91,6 +91,8 @@ if __name__ == "__main__":
             print(dd)
             time.sleep(1)
     except KeyboardInterrupt:
+        print(mm.mean)
+        print(mm.variance)
         mm.disable_fifo()
         mm.disable_gyro()
         mm.disable_acc()
