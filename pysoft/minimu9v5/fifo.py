@@ -81,7 +81,7 @@ class Fifo:
         return len([x for x in self.fifo_pattern if x])
 
     def _get_record_size(self):
-        df = self.decimation_factors
+        df = list(self.decimation_factors)
         for x in range(2,-1,-1):
             if df[x] == 0:
                 df.pop()
