@@ -9,6 +9,8 @@ class Minimu:
     MAX_POSITIVE_16 = 32767.0
     MIN_NEGATIVE_16 = 32768.0
 
+    STATIC_OFFSET = np.array([520, -465, -539, -501, -206, 244])
+
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
         self.acc = Acc(buss_id, address)
@@ -23,6 +25,7 @@ class Minimu:
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
+        self.offset = self.STATIC_OFFSET
         self.variance = None
         self.mean = None
 
@@ -54,11 +57,8 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        time.sleep(0.2)
-        self.read() # discard first samples
-        time.sleep(1)
-        self.calculate_noise(np.array(self.read(),dtype=np.float))
-
+        time.sleep(0.5)
+        self.read()  # discard first samples
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -73,7 +73,8 @@ class Minimu:
             return sample_sum * self.gyro_negative_factor
 
     def read(self):
-        data = self.fifo.get_data()
+        data = np.array(self.fifo.get_data(), dtype=np.float)
+        data[:, 0:6] -= self.offset[0:6]
         return data
 
 
@@ -88,8 +89,12 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            dd = np.array(mm.read(), dtype=np.float)
-            print(dd)
+            dd = mm.read()
+            mm.calculate_noise(dd)
+            print(mm.mean)
+            print(mm.variance)
+            # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
+            print()
             time.sleep(0.5)
     except KeyboardInterrupt:
         print(mm.mean)
