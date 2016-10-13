@@ -40,7 +40,7 @@ class Fifo:
         self.bus_id = bus_id
         self.address = address
         self.bus = smbus.SMBus(self.bus_id)
-        self.decimation_factors = []
+        self.decimation_factors = [0, 0, 0] # Gyro, Acc, Pedo
         self.fifo_pattern = []
 
     @staticmethod
@@ -56,27 +56,8 @@ class Fifo:
         if current_value != new_value:
             self.bus.write_byte_data(self.address, register, new_value)
 
-    def _set_decimation_factor(self, index, value ):
-        # index: 0 - gyro, 1 - acc, 2 - pedo
-        df = self.decimation_factors
-        l_df = len(df)
-        temp = [0, 0, 0]
-        l_temp = len(temp)
-        for i in range(l_df):
-            temp[i] = df[i]
-        temp[index] = value
-        for i in range(l_temp):
-            if temp[l_temp - 1 - i]:
-                break
-            else:
-                temp.pop(l_temp - 1 - i)
-        self.decimation_factors = temp
-
     def _calculate_fifo_pattern(self):
         dec_f = self.decimation_factors
-        for x in range(3):
-            if len(dec_f) <= x:
-                dec_f.append(0)
         rec_size = 3 * len(dec_f) # Gx Gy Gz Ax AY AZ S1 S2 S3
         sample_index = 0
         fifo_pattern = [None for x in range(rec_size * lcm3(*dec_f))]
@@ -97,7 +78,7 @@ class Fifo:
         bits = self.GYRO_DECIMATION_FACTOR[decimation]  # DEC_FIFO_GYRO_[2:0]
         mask = '00111000'
         self.__set_bits(register, mask, bits)
-        self._set_decimation_factor(0, decimation)
+        self.decimation_factors[0] = decimation
         self._calculate_fifo_pattern()
 
 
@@ -106,7 +87,7 @@ class Fifo:
         bits = self.ACC_DECIMATION_FACTOR[decimation]  # DEC_FIFO_XL[2:0]
         mask = '00000111'
         self.__set_bits(register, mask, bits)
-        self._set_decimation_factor(1, decimation)
+        self.decimation_factors[1] = decimation
         self._calculate_fifo_pattern()
 
     def set_pedo_decimation_factor(self, decimation):
@@ -114,7 +95,7 @@ class Fifo:
         bits = self.ACC_DECIMATION_FACTOR[decimation]  # DEC_FIFO_XL[2:0]
         mask = '00111000'
         self.__set_bits(register, mask, bits)
-        self._set_decimation_factor(2, decimation)
+        self.decimation_factors[2] = decimation
         self._calculate_fifo_pattern()
 
     def set_odr_hz(self, fifo_odr):
