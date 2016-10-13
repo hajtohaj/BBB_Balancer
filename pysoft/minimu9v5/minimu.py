@@ -23,8 +23,13 @@ class Minimu:
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
+        self.variance = np.zeros(9)
+        self.mean = np.zeros(9)
+
     def calculate_noise(self, gyro_data):
-        return np.vstack((np.nanmean(gyro_data, axis=0), np.nanvar(gyro_data, axis=0)))
+        self.mean = np.nanmean(gyro_data, axis=0)
+        self.variance = np.nanvar(gyro_data, axis=0)
+        return np.vstack((self.mean, self.variance))
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
@@ -49,7 +54,8 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        time.sleep(0.2) # gyro needs this (checked experymentaly)
+        time.sleep(1) # gyro needs this (checked experymentaly)
+        self.calculate_noise(np.array(mm.read(),dtype=np.float))
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
