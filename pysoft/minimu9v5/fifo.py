@@ -75,7 +75,7 @@ class Fifo:
     def _calculate_fifo_pattern(self):
         dec_f = self.decimation_factors
         for x in range(3):
-            if len(dec_f) < x:
+            if len(dec_f) <= x:
                 dec_f.append(0)
         rec_size = 3 * len(dec_f) # Gx Gy Gz Ax AY AZ S1 S2 S3
         sample_index = 0
