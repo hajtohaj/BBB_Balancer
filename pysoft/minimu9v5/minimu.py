@@ -23,8 +23,8 @@ class Minimu:
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
-        self.variance = np.zeros(9)
-        self.mean = np.zeros(9)
+        self.variance = None
+        self.mean = None
 
     def calculate_noise(self, gyro_data):
         self.mean = np.nanmean(gyro_data, axis=0)
