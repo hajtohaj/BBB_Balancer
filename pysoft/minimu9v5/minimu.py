@@ -82,6 +82,8 @@ if __name__ == "__main__":
     buss_id = 2
     fifo_address = 0x6b
 
+    np.set_printoptions(precision=3)
+
     mm = Minimu(buss_id, fifo_address)
     mm.setup_gyro()
     mm.setup_acc()
