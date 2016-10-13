@@ -45,12 +45,10 @@ class Minimu():
         self.acc.disable_axes(self.acc_axes)
 
     def setup_fifo(self):
+        self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
-        self.fifo.set_odr_hz(self.odr_hz)
         self.fifo.set_mode('Continuous')
-        time.sleep(0.01)
-        print(self.fifo.get_data())
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
