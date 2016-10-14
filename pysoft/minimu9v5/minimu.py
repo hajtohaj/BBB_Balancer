@@ -23,12 +23,8 @@ class Minimu:
         self.fifo = Fifo(buss_id, address)
         self.gyro_full_scale = 245
         self.gyro_axes = 'XYZ'
-        self.gyro_positive_factor = self.gyro_full_scale / self.MAX_POSITIVE_16
-        self.gyro_negative_factor = self.gyro_full_scale / self.MIN_NEGATIVE_16
         self.acc_full_scale = 2
         self.acc_axes = 'XYZ'
-        self.acc_positive_factor = self.acc_full_scale / self.MAX_POSITIVE_16
-        self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
         self.mean = self.DEFAULT_MEAN
@@ -65,12 +61,6 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(0)
         self.fifo.set_acc_decimation_factor(0)
         self.fifo.set_odr_hz(0)
-    #
-    # def to_angle(self, sample_sum):
-    #     if sample_sum >= 0:
-    #         return sample_sum * self.gyro_positive_factor
-    #     else:
-    #         return sample_sum * self.gyro_negative_factor
 
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
