@@ -73,7 +73,7 @@ class Minimu:
 
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
-        data[:, 0:6] -= self.offset[0:6]
+        # data[:, 0:6] -= self.offset[0:6]
         return data
 
 
