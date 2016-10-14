@@ -101,7 +101,7 @@ class Minimu:
     def get_calibration_factors_default(self):
         return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_OFFSET, self.DEFAULT_VARIANCE))
 
-    def read_with_offset_reduction(self):
+    def read_and_reduce_offset(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
         data[:, 0:6] -= self.offset[0:6]
         return data
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print(mm.read_with_offset_reduction())
+            print(mm.read_and_reduce_offset())
             sleep(1)
 
     except KeyboardInterrupt:
