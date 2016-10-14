@@ -84,6 +84,8 @@ if __name__ == "__main__":
 
     np.set_printoptions(precision=3)
 
+    out_f = open('/root/minimu_out.txt', 'rb')
+
     mm = Minimu(buss_id, fifo_address)
     mm.setup_gyro()
     mm.setup_acc()
@@ -93,8 +95,10 @@ if __name__ == "__main__":
         while 1:
             print(datetime.strftime(datetime.now(), '%Y.%m.d %H:%M:%S'))
             dd = mm.read()
+            out_f.writeln(datetime.strftime(datetime.now(), '%Y.%m.d %H:%M:%S'))
+            np.savetxt(out_f, dd)
             print(dd)
-            # mm.calculate_noise(dd)
+            mm.calculate_noise(dd)
             # print(mm.mean)
             # print(mm.variance)
             # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
