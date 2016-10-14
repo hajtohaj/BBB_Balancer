@@ -121,6 +121,9 @@ if __name__ == "__main__":
             print(mm.read_with_offset_reduction())
             sleep(1)
     except KeyboardInterrupt:
+        print(mm.mean)
+        print(mm.offset)
+        print(mm.variance)
         mm.disable_fifo()
         mm.disable_gyro()
         mm.disable_acc()
