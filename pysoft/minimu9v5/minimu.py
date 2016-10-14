@@ -14,6 +14,7 @@ class Minimu:
     ACC_G_ORIENTATION = np.array([0, 0, 1])
 
     DEFAULT_MEAN = np.array([520, -465, -539, -501, -206, 244])
+    DEFAULT_OFFSET = np.array([520, -465, -539, -501, -206, 244])
     DEFAULT_VARIANCE = np.array([520, -465, -539, -501, -206, 244])
 
     def __init__(self, buss_id, address):
@@ -30,8 +31,9 @@ class Minimu:
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
-        self.variance = self.DEFAULT_MEAN
-        self.mean = self.DEFAULT_VARIANCE
+        self.mean = self.DEFAULT_MEAN
+        self.offset = self.DEFAULT_OFFSET
+        self.variance = self.DEFAULT_VARIANCE
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
@@ -85,16 +87,16 @@ class Minimu:
         self.mean = np.nanmean(data, axis=0)
         self.variance = np.nanvar(data, axis=0)
 
-        a = self.mean[0, 3:3] + acc_axes * self.acc_full_scale/self.MAX_POSITIVE_16
-        self.offset = self.mean + np.hstack((self.mean[0, 0:3], a))
-        print(self.offse)
-        return np.vstack((self.mean, self.variance))
+        offset = self.mean[3:6] - acc_axes * self.MAX_POSITIVE_16 / self.acc_full_scale
+        self.offset = np.hstack((self.mean[0:3], offset))
+
+        return np.vstack((self.mean, self.offset, self.variance))
 
     def get_calibration_factors(self):
-        return np.vstack((self.mean, self.variance))
+        return np.vstack((self.mean, self.offset, self.variance))
 
     def get_calibration_factors_default(self):
-        return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_VARIANCE))
+        return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_OFFSET, self.DEFAULT_VARIANCE))
 
     # def read_with_noise_reduction(self):
     #     # data[:, 0:6] -= self.offset[0:6]
