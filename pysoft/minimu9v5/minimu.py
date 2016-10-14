@@ -13,9 +13,9 @@ class Minimu:
 
     ACC_G_ORIENTATION = np.array([0, 0, 1])
 
-    DEFAULT_MEAN = np.array([520, -465, -539, -501, -206, 244])
-    DEFAULT_OFFSET = np.array([520, -465, -539, -501, -206, 244])
-    DEFAULT_VARIANCE = np.array([520, -465, -539, -501, -206, 244])
+    DEFAULT_MEAN = np.array([534, -479, -572, -435, -365, 16627])
+    DEFAULT_OFFSET = np.array([534, -479, -572, -435, -365, 243])
+    DEFAULT_VARIANCE = np.array([56, 237, 132, 158, 134, 318])
 
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
@@ -98,9 +98,10 @@ class Minimu:
     def get_calibration_factors_default(self):
         return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_OFFSET, self.DEFAULT_VARIANCE))
 
-    # def read_with_noise_reduction(self):
-    #     # data[:, 0:6] -= self.offset[0:6]
-    #     pass
+    def read_with_offset_reduction(self):
+        data = np.array(self.fifo.get_data(), dtype=np.float)
+        data[:, 0:6] -= self.offset[0:6]
+        return data
 
 if __name__ == "__main__":
     buss_id = 2
@@ -112,24 +113,14 @@ if __name__ == "__main__":
     mm.setup_gyro()
     mm.setup_acc()
     mm.setup_fifo()
+    print(mm.calculate_calibration_factors(1))
+    print(mm.calculate_calibration_factors(5))
 
     try:
         while 1:
-            print(mm.calculate_calibration_factors(1))
-            # time_stamp = datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S')
-            # print(time_stamp)
-            # dd = mm.read()
-            # out_f.write(bytes('TIME_STAMP: ' + time_stamp+'\n', 'UTF-8'))
-            # np.savetxt(out_f, dd, fmt='%7d %7d %7d %7d %7d %7d')
-            # print(dd)
-            # # mm.calculate_noise(dd)
-            # # print(mm.mean)
-            # # print(mm.variance)
-            # # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
+            print(mm.read_with_offset_reduction())
             sleep(1)
     except KeyboardInterrupt:
-        # print(mm.mean)
-        # print(mm.variance)
         mm.disable_fifo()
         mm.disable_gyro()
         mm.disable_acc()
