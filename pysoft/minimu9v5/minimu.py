@@ -75,9 +75,10 @@ class Minimu:
     def calculate_calibration_factors(self, n_seconds=1):
         data = self.read()
         for x in range(n_seconds):
+            sleep(1)
             next_data = self.read()
-            print(data[1,:])
-            print(next_data[1,:])
+            # print(data[1,:])
+            # print(next_data[1,:])
             data = np.vstack((data, next_data))
         if np.isnan(np.min(data[0, :])):  # discard first record if needed
             data = data[1:, :]
