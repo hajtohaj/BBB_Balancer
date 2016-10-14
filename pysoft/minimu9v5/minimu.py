@@ -7,10 +7,12 @@ import numpy as np
 
 
 class Minimu:
+
     MAX_POSITIVE_16 = 32767.0
     MIN_NEGATIVE_16 = 32768.0
 
-    # STATIC_OFFSET = np.array([520, -465, -539, -501, -206, 244])
+    DEFAULT_MEAN = np.array([520, -465, -539, -501, -206, 244])
+    DEFAULT_VARIANCE = np.array([520, -465, -539, -501, -206, 244])
 
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
@@ -26,14 +28,8 @@ class Minimu:
         self.acc_negative_factor = self.acc_full_scale / self.MIN_NEGATIVE_16
         self.odr_hz = 104
 
-        # self.offset = self.STATIC_OFFSET
-        # self.variance = None
-        # self.mean = None
-
-    # def calculate_noise(self, gyro_data):
-    #     self.mean = np.nanmean(gyro_data, axis=0)
-    #     self.variance = np.nanvar(gyro_data, axis=0)
-    #     return np.vstack((self.mean, self.variance))
+        self.variance = self.DEFAULT_MEAN
+        self.mean = self.DEFAULT_VARIANCE
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
@@ -58,7 +54,7 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        sleep(0.2) #needed for gyro
+        sleep(0.2)  # needed for gyro
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -74,17 +70,34 @@ class Minimu:
 
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
-        # data[:, 0:6] -= self.offset[0:6]
         return data
 
+    def calculate_calibration_factors(self, n_seconds=1):
+        data = self.read()
+        for x in range(n_seconds):
+            next_data = self.read()
+            data = np.vstack((data, next_data))
+        if np.isnan(np.min(data[0, :])):  # discard first record if needed
+            data = data[1:, :]
+        self.mean = np.nanmean(data, axis=0)
+        self.variance = np.nanvar(data, axis=0)
+        return np.vstack((self.mean, self.variance))
+
+    def get_calibration_factors(self):
+        return np.vstack((self.mean, self.variance))
+
+    def get_calibration_factors_default(self):
+        return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_VARIANCE))
+
+    # def read_with_noise_reduction(self):
+    #     # data[:, 0:6] -= self.offset[0:6]
+    #     pass
 
 if __name__ == "__main__":
     buss_id = 2
     fifo_address = 0x6b
 
     np.set_printoptions(precision=3)
-
-    out_f = open('/root/minimu_out.txt', 'wb')
 
     mm = Minimu(buss_id, fifo_address)
     mm.setup_gyro()
@@ -93,16 +106,22 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            time_stamp = datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S')
-            print(time_stamp)
-            dd = mm.read()
-            out_f.write(bytes('TIME_STAMP: ' + time_stamp+'\n', 'UTF-8'))
-            np.savetxt(out_f, dd, fmt='%7d %7d %7d %7d %7d %7d')
-            print(dd)
-            # mm.calculate_noise(dd)
-            # print(mm.mean)
-            # print(mm.variance)
-            # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
+            print(mm.calculate_calibration_factors(1))
+            print(mm.calculate_calibration_factors(1))
+            print(mm.calculate_calibration_factors(2))
+            print(mm.calculate_calibration_factors(4))
+            print(mm.calculate_calibration_factors(8))
+            print(mm.calculate_calibration_factors(16))
+            # time_stamp = datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S')
+            # print(time_stamp)
+            # dd = mm.read()
+            # out_f.write(bytes('TIME_STAMP: ' + time_stamp+'\n', 'UTF-8'))
+            # np.savetxt(out_f, dd, fmt='%7d %7d %7d %7d %7d %7d')
+            # print(dd)
+            # # mm.calculate_noise(dd)
+            # # print(mm.mean)
+            # # print(mm.variance)
+            # # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
             sleep(1)
     except KeyboardInterrupt:
         # print(mm.mean)
