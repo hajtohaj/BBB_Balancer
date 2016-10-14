@@ -87,7 +87,10 @@ class Minimu:
         self.mean = np.nanmean(data, axis=0)
         self.variance = np.nanvar(data, axis=0)
 
-        offset = self.mean[3:6] - acc_axes * self.MAX_POSITIVE_16 / self.acc_full_scale
+        if self.mean[5] >= 0:
+            offset = self.mean[3:6] - acc_axes * self.MAX_POSITIVE_16 / self.acc_full_scale
+        else:
+            offset = self.mean[3:6] - acc_axes * self.MIN_NEGATIVE_16 / self.acc_full_scale
         self.offset = np.hstack((self.mean[0:3], offset))
 
         return np.vstack((self.mean, self.offset, self.variance))
