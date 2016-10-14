@@ -96,7 +96,7 @@ if __name__ == "__main__":
             time_stamp = datetime.strftime(datetime.now(), '%Y.%m.d %H:%M:%S')
             print(time_stamp)
             dd = mm.read()
-            out_f.writeln(bytes(time_stamp, 'UTF-8'))
+            out_f.write(bytes(time_stamp, 'UTF-8'))
             np.savetxt(out_f, dd)
             print(dd)
             mm.calculate_noise(dd)
