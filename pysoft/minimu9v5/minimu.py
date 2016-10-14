@@ -1,7 +1,8 @@
 from gyro import Gyro
 from acc import Acc
 from fifo import Fifo
-import time
+from time import sleep
+from datetime import datetime
 import numpy as np
 
 
@@ -90,14 +91,14 @@ if __name__ == "__main__":
 
     try:
         while 1:
+            print(datetime.strftime(datetime.now(), '%Y.%m.d %H:%M:%S'))
             dd = mm.read()
             print(dd)
             # mm.calculate_noise(dd)
             # print(mm.mean)
             # print(mm.variance)
             # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
-            print()
-            time.sleep(0.5)
+            sleep(1)
     except KeyboardInterrupt:
         # print(mm.mean)
         # print(mm.variance)
