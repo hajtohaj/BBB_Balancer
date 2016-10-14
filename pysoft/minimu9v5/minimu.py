@@ -117,12 +117,13 @@ if __name__ == "__main__":
     mm.setup_acc()
     mm.setup_fifo()
     print(mm.calculate_calibration_factors(1))
-    print(mm.calculate_calibration_factors(5))
+    print(mm.calculate_calibration_factors(1))
 
     try:
         while 1:
             print(mm.read_with_offset_reduction())
             sleep(1)
+
     except KeyboardInterrupt:
         print(mm.mean)
         print(mm.offset)
