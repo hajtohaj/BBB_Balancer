@@ -165,7 +165,7 @@ class Fifo:
             numb_of_samples = 4096
         rec_size = 3 * self._get_record_size()
         next_sample_pattern_idx = self.get_fifo_pattern_index()
-        print(next_sample_pattern_idx, numb_of_samples)
+        # print(next_sample_pattern_idx, numb_of_samples)
         pattern_size = self._get_pattern_size()
         fifo_data = []
         fifo_record = [None for x in range(rec_size)]
