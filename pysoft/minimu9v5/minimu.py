@@ -76,7 +76,7 @@ class Minimu:
         data = self.read()
         for x in range(n_seconds):
             next_data = self.read()
-            data = np.vstack((data, next_data))
+            data = np.hstack((data, next_data), axis=0)
         if np.isnan(np.min(data[0, :])):  # discard first record if needed
             data = data[1:, :]
         self.mean = np.nanmean(data, axis=0)
