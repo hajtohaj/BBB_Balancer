@@ -93,10 +93,10 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            time_stamp = datetime.strftime(datetime.now(), '%Y.%m.d %H:%M:%S')
+            time_stamp = datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S')
             print(time_stamp)
             dd = mm.read()
-            out_f.write(bytes(time_stamp+'\n', 'UTF-8'))
+            out_f.write(bytes('TIME_STAMP: ' + time_stamp+'\n', 'UTF-8'))
             np.savetxt(out_f, dd, fmt='%7d %7d %7d %7d %7d %7d')
             print(dd)
             # mm.calculate_noise(dd)
