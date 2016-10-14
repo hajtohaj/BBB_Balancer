@@ -99,7 +99,7 @@ if __name__ == "__main__":
             out_f.write(bytes(time_stamp, 'UTF-8'))
             np.savetxt(out_f, dd)
             print(dd)
-            mm.calculate_noise(dd)
+            # mm.calculate_noise(dd)
             # print(mm.mean)
             # print(mm.variance)
             # # np.savetxt(f,mm.mean.reshape(1,6), fmt='%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f')
