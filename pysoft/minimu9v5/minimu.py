@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     np.set_printoptions(precision=3)
 
-    out_f = open('/root/minimu_out.txt', 'rb')
+    out_f = open('/root/minimu_out.txt', 'wb')
 
     mm = Minimu(buss_id, fifo_address)
     mm.setup_gyro()
