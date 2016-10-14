@@ -11,6 +11,8 @@ class Minimu:
     MAX_POSITIVE_16 = 32767.0
     MIN_NEGATIVE_16 = 32768.0
 
+    ACC_G_ORIENTATION = np.array([0, 0, 1])
+
     DEFAULT_MEAN = np.array([520, -465, -539, -501, -206, 244])
     DEFAULT_VARIANCE = np.array([520, -465, -539, -501, -206, 244])
 
@@ -72,18 +74,20 @@ class Minimu:
         data = np.array(self.fifo.get_data(), dtype=np.float)
         return data
 
-    def calculate_calibration_factors(self, n_seconds=1):
+    def calculate_calibration_factors(self, n_seconds=1, acc_axes=ACC_G_ORIENTATION):
         data = self.read()
         for x in range(n_seconds):
             sleep(1)
             next_data = self.read()
-            # print(data[1,:])
-            # print(next_data[1,:])
             data = np.vstack((data, next_data))
         if np.isnan(np.min(data[0, :])):  # discard first record if needed
             data = data[1:, :]
         self.mean = np.nanmean(data, axis=0)
         self.variance = np.nanvar(data, axis=0)
+
+        a = self.mean[0, 3:3] + acc_axes * self.acc_full_scale/self.MAX_POSITIVE_16
+        self.offset = self.mean + np.hstack((self.mean[0, 0:3], a))
+        print(self.offse)
         return np.vstack((self.mean, self.variance))
 
     def get_calibration_factors(self):
@@ -110,11 +114,6 @@ if __name__ == "__main__":
     try:
         while 1:
             print(mm.calculate_calibration_factors(1))
-            print(mm.calculate_calibration_factors(1))
-            print(mm.calculate_calibration_factors(2))
-            print(mm.calculate_calibration_factors(4))
-            print(mm.calculate_calibration_factors(8))
-            print(mm.calculate_calibration_factors(16))
             # time_stamp = datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S')
             # print(time_stamp)
             # dd = mm.read()
