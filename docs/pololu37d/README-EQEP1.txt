@@ -18,7 +18,7 @@ echo -5 > /sys/devices/platform/bone_capemgr/slots
 	Red:	motor power (connects to one motor terminal)
 	Black:	motor power (connects to the other motor terminal)
 	Green:	encoder GND
-	Blue:	encoder Vcc (3.5 – 20 V)
+	Blue:	encoder Vcc (3.5 ï¿½ 20 V)
 	Yellow:	encoder A output
 	White:	encoder B output
 
@@ -28,7 +28,7 @@ BBB
 	GND     P9_1 szary
 	DC_5V   P9_5 czerwony
 
-Po³¹czenie: (wymagany dzielnik napiêcia (0.66)  )
+Poï¿½ï¿½czenie: (wymagany dzielnik napicia (0.66)  )
 Func 	 BBB   <--->   37D
 A:		P8_35  <--->  Yellow
 B:		P8_33  <--->  White
