@@ -31,14 +31,14 @@ class Pwm:
         from os import path
         return path.exists(self.pwm_path)
 
+    def is_enabled(self):
+        return self._read_interface('enable')
+
     def enable(self):
         self._write_interface('enable', 1)
 
     def disable(self):
         self._write_interface('enable', 0)
-
-    def is_enabled(self):
-        return self._read_interface('enable')
 
     def set_duty_cycle(self, duty_cycle):
         self._write_interface('duty_cycle', duty_cycle)
