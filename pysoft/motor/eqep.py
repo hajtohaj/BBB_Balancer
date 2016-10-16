@@ -8,12 +8,12 @@ class Eqep:
         self.eqep_id = eqep_id
 
     def _write_interface(self, interface_name, value):
-        f_itf = open(self.EQEP[self.eqep_id], "w")
+        f_itf = open('/'.join([self.EQEP[self.eqep_id], interface_name]), "w")
         f_itf.write(str(value))
         f_itf.close()
 
     def _read_interface(self, interface_name):
-        f_itf = open(self.EQEP[self.eqep_id], "r")
+        f_itf = open('/'.join([self.EQEP[self.eqep_id], interface_name]), "r")
         value = f_itf.read()
         return value.rstrip()
 
@@ -41,5 +41,5 @@ if __name__ == "__main__":
     print(eqep1.get_position())
     eqep1.set_position(12345)
     print(eqep1.get_position())
-    eqep1.set_position(0)
+    eqep1.set_position()
     eqep1.disable()
