@@ -2,7 +2,7 @@
 class Eqep:
     EQEP1_PATH = '/sys/devices/platform/ocp/48302000.epwmss/48302180.eqep'
     EQEP2_PATH = '/sys/devices/platform/ocp/48304000.epwmss/48304180.eqep'
-    EQEP = {1:'EQEP1_PATH', 2:'EQEP2_PATH'}
+    EQEP = {1:EQEP1_PATH, 2:EQEP2_PATH}
 
     def __init__(self, eqep_id):
         self.eqep_id = eqep_id
