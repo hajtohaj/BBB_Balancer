@@ -7,11 +7,6 @@ class Pwm:
         self.pwm_id = pwm_id
         self.pwm_path = '/'.join([self.PWM_BASE_PATH, 'pwm' + str(self.pwm_id)])
 
-        if not self.is_exported():
-            self.export()
-        if not self.is_enabled():
-            self.enable()
-
     def _write_interface(self, interface_name, value):
         f_itf = open('/'.join([self.pwm_path, interface_name]), "w")
         f_itf.write(str(value))
@@ -22,28 +17,32 @@ class Pwm:
         value = f_itf.read()
         return value.rstrip()
 
-    def export(self):
-        f_itf = open('/'.join([self.PWM_BASE_PATH, 'export']), "w")
-        f_itf.write(str(self.pwm_id))
-        f_itf.close()
-
-    def unexport(self):
-        f_itf = open('/'.join([self.PWM_BASE_PATH, 'unexport']), "w")
-        f_itf.write(str(self.pwm_id))
-        f_itf.close()
-
     def is_exported(self):
         from os import path
         return path.exists(self.pwm_path)
+
+    def export(self):
+        if not self.is_exported():
+            f_itf = open('/'.join([self.PWM_BASE_PATH, 'export']), "w")
+            f_itf.write(str(self.pwm_id))
+            f_itf.close()
+
+    def unexport(self):
+        if self.is_exported():
+            f_itf = open('/'.join([self.PWM_BASE_PATH, 'unexport']), "w")
+            f_itf.write(str(self.pwm_id))
+            f_itf.close()
 
     def is_enabled(self):
         return self._read_interface('enable')
 
     def enable(self):
-        self._write_interface('enable', 1)
+        if not self.is_enabled():
+            self._write_interface('enable', 1)
 
     def disable(self):
-        self._write_interface('enable', 0)
+        if self.is_enabled():
+            self._write_interface('enable', 0)
 
     def set_duty_cycle(self, duty_cycle):
         self._write_interface('duty_cycle', duty_cycle)
@@ -61,7 +60,10 @@ class Pwm:
 if __name__ == "__main__":
 
     pwm0 = Pwm(0)
+    pwm0.export()
+    pwm0.enable()
 
     pwm0.set_duty_cycle(0)
-    print(pwm0.get_duty_cycle())
 
+    pwm0.disable()
+    pwm0.unexport()
