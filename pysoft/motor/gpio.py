@@ -23,7 +23,10 @@ class Gpio:
         return path.exists(self.gpio_path)
 
     def export(self):
+        print('exp')
         if not self.is_exported():
+            print('ort')
+            print('/'.join([self.GPIO_BASE_PATH, 'export']))
             f_itf = open('/'.join([self.GPIO_BASE_PATH, 'export']), "w")
             f_itf.write(str(self.gpio_id))
             f_itf.close()

@@ -100,3 +100,4 @@ if __name__ == "__main__":
     m0.set_direction('ccw')
     time.sleep(delay)
     m0.stop()
+    m0.pwm.unexport()
