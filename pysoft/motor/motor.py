@@ -93,13 +93,13 @@ class Motor:
     def get_position(self):
         return self.encoder.get_position(0)
 
-
     def close(self):
         self.pwm.set_duty_cycle(0)
         self.pwm.disable()
         self.pwm.unexport()
         self.pin_a.unexport()
         self.pin_b.unexport()
+        self.encoder.disable()
 
 if __name__ == "__main__":
 
