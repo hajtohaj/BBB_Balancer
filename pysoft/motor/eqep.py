@@ -18,7 +18,7 @@ class Eqep:
         return value.rstrip()
 
     def is_enabled(self):
-        return self._read_interface('enabled')
+        return int(self._read_interface('enabled'))
 
     def enable(self):
         self._write_interface('enabled', 1)

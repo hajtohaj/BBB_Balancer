@@ -19,10 +19,12 @@ class Motor:
             self.pwm = Pwm(1)
             self.pin_a = Gpio(26)
             self.pin_b = Gpio(47)
+            self.encoder = Eqep(1)
         else:
             self.pwm = Pwm(0)
             self.pin_a = Gpio(36)
             self.pin_b = Gpio(62)
+            self.encoder = Eqep(0)
 
         self.pwm.export()
         self.pwm.set_period(self.MAX_SPEED * self.__SPEED_FACTOR)
@@ -36,6 +38,9 @@ class Motor:
         self.pin_b.export()
         self.pin_b.set_direction_out()
         self.pin_b.set_low()
+
+        self.encoder.set_position(0)
+        self.encoder.enable()
 
     def set_speed(self, speed):
         if speed > self.MAX_SPEED:
@@ -79,6 +84,16 @@ class Motor:
     def stop(self):
         self.set_direction('stop')
 
+    def set_position(self, position):
+        self.encoder.set_position(position)
+
+    def set_position_zero(self):
+        self.set_position(0)
+
+    def get_position(self):
+        return self.encoder.get_position(0)
+
+
     def close(self):
         self.pwm.set_duty_cycle(0)
         self.pwm.disable()
@@ -96,9 +111,11 @@ if __name__ == "__main__":
     import time
     time.sleep(delay)
     m0.stop()
+    print(m0.get_position())
     time.sleep(delay)
     m0.set_speed(speeed)
     m0.set_direction('ccw')
     time.sleep(delay)
     m0.stop()
+    print(m0.get_position())
     m0.close()
