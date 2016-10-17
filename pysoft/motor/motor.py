@@ -87,3 +87,12 @@ class Motor:
 if __name__ == "__main__":
 
     m0 = Motor(0)
+    m0.get_speed(20)
+    m0.set_direction('cw')
+    import time
+    time.sleep(0.5)
+    m0.stop()
+    time.sleep(0.5)
+    m0.set_direction('ccw')
+    time.sleep(0.5)
+    m0.stop()
