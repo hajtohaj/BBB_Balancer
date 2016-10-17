@@ -57,9 +57,11 @@ class Motor:
             self.pin_a.set_high()
             self.pin_b.set_low()
         elif direction == 'stop':
+            m0.set_speed(0)
             self.pin_a.set_low()
             self.pin_b.set_low()
         elif direction == 'stop_high':
+            m0.set_speed(0)
             self.pin_a.set_high()
             self.pin_b.set_high()
 
@@ -87,7 +89,7 @@ class Motor:
 if __name__ == "__main__":
 
     m0 = Motor(0)
-    m0.get_speed(20)
+    m0.set_speed(20)
     m0.set_direction('cw')
     import time
     time.sleep(0.5)
