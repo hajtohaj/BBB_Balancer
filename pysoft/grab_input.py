@@ -41,7 +41,7 @@ key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
 
 c = 'a'
 
-while c != 'q' or c != 'Q':
+while c != 'q' and c != 'Q':
     c = getch()
     if ord(c) == 27:
         c = getch()
