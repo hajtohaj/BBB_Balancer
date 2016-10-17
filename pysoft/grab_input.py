@@ -36,8 +36,20 @@ class _GetchWindows:
 
 
 getch = _Getch()
+
+key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
+
 c = 'a'
 
 while c != 'e':
     c = getch()
-    print(chr(c))
+    c_code = ord(c)
+    if c_code == 27:
+        c = getch()
+        if c_code == 91:
+            c = getch()
+            if c_code in key_map.keys():
+                print(key_map[c_code])
+    else:
+       print(c_code)
+
