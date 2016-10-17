@@ -36,3 +36,8 @@ class _GetchWindows:
 
 
 getch = _Getch()
+c = 'a'
+
+while c != 'e':
+    c = getch()
+    print(c)
