@@ -35,7 +35,7 @@ class _GetchWindows:
         return msvcrt.getch()
 
 
-from motor.pwm import Pwm
+from pwm import Pwm
 
 pwm0 = Pwm(0)
 pwm0_step = 100000
