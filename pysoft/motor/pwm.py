@@ -38,7 +38,6 @@ class Pwm:
 
     def enable(self):
         if not self.is_enabled():
-            print('enabling')
             self._write_interface('enable', 1)
 
     def disable(self):
