@@ -91,7 +91,7 @@ class Motor:
         self.set_position(0)
 
     def get_position(self):
-        return self.encoder.get_position(0)
+        return self.encoder.get_position()
 
     def close(self):
         self.pwm.set_duty_cycle(0)
