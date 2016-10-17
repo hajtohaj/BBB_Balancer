@@ -79,7 +79,7 @@ class Motor:
     def stop(self):
         self.set_direction('stop')
 
-    def __exit__(self):
+    def close(self):
         self.pwm.set_duty_cycle(0)
         self.pwm.disable()
         self.pwm.unexport()
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     delay = 1
     m0 = Motor(0)
-    m0.set_speed(20)
+    m0.set_speed(10)
     m0.set_direction('cw')
     import time
     time.sleep(delay)
@@ -100,4 +100,4 @@ if __name__ == "__main__":
     m0.set_direction('ccw')
     time.sleep(delay)
     m0.stop()
-    m0.pwm.unexport()
+    m0.cloce()
