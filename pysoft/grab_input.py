@@ -43,13 +43,12 @@ c = 'a'
 
 while c != 'e':
     c = getch()
-    c_code = ord(c)
-    if c_code == 27:
+    if ord(c) == 27:
         c = getch()
-        if c_code == 91:
+        if ord(c) == 91:
             c = getch()
-            if c_code in key_map.keys():
-                print(key_map[c_code])
+            if ord(c) in key_map.keys():
+                print(key_map[ord(c)])
     else:
-       print(c_code)
+       print(ord(c))
 
