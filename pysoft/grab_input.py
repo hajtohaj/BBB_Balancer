@@ -35,10 +35,12 @@ class _GetchWindows:
         return msvcrt.getch()
 
 
+from pysoft.motor.pwm import Pwm
+
+pwm0 = Pwm(0)
+pwm0_step = 100000
 getch = _Getch()
-
 key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
-
 c = 'a'
 
 while c != 'q' and c != 'Q':
@@ -49,6 +51,10 @@ while c != 'q' and c != 'Q':
             c = getch()
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
+                if key_map[ord(c)] == 'up':
+                    pwm0.set_duty_cycle(pwm0.get_duty_cycle() + pwm0_step)
+                elif key_map[ord(c)] == 'down':
+                    pwm0.set_duty_cycle(pwm0.get_duty_cycle() - pwm0_step)
     else:
        print(ord(c))
 

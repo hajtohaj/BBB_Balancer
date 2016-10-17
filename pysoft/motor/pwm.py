@@ -7,6 +7,11 @@ class Pwm:
         self.pwm_id = pwm_id
         self.pwm_path = '/'.join([self.PWM_BASE_PATH, 'pwm' + str(self.pwm_id)])
 
+        if not pwm0.is_exported():
+            pwm0.export()
+        if not pwm0.is_enabled():
+            pwm0.enable()
+
     def _write_interface(self, interface_name, value):
         f_itf = open('/'.join([self.pwm_path, interface_name]), "w")
         f_itf.write(str(value))
@@ -52,17 +57,11 @@ class Pwm:
     def get_period(self):
         return self._read_interface('period')
 
+
 if __name__ == "__main__":
 
     pwm0 = Pwm(0)
 
-    if not pwm0.is_exported():
-        pwm0.export()
-    if not pwm0.is_enabled():
-        pwm0.enable()
-    pwm0.set_period(1000000)
-    print(pwm0.get_period())
     pwm0.set_duty_cycle(0)
     print(pwm0.get_duty_cycle())
-    pwm0.disable()
-    pwm0.unexport()
+
