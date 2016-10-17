@@ -52,7 +52,7 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    pwm0.set_duty_cycle(pwm0.get_duty_cycle() + pwm0_step)
+                    pwm0.set_duty_cycle(str(int(pwm0.get_duty_cycle()) + pwm0_step))
                 elif key_map[ord(c)] == 'down':
                     pwm0.set_duty_cycle(pwm0.get_duty_cycle() - pwm0_step)
     else:
