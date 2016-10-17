@@ -42,8 +42,8 @@ class Motor:
             speed = self.MAX_SPEED
         elif speed < 0:
             speed = self.MIN_SPEED
-        else:
-            speed *= self.__SPEED_FACTOR
+        speed *= self.__SPEED_FACTOR
+        print(speed)
         self.pwm.set_duty_cycle(speed)
 
     def get_speed(self):
