@@ -10,7 +10,7 @@ class Motor:
 
     __SPEED_FACTOR = 10000
 
-    DIRECTION = {'01': 'cw', '10': 'ccw', '00': 'stop', '11': 'halt'}
+    DIRECTION = {'01': 'cw', '10': 'ccw', '00': 'stop', '11': 'stop_high'}
 
     def __init__(self, motor_id):
         self.motor_id = motor_id
@@ -59,7 +59,7 @@ class Motor:
         elif direction == 'stop':
             self.pin_a.set_low()
             self.pin_b.set_low()
-        elif direction == 'halt':
+        elif direction == 'stop_high':
             self.pin_a.set_high()
             self.pin_b.set_high()
 
@@ -76,9 +76,6 @@ class Motor:
 
     def stop(self):
         self.set_direction('stop')
-
-    def halt(self):
-        self.set_direction('halt')
 
     def __del__(self):
         self.pwm.set_duty_cycle(0)
