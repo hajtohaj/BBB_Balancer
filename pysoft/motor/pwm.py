@@ -19,12 +19,10 @@ class Pwm:
 
     def is_exported(self):
         from os import path
-        print(path.exists(self.pwm_path))
         return path.exists(self.pwm_path)
 
     def export(self):
         if not self.is_exported():
-            print('exporting')
             f_itf = open('/'.join([self.PWM_BASE_PATH, 'export']), "w")
             f_itf.write(str(self.pwm_id))
             f_itf.close()
