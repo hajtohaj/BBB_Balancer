@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
     delay = 1
     speeed = 10
-    m0 = Motor(0)
+    m0 = Motor(1)
     m0.set_speed(speeed)
     m0.set_direction('cw')
     import time
