@@ -35,10 +35,10 @@ class Pwm:
             f_itf.close()
 
     def is_enabled(self):
-        return self._read_interface('enable')
+        return int(self._read_interface('enable'))
 
     def enable(self):
-        if not int(self.is_enabled()):
+        if not self.is_enabled():
             print('enabling')
             self._write_interface('enable', 1)
 
