@@ -19,12 +19,12 @@ class Motor:
             self.pwm = Pwm(1)
             self.pin_a = Gpio(26)
             self.pin_b = Gpio(47)
-            self.encoder = Eqep(1)
+            self.encoder = Eqep(2)
         else:
             self.pwm = Pwm(0)
             self.pin_a = Gpio(36)
             self.pin_b = Gpio(62)
-            self.encoder = Eqep(0)
+            self.encoder = Eqep(1)
 
         self.pwm.export()
         self.pwm.set_period(self.MAX_SPEED * self.__SPEED_FACTOR)
