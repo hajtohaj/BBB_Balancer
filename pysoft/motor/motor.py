@@ -77,7 +77,7 @@ class Motor:
     def stop(self):
         self.set_direction('stop')
 
-    def release(self):
+    def __exit__(self):
         self.pwm.set_duty_cycle(0)
         self.pwm.disable()
         self.pwm.unexport()
@@ -87,4 +87,3 @@ class Motor:
 if __name__ == "__main__":
 
     m0 = Motor(0)
-    m0.release()
