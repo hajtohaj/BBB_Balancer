@@ -19,18 +19,17 @@ class Gpio:
 
     def is_exported(self):
         from os import path
+        print(path.exists(self.gpio_path))
         return path.exists(self.gpio_path)
 
     def export(self):
         if not self.is_exported():
-            print('export')
             f_itf = open('/'.join([self.GPIO_BASE_PATH, 'export']), "w")
             f_itf.write(str(self.gpio_id))
             f_itf.close()
 
     def unexport(self):
         if self.is_exported():
-            print('unexport')
             f_itf = open('/'.join([self.GPIO_BASE_PATH, 'unexport']), "w")
             f_itf.write(str(self.gpio_id))
             f_itf.close()

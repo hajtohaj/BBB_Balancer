@@ -19,6 +19,7 @@ class Pwm:
 
     def is_exported(self):
         from os import path
+        print(path.exists(self.pwm_path))
         return path.exists(self.pwm_path)
 
     def export(self):
