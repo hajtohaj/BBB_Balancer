@@ -40,4 +40,4 @@ c = 'a'
 
 while c != 'e':
     c = getch()
-    print(int(c))
+    print(chr(c))
