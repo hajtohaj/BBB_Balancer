@@ -103,19 +103,25 @@ class Motor:
 
 if __name__ == "__main__":
 
+    m0 = Motor(1)
+
     delay = 1
     speeed = 10
-    m0 = Motor(1)
+
+
     m0.set_speed(speeed)
     m0.set_direction('cw')
     import time
     time.sleep(delay)
+
     m0.stop()
     print(m0.get_position())
     time.sleep(delay)
+
     m0.set_speed(speeed)
     m0.set_direction('ccw')
     time.sleep(delay)
     m0.stop()
+
     print(m0.get_position())
     m0.close()
