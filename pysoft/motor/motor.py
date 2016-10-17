@@ -88,7 +88,7 @@ class Motor:
 
 if __name__ == "__main__":
 
-    delay = 5
+    delay = 1
     m0 = Motor(0)
     m0.set_speed(20)
     m0.set_direction('cw')
