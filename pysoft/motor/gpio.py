@@ -32,7 +32,10 @@ class Gpio:
             f_itf.close()
 
     def unexport(self):
+        print('Unexp')
         if self.is_exported():
+            print('ort')
+            print('/'.join([self.GPIO_BASE_PATH, 'unexport']))
             f_itf = open('/'.join([self.GPIO_BASE_PATH, 'unexport']), "w")
             f_itf.write(str(self.gpio_id))
             f_itf.close()
