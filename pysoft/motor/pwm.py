@@ -23,6 +23,7 @@ class Pwm:
 
     def export(self):
         if not self.is_exported():
+            print('exporting')
             f_itf = open('/'.join([self.PWM_BASE_PATH, 'export']), "w")
             f_itf.write(str(self.pwm_id))
             f_itf.close()
@@ -38,6 +39,7 @@ class Pwm:
 
     def enable(self):
         if not self.is_enabled():
+            print('enabling')
             self._write_interface('enable', 1)
 
     def disable(self):
