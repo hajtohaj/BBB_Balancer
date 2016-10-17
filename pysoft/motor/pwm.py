@@ -64,6 +64,6 @@ if __name__ == "__main__":
     pwm0.enable()
 
     pwm0.set_duty_cycle(0)
-
+    print(pwm0.get_duty_cycle())
     pwm0.disable()
     pwm0.unexport()
