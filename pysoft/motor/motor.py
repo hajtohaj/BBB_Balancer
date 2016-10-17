@@ -95,6 +95,7 @@ if __name__ == "__main__":
     time.sleep(0.5)
     m0.stop()
     time.sleep(0.5)
+    m0.set_speed(20)
     m0.set_direction('ccw')
     time.sleep(0.5)
     m0.stop()
