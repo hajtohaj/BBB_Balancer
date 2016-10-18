@@ -36,7 +36,8 @@ class _GetchWindows:
 
 from motor import Motor
 
-m0 = Motor(1)
+m0 = Motor(0)
+m1 = Motor(1)
 speed_step = 10
 
 getch = _Getch()
@@ -53,15 +54,15 @@ while c != 'q' and c != 'Q':
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
                     m0.change_velocity(speed_step)
-
+                    m1.change_velocity(speed_step)
                 elif key_map[ord(c)] == 'down':
                     m0.change_velocity(- speed_step)
-
+                    m1.change_velocity(- speed_step)
                 if key_map[ord(c)] == 'right':
-                    print(m0.get_velocity())
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
 
                 elif key_map[ord(c)] == 'left':
-                    print(m0.get_velocity())
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
 
     elif ord(c) == 32:
         m0.set_velocity(0)
