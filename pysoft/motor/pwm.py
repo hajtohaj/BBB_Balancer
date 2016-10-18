@@ -45,7 +45,6 @@ class Pwm:
             self._write_interface('enable', 0)
 
     def set_duty_cycle(self, duty_cycle):
-        print("duty cycle: {0}".format(duty_cycle))
         self._write_interface('duty_cycle', duty_cycle)
 
     def get_duty_cycle(self):
