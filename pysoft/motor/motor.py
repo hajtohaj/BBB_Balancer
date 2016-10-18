@@ -62,11 +62,11 @@ class Motor:
             self.pin_a.set_high()
             self.pin_b.set_low()
         elif direction == 'stop':
-            m0.set_speed(0)
+            self.set_speed(0)
             self.pin_a.set_low()
             self.pin_b.set_low()
         elif direction == 'stop_high':
-            m0.set_speed(0)
+            self.set_speed(0)
             self.pin_a.set_high()
             self.pin_b.set_high()
 
