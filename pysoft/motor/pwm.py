@@ -48,7 +48,7 @@ class Pwm:
         self._write_interface('duty_cycle', duty_cycle)
 
     def get_duty_cycle(self):
-        return self._read_interface('duty_cycle')
+        return int(self._read_interface('duty_cycle'))
 
     def set_period(self, period):
         self._write_interface('period', period)
