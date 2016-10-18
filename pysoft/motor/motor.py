@@ -75,6 +75,15 @@ class Motor:
         b = self.pin_b.get_value()
         return self.DIRECTION[a+b]
 
+    def is_direction_cw(self):
+        return self.get_direction() == 'cw'
+
+    def is_direction_ccw(self):
+        return self.get_direction() == 'ccw'
+
+    def is_stopped(self):
+        return self.get_direction() == 'stop' or self.get_direction() == 'stop_high'
+
     def set_direction_cw(self):
         self.set_direction('cw')
 
@@ -101,13 +110,35 @@ class Motor:
         self.pin_b.unexport()
         self.encoder.disable()
 
+    def set_velocity(self, new_speed):
+        if new_speed > 0:
+            if not self.is_direction_cw():
+                self.set_direction_cw()
+        elif new_speed < 0:
+            if not self.is_direction_ccw():
+                self.set_direction_ccw()
+        else:
+            if not self.is_stopped():
+                self.stop()
+        self.set_speed(abs(new_speed))
+
+    def get_velocity(self):
+        speed = self.get_speed()
+        direction = self.get_direction()
+        if direction == 'cw':
+            return speed
+        elif direction == 'ccw':
+            return -1 * speed
+        return 0
+
+
+
 if __name__ == "__main__":
 
     m0 = Motor(1)
 
     delay = 1
     speeed = 10
-
 
     m0.set_speed(speeed)
     m0.set_direction('cw')
