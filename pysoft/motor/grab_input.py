@@ -34,6 +34,10 @@ class _GetchWindows:
         import msvcrt
         return msvcrt.getch()
 
+from motor import Motor
+
+m0 = Motor(0)
+speed_step =10
 
 getch = _Getch()
 key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
@@ -47,21 +51,22 @@ while c != 'q' and c != 'Q':
             c = getch()
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
-    #             if key_map[ord(c)] == 'up':
-    #                 if
-    #                 pwm0.set_duty_cycle(str(int(pwm0.get_duty_cycle()) + pwm0_step))
-    #                 pwm1.set_duty_cycle(str(int(pwm1.get_duty_cycle()) + pwm1_step))
-    #             elif key_map[ord(c)] == 'down':
-    #                 pwm0.set_duty_cycle(str(int(pwm0.get_duty_cycle()) - pwm0_step))
-    #                 pwm1.set_duty_cycle(str(int(pwm1.get_duty_cycle()) - pwm1_step))
-    #
-    #             if key_map[ord(c)] == 'right':
-    #                 pwm0.set_duty_cycle(str(int(pwm0.get_duty_cycle()) + pwm0_step/2))
-    #                 pwm1.set_duty_cycle(str(int(pwm1.get_duty_cycle()) - pwm1_step/2))
-    #             elif key_map[ord(c)] == 'left':
-    #                 pwm0.set_duty_cycle(str(int(pwm0.get_duty_cycle()) - pwm0_step/2))
-    #                 pwm1.set_duty_cycle(str(int(pwm1.get_duty_cycle()) + pwm1_step/2))
-    # # elif ord(c) == 32:
+                if key_map[ord(c)] == 'up':
+                    m0.change_velocity(speed_step)
+
+                elif key_map[ord(c)] == 'down':
+                    m0.change_velocity(- speed_step)
+
+                if key_map[ord(c)] == 'right':
+                    print(m0.get_velocity())
+
+                elif key_map[ord(c)] == 'left':
+                    print(m0.get_velocity())
+
+    elif ord(c) == 32:
+        m0.set_velocity(0)
     else:
        print(ord(c))
+
+m0.close()
 
