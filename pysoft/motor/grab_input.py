@@ -36,7 +36,7 @@ class _GetchWindows:
 
 from motor import Motor
 
-m0 = Motor(0)
+m0 = Motor(1)
 speed_step = 10
 
 getch = _Getch()
