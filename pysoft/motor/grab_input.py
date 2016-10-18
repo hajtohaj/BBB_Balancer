@@ -79,4 +79,5 @@ while c != 'q' and c != 'Q':
        print(ord(c))
 
 m0.close()
+m1.close()
 
