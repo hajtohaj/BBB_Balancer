@@ -35,7 +35,7 @@ class _GetchWindows:
         return msvcrt.getch()
 
 def sign(a):
-    return (a > 0) - (a < 0)
+    return (a >= 0) - (a < 0)
 
 from motor import Motor
 
