@@ -48,7 +48,6 @@ class Motor:
         elif speed < 0:
             speed = self.MIN_SPEED
         speed *= self.__SPEED_FACTOR
-        print(speed)
         self.pwm.set_duty_cycle(speed)
 
     def get_speed(self):
@@ -124,7 +123,6 @@ class Motor:
 
     def get_velocity(self):
         speed = self.get_speed()
-        print("SPEED: {0}".format(speed))
         direction = self.get_direction()
         if direction == 'cw':
             return speed
