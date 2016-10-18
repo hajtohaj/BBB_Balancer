@@ -52,10 +52,7 @@ class Motor:
         self.pwm.set_duty_cycle(speed)
 
     def get_speed(self):
-        a = self.pwm.get_duty_cycle()
-        b = self.__SPEED_FACTOR
-        print(a,b)
-        return a/b
+        return self.pwm.get_duty_cycle()/self.__SPEED_FACTOR
 
     def set_direction(self, direction):
         if direction == 'cw':
