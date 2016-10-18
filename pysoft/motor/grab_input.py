@@ -54,14 +54,17 @@ while c != 'q' and c != 'Q':
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
                     m0.change_velocity(speed_step)
-                    m1.change_velocity(speed_step)
+                    m1.change_velocity(- speed_step)
                 elif key_map[ord(c)] == 'down':
                     m0.change_velocity(- speed_step)
-                    m1.change_velocity(- speed_step)
+                    m1.change_velocity(speed_step)
                 if key_map[ord(c)] == 'right':
+                    m0.change_velocity(- speed_step/2)
+                    m1.change_velocity(speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
-
                 elif key_map[ord(c)] == 'left':
+                    m0.change_velocity(speed_step/2)
+                    m1.change_velocity(- speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
 
     elif ord(c) == 32:
