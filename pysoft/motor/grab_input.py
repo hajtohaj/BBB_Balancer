@@ -69,6 +69,7 @@ while c != 'q' and c != 'Q':
 
     elif ord(c) == 32:
         m0.set_velocity(0)
+        m1.set_velocity(0)
     else:
        print(ord(c))
 
