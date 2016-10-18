@@ -132,7 +132,7 @@ class Motor:
 
     def change_velocity(self, increment):
         current_speed = self.get_velocity()
-        self.set_velocity(+ increment)
+        self.set_velocity(current_speed + increment)
 
 if __name__ == "__main__":
 
