@@ -67,17 +67,18 @@ while c != 'q' and c != 'Q':
                     m0_vel = m0.get_velocity()
                     m1_vel = m1.get_velocity()
                     m0.change_velocity(sign(m0_vel) * speed_step/2)
-                    m1.change_velocity(sign(m1_vel) * speed_step/2)
+                    m1.change_velocity(- sign(m1_vel) * speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'left':
                     m0_vel = m0.get_velocity()
                     m1_vel = m1.get_velocity()
-                    m0.change_velocity(sign(m0_vel) * speed_step/2)
+                    m0.change_velocity( - sign(m0_vel) * speed_step/2)
                     m1.change_velocity(sign(m1_vel) * speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     elif ord(c) == 32:
         m0.set_velocity(0)
         m1.set_velocity(0)
+        print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     else:
        print(ord(c))
 
