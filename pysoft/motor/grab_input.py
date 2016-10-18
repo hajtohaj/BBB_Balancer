@@ -38,7 +38,7 @@ from motor import Motor
 
 m0 = Motor(0)
 m1 = Motor(1)
-speed_step = 10
+speed_step = 6
 
 getch = _Getch()
 key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
