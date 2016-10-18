@@ -34,6 +34,9 @@ class _GetchWindows:
         import msvcrt
         return msvcrt.getch()
 
+def sign(a):
+    return (a > 0) - (a < 0)
+
 from motor import Motor
 
 m0 = Motor(0)
@@ -59,14 +62,17 @@ while c != 'q' and c != 'Q':
                     m0.change_velocity(- speed_step)
                     m1.change_velocity(speed_step)
                 if key_map[ord(c)] == 'right':
-                    m0.change_velocity(- speed_step/2)
-                    m1.change_velocity(speed_step/2)
+                    m0_vel = m0.get_velocity()
+                    m1_vel = m1.get_velocity()
+                    m0.change_velocity(m0_vel + sign(m0_vel) * speed_step/2)
+                    m1.change_velocity(m1_vel - sign(m1_vel) * speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'left':
-                    m0.change_velocity(speed_step/2)
-                    m1.change_velocity(- speed_step/2)
+                    m0_vel = m0.get_velocity()
+                    m1_vel = m1.get_velocity()
+                    m0.change_velocity(m0_vel -  sign(m0_vel) * speed_step/2)
+                    m1.change_velocity(m1_vel + sign(m1_vel) * speed_step/2)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
-
     elif ord(c) == 32:
         m0.set_velocity(0)
         m1.set_velocity(0)
