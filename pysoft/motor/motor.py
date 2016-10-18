@@ -87,7 +87,7 @@ class Motor:
     def set_direction_cw(self):
         self.set_direction('cw')
 
-    def set_directio_ccw(self):
+    def set_direction_ccw(self):
         self.set_direction('ccw')
 
     def stop(self):
@@ -130,7 +130,6 @@ class Motor:
         elif direction == 'ccw':
             return -1 * speed
         return 0
-
 
 
 if __name__ == "__main__":
