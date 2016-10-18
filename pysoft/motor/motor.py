@@ -124,6 +124,7 @@ class Motor:
 
     def get_velocity(self):
         speed = self.get_speed()
+        print("SPEED: {0}".format(speed))
         direction = self.get_direction()
         if direction == 'cw':
             return speed
