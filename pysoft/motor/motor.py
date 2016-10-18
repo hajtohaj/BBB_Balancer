@@ -123,7 +123,7 @@ class Motor:
         else:
             if not self.is_stopped():
                 self.stop()
-        self.set_speed(abs(new_speed))
+        self.set_speed(int(abs(new_speed)))
 
     def get_velocity(self):
         speed = self.get_speed()
