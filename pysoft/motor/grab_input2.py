@@ -56,11 +56,11 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    m0.change_rotation(- speed_step)
+                    m0.change_rotation(speed_step)
                     m1.change_rotation(speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 elif key_map[ord(c)] == 'down':
-                    m0.change_rotation(speed_step)
+                    m0.change_rotation(- speed_step)
                     m1.change_rotation(- speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 if key_map[ord(c)] == 'right':
