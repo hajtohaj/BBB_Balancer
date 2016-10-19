@@ -39,12 +39,12 @@ def sign(a):
 
 from motor2 import Motor
 
-m0 = Motor(0)
-m1 = Motor(1, -1)
+m0 = Motor(0, -1)
+m1 = Motor(1)
 speed_step = 10
 
 getch = _Getch()
-key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
+key_map = {65: 'up', 66: 'down', 67: 'right', 68: 'left', }
 c = 'a'
 
 while c != 'q' and c != 'Q':
@@ -56,14 +56,25 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    m0.change_rotation(speed_step)
-                    m1.change_rotation(speed_step)
+                    if m0.get_rotation() > m1.get_rotation():
+                        m0.change_rotation(m1.get_rotation())
+                    elif m0.get_rotation() < m1.get_rotation():
+                        m1.change_rotation(m0.get_rotation())
+                    else:
+                        m0.change_rotation(speed_step)
+                        m1.change_rotation(speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 elif key_map[ord(c)] == 'down':
-                    m0.change_rotation(- speed_step)
-                    m1.change_rotation(- speed_step)
+                    if m0.get_rotation() > m1.get_rotation():
+                        m0.change_rotation(m1.get_rotation())
+                    elif m0.get_rotation() < m1.get_rotation():
+                        m1.change_rotation(m0.get_rotation())
+                    else:
+                        m0.change_rotation(- speed_step)
+                        m1.change_rotation(- speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 if key_map[ord(c)] == 'right':
+
                     m0_vel = m0.get_rotation()
                     m0.change_rotation(sign(m0_vel) * speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
