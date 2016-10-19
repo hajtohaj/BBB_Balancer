@@ -97,11 +97,11 @@ class Motor:
     def stop(self):
         self.set_direction(0)
 
-    def set_encoder(self, position):
-        self.encoder.set_encoder(position)
+    def set_encoder(self, value):
+        self.encoder.set_counter(value)
 
     def set_encoder_zero(self):
-        self.set_counter(0)
+        self.set_encoder(0)
 
     def get_encoder(self):
         return self.encoder.get_counter()
