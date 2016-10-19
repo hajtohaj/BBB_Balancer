@@ -74,13 +74,16 @@ while c != 'q' and c != 'Q':
                         m1.change_rotation(- speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 if key_map[ord(c)] == 'right':
-
                     m0_vel = m0.get_rotation()
                     m0.change_rotation(sign(m0_vel) * speed_step)
+                    m1_vel = m1.get_rotation()
+                    m1.change_rotation(-sign(m1_vel) * speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 elif key_map[ord(c)] == 'left':
                     m0_vel = m0.get_rotation()
                     m0.change_rotation(-sign(m0_vel) * speed_step)
+                    m1_vel = m1.get_rotation()
+                    m1.change_rotation(sign(m1_vel) * speed_step)
                     print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
     elif ord(c) == 32:
         m0.set_rotation(0)
