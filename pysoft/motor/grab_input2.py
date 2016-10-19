@@ -67,6 +67,9 @@ while c != 'q' and c != 'Q':
                             m0.reverse_direction()
                         if (m1.get_voltage_level() + speed_step) > 0 and (m1.get_direction() < 0):
                             m1.reverse_direction()
+                        if m0.is_stopped():
+                            m0.set_direction_cw()
+                            m0.set_direction_ccw()
                         m0.set_voltage_level(m0.get_voltage_level() + speed_step)
                         m1.set_voltage_level(m1.get_voltage_level() + speed_step)
                     print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
@@ -82,17 +85,24 @@ while c != 'q' and c != 'Q':
                             m0.reverse_direction()
                         if (m1.get_voltage_level() - speed_step < 0) and (m1.get_direction() > 0):
                             m1.reverse_direction()
+                        if m0.is_stopped():
+                            m0.set_direction_cw()
+                            m0.set_direction_ccw()
                         m0.set_voltage_level(m0.get_voltage_level() - speed_step)
                         m1.set_voltage_level(m1.get_voltage_level() - speed_step)
                     print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
                 if key_map[ord(c)] == 'right':
                     if (m0.get_voltage_level() - speed_step) < 0 and (m0.get_direction() > 0):
                         m0.reverse_direction()
+                    if m0.is_stopped():
+                        m0.set_direction_ccw()
                     m0.set_voltage_level(m0.get_voltage_level() - speed_step)
                     print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
                 elif key_map[ord(c)] == 'left':
                     if (m1.get_voltage_level() - speed_step < 0) and (m1.get_direction() > 0):
                         m1.reverse_direction()
+                    if m1.is_stopped():
+                        m1.set_direction_ccw()
                     m1.set_voltage_level(m1.get_voltage_level() - speed_step)
                     print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
     elif ord(c) == 32:
