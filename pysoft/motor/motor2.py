@@ -131,7 +131,7 @@ class Motor:
         return 0
 
     def change_rotation(self, change):
-        current_rotation = self.get_velocity()
+        current_rotation = self.get_rotation()
         self.set_velocity(current_rotation + change)
 
     def close(self):
