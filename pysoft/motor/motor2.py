@@ -44,7 +44,7 @@ class Motor:
         self.pin_b.set_direction_out()
         self.pin_b.set_low()
 
-        self.encoder.set_encoder(0)
+        self.set_encoder_zero()
         self.encoder.enable()
 
     def set_voltage_level(self, new_level):
