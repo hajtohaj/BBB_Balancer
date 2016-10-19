@@ -39,8 +39,8 @@ def sign(a):
 
 from motor2 import Motor
 
-m0 = Motor(0, -1)
-m1 = Motor(1)
+m0 = Motor(0)
+m1 = Motor(1, -1)
 speed_step = 10
 
 getch = _Getch()
@@ -49,7 +49,6 @@ c = 'a'
 
 while c != 'q' and c != 'Q':
     c = getch()
-    print("a")
     if ord(c) == 27:
         c = getch()
         if ord(c) == 91:
@@ -57,63 +56,28 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    if m0.get_voltage_level() > m1.get_voltage_level():
-                        m1.set_voltage_level(m0.get_voltage_level())
-                        m1.set_direction(m0.get_direction())
-                    elif m0.get_voltage_level() < m1.get_voltage_level():
-                        m0.set_voltage_level(m1.get_voltage_level())
-                        m0.set_direction(m1.get_direction())
-                    else:
-                        if (m0.get_voltage_level() + speed_step) > 0 and (m0.get_direction() < 0):
-                            m0.reverse_direction()
-                        if (m1.get_voltage_level() + speed_step) > 0 and (m1.get_direction() < 0):
-                            m1.reverse_direction()
-                        if m0.is_stopped():
-                            m0.set_direction_cw()
-                            m0.set_direction_ccw()
-                        m0.set_voltage_level(m0.get_voltage_level() + speed_step)
-                        m1.set_voltage_level(m1.get_voltage_level() + speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
+                    m0.change_velocity(- speed_step)
+                    m1.change_velocity(speed_step)
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'down':
-                    if m0.get_voltage_level() > m1.get_voltage_level():
-                        m1.set_voltage_level(m0.get_voltage_level())
-                        m1.set_direction(m0.get_direction())
-                    elif m0.get_voltage_level() < m1.get_voltage_level():
-                        m0.set_voltage_level(m1.get_voltage_level())
-                        m0.set_direction(m1.get_direction())
-                    else:
-                        if (m0.get_voltage_level() - speed_step) < 0 and (m0.get_direction() > 0):
-                            m0.reverse_direction()
-                        if (m1.get_voltage_level() - speed_step < 0) and (m1.get_direction() > 0):
-                            m1.reverse_direction()
-                        if m0.is_stopped():
-                            m0.set_direction_cw()
-                            m0.set_direction_ccw()
-                        m0.set_voltage_level(m0.get_voltage_level() - speed_step)
-                        m1.set_voltage_level(m1.get_voltage_level() - speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
+                    m0.change_velocity(speed_step)
+                    m1.change_velocity(- speed_step)
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 if key_map[ord(c)] == 'right':
-                    if (m0.get_voltage_level() - speed_step) < 0 and (m0.get_direction() > 0):
-                        m0.reverse_direction()
-                    if m0.is_stopped():
-                        m0.set_direction_ccw()
-                    m0.set_voltage_level(m0.get_voltage_level() - speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
+                    m0_vel = m0.get_velocity()
+                    m0.change_velocity(sign(m0_vel) * speed_step)
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'left':
-                    if (m1.get_voltage_level() - speed_step < 0) and (m1.get_direction() > 0):
-                        m1.reverse_direction()
-                    if m1.is_stopped():
-                        m1.set_direction_ccw()
-                    m1.set_voltage_level(m1.get_voltage_level() - speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
+                    m0_vel = m0.get_velocity()
+                    m0.change_velocity(-sign(m0_vel) * speed_step)
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     elif ord(c) == 32:
-        m0.stop()
-        m0.set_voltage_level(m0.get_voltage_level() + speed_step)
-        m1.stop()
-        m1.set_voltage_level(m1.get_voltage_level() + speed_step)
-        print("left: {0}, right: {1}".format(m0.get_voltage_level(), m1.get_voltage_level()))
+        m0.set_velocity(0)
+        m1.set_velocity(0)
+        print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     else:
        print(ord(c))
+
 
 m0.close()
 m1.close()

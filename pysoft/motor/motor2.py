@@ -8,6 +8,8 @@ class Motor:
     MAX_VOLTAGE_LEVEL = 100
     MIN_VOLTAGE_LEVEL = 0
 
+    ENCODER_RESOLUTION = 1200
+
     ___VOLTAGE_FACTOR = 10000
 
     DIRECTION_POLARITY = 1
@@ -42,7 +44,7 @@ class Motor:
         self.pin_b.set_direction_out()
         self.pin_b.set_low()
 
-        self.encoder.set_position(0)
+        self.encoder.set_encoder(0)
         self.encoder.enable()
 
     def set_voltage_level(self, new_level):
@@ -95,14 +97,42 @@ class Motor:
     def stop(self):
         self.set_direction(0)
 
-    def set_position(self, position):
-        self.encoder.set_position(position)
+    def set_encoder(self, position):
+        self.encoder.set_encoder(position)
 
-    def set_position_zero(self):
-        self.set_position(0)
+    def set_encoder_zero(self):
+        self.set_encoder(0)
 
-    def get_position(self):
-        return self.encoder.get_position()
+    def get_encoder(self):
+        return self.encoder.get_encoder()
+
+    def get_encoder_resolution(self):
+        return self.ENCODER_RESOLUTION
+
+    def set_rotation(self, value):
+        if value > 0:
+            if not self.is_direction_cw():
+                self.set_direction_cw()
+        elif value < 0:
+            if not self.is_direction_ccw():
+                self.set_direction_ccw()
+        else:
+            if not self.is_stopped():
+                self.stop()
+        self.set_voltage_level(int(abs(value)))
+
+    def get_rotation(self):
+        voltage_level = self.get_voltage_level()
+        direction = self.get_direction()
+        if direction > 0:
+            return voltage_level
+        elif direction < 0:
+            return -1 * voltage_level
+        return 0
+
+    def change_rotation(self, change):
+        current_rotation = self.get_velocity()
+        self.set_velocity(current_rotation + change)
 
     def close(self):
         self.pwm.set_duty_cycle(0)
@@ -128,7 +158,7 @@ if __name__ == "__main__":
     time.sleep(delay)
 
     m0.stop()
-    print(m0.get_position())
+    print(m0.get_encoder())
     time.sleep(delay)
 
     m0.set_voltage_level(speeed)
@@ -136,5 +166,5 @@ if __name__ == "__main__":
     time.sleep(delay)
     m0.stop()
 
-    print(m0.get_position())
+    print(m0.get_encoder())
     m0.close()
