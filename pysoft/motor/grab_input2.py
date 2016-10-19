@@ -58,23 +58,23 @@ while c != 'q' and c != 'Q':
                 if key_map[ord(c)] == 'up':
                     m0.change_rotation(- speed_step)
                     m1.change_rotation(speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 elif key_map[ord(c)] == 'down':
                     m0.change_rotation(speed_step)
                     m1.change_rotation(- speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 if key_map[ord(c)] == 'right':
-                    m0_vel = m0.get_velocity()
+                    m0_vel = m0.get_rotation()
                     m0.change_rotation(sign(m0_vel) * speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
                 elif key_map[ord(c)] == 'left':
-                    m0_vel = m0.get_velocity()
+                    m0_vel = m0.get_rotation()
                     m0.change_rotation(-sign(m0_vel) * speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
     elif ord(c) == 32:
-        m0.set_velocity(0)
-        m1.set_velocity(0)
-        print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+        m0.set_rotation(0)
+        m1.set_rotation(0)
+        print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
     else:
        print(ord(c))
 
