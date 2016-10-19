@@ -132,7 +132,7 @@ class Motor:
 
     def change_rotation(self, change):
         current_rotation = self.get_rotation()
-        self.set_velocity(current_rotation + change)
+        self.set_rotation(current_rotation + change)
 
     def close(self):
         self.pwm.set_duty_cycle(0)
