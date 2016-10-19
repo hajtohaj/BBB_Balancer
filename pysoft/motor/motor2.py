@@ -101,10 +101,10 @@ class Motor:
         self.encoder.set_encoder(position)
 
     def set_encoder_zero(self):
-        self.set_encoder(0)
+        self.set_counter(0)
 
     def get_encoder(self):
-        return self.encoder.get_encoder()
+        return self.encoder.get_counter()
 
     def get_encoder_resolution(self):
         return self.ENCODER_RESOLUTION
