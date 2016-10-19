@@ -39,8 +39,8 @@ def sign(a):
 
 from motor2 import Motor
 
-m0 = Motor(0)
-m1 = Motor(1, -1)
+m0 = Motor(0, -1)
+m1 = Motor(1)
 speed_step = 10
 
 getch = _Getch()
