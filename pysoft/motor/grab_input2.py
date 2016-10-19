@@ -49,6 +49,7 @@ c = 'a'
 
 while c != 'q' and c != 'Q':
     c = getch()
+    print("a")
     if ord(c) == 27:
         c = getch()
         if ord(c) == 91:
