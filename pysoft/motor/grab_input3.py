@@ -82,6 +82,8 @@ while c != 'q' and c != 'Q':
 
     if m0_enc > m1_enc:
         m1.change_rotation(1)
+    if m0_enc < m1_enc:
+        m0.change_rotation(1)
 
 m0.close()
 m1.close()
