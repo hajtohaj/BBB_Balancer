@@ -78,7 +78,7 @@ while c != 'q' and c != 'Q':
     enc = m0.get_encoder()
     m0_enc = m0.get_encoder()
     m1_enc = m1.get_encoder()
-    print("left: {0}, right: {1}".format(m0_enc, m1_enc))
+    print("left: {0}/{1}, right: {2}/{3}".format(m0_enc,m0.get_rotation(), m1_enc,m1.get_rotation()))
 
     if m0_enc > m1_enc:
         m1.change_rotation(1)
