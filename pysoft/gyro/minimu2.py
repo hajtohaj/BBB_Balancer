@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print(mm.read())
+            print(mm.read().size)
             sleep(1)
 
     except KeyboardInterrupt:
