@@ -59,7 +59,7 @@ class Minimu:
 
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
-        return data.size()
+        return data
 
 if __name__ == "__main__":
     buss_id = 2
