@@ -59,7 +59,7 @@ class Minimu:
 
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
-        return data
+        return data.size()
 
 if __name__ == "__main__":
     buss_id = 2
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print(mm.read().size())
+            print(mm.read())
             sleep(1)
 
     except KeyboardInterrupt:
