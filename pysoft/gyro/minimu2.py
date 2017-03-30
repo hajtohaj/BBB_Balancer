@@ -40,7 +40,6 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        #sleep(0.2)  # needed for gyro
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
