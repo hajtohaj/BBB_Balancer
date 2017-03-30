@@ -12,9 +12,9 @@ class Minimu:
         self.acc = Acc(buss_id, address)
         self.fifo = Fifo(buss_id, address)
         self.gyro_full_scale = 245
-        self.gyro_axes = 'XYZ'
+        self.gyro_axes = 'X'
         self.acc_full_scale = 2
-        self.acc_axes = 'XYZ'
+        self.acc_axes = 'X'
         self.odr_hz = 104
 
     def setup_gyro(self):
