@@ -7,15 +7,6 @@ import numpy as np
 
 class Minimu:
 
-    MAX_POSITIVE_16 = 32767.0
-    MIN_NEGATIVE_16 = 32768.0
-
-    ACC_G_ORIENTATION = np.array([0, 0, 1])
-
-    DEFAULT_MEAN = np.array([534, -479, -572, -435, -365, 16627])
-    DEFAULT_OFFSET = np.array([534, -479, -572, -435, -365, 243])
-    DEFAULT_VARIANCE = np.array([56, 237, 132, 158, 134, 318])
-
     def __init__(self, buss_id, address):
         self.gyro = Gyro(buss_id, address)
         self.acc = Acc(buss_id, address)
@@ -25,10 +16,6 @@ class Minimu:
         self.acc_full_scale = 2
         self.acc_axes = 'XYZ'
         self.odr_hz = 104
-
-        self.mean = self.DEFAULT_MEAN
-        self.offset = self.DEFAULT_OFFSET
-        self.variance = self.DEFAULT_VARIANCE
 
     def setup_gyro(self):
         self.gyro.set_full_scale_selection(self.gyro_full_scale)
@@ -53,7 +40,6 @@ class Minimu:
         self.fifo.set_gyro_decimation_factor(1)
         self.fifo.set_acc_decimation_factor(1)
         self.fifo.set_mode('Continuous')
-        sleep(0.2)  # needed for gyro
 
     def disable_fifo(self):
         self.fifo.set_mode('Bypass')
@@ -61,38 +47,18 @@ class Minimu:
         self.fifo.set_acc_decimation_factor(0)
         self.fifo.set_odr_hz(0)
 
+    def enable(self):
+        self.setup_gyro()
+        self.setup_acc()
+        self.setup_fifo()
+
+    def disable(self):
+        self.disable_fifo()
+        self.disable_acc()
+        self.disable_gyro()
+
     def read(self):
         data = np.array(self.fifo.get_data(), dtype=np.float)
-        return data
-
-    def calculate_calibration_factors(self, n_seconds=1, acc_axes=ACC_G_ORIENTATION):
-        data = self.read()
-        for x in range(n_seconds):
-            sleep(1)
-            next_data = self.read()
-            data = np.vstack((data, next_data))
-        if np.isnan(np.min(data[0, :])):  # discard first record if needed
-            data = data[1:, :]
-        self.mean = np.nanmean(data, axis=0)
-        self.variance = np.nanvar(data, axis=0)
-
-        if self.mean[5] >= 0:
-            offset = self.mean[3:6] - acc_axes * self.MAX_POSITIVE_16 / self.acc_full_scale
-        else:
-            offset = self.mean[3:6] - acc_axes * self.MIN_NEGATIVE_16 / self.acc_full_scale
-        self.offset = np.hstack((self.mean[0:3], offset))
-
-        return np.vstack((self.mean, self.offset, self.variance))
-
-    def get_calibration_factors(self):
-        return np.vstack((self.mean, self.offset, self.variance))
-
-    def get_calibration_factors_default(self):
-        return np.vstack((self.DEFAULT_MEAN, self.DEFAULT_OFFSET, self.DEFAULT_VARIANCE))
-
-    def read_and_reduce_offset(self):
-        data = np.array(self.fifo.get_data(), dtype=np.float)
-        data[:, 0:6] -= self.offset[0:6]
         return data
 
 if __name__ == "__main__":
@@ -102,11 +68,7 @@ if __name__ == "__main__":
     np.set_printoptions(precision=3)
 
     mm = Minimu(buss_id, fifo_address)
-    mm.setup_gyro()
-    mm.setup_acc()
-    mm.setup_fifo()
-    print(mm.calculate_calibration_factors(1))
-    print(mm.calculate_calibration_factors(1))
+    mm.enable()
 
     try:
         while 1:
@@ -114,9 +76,4 @@ if __name__ == "__main__":
             sleep(1)
 
     except KeyboardInterrupt:
-        print(mm.mean)
-        print(mm.offset)
-        print(mm.variance)
-        mm.disable_fifo()
-        mm.disable_gyro()
-        mm.disable_acc()
+        mm.disable()
