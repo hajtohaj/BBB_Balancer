@@ -1,6 +1,7 @@
 from minimu import Minimu
 from time import sleep
 import numpy as np
+import sys
 
 
 if __name__ == "__main__":
@@ -12,7 +13,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            print(mm.read())
+            np.savetxt(sys.stdout.buffer, mm.read(), fmt='%10.5f', delimiter=' ')
             sleep(1)
 
     except KeyboardInterrupt:
