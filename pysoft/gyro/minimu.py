@@ -59,7 +59,7 @@ class Minimu:
         self.disable_gyro()
 
     def read(self):
-        data = np.array(self.fifo.get_data(), dtype=np.float)
+        data = np.array(self.fifo.get_data(), dtype=np.int16)
         return data
 
 if __name__ == "__main__":
