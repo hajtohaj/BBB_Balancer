@@ -14,6 +14,7 @@ if __name__ == "__main__":
     try:
         while 1:
             data = mm.read()
+            print(data)
             if data.size :
                 np.savetxt(sys.stdout.buffer, mm.read(), fmt='%i', delimiter='; ')
             sleep(1)
