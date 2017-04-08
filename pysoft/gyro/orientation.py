@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     try:
         while 1:
-            np.savetxt(sys.stdout.buffer, mm.read(), fmt='%10f', delimiter='; ')
+            np.savetxt(sys.stdout.buffer, mm.read(), fmt='%i', delimiter='; ')
             sleep(1)
 
     except KeyboardInterrupt:
