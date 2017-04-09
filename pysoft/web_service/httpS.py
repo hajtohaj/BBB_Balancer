@@ -69,12 +69,14 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         host = "127.0.0.1"
         port = 8001
+        print(host, port)
         httpd = socketserver.TCPServer((host, port), service)
         print("Starting Service {0}:{1}".format(host,port))
         httpd.serve_forever()
     elif len(sys.argv) == 3:
         host = sys.argv[1]
         port = sys.argv[2]
+        print(host, port)
         httpd = socketserver.TCPServer((host, port), service)
         print("Starting Service {0}:{1}".format(host,port))
         httpd.serve_forever()
