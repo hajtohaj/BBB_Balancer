@@ -63,30 +63,29 @@ class WebServiceClient:
 
 class BepfBuildRequestString:
 
-    REQUEST_TEMPLATE = {"request": {"name": "", "parameters": {}}}
-    READING_MODE_DELTA = 'delta'
-    READING_MODE_FULL = 'full'
+    REQUEST_TEMPLATE = '{"request": {"name": "", "parameters": {}}}'
 
-    def create_cursor(self, chunk_size=0):
-        my_req = self.REQUEST_TEMPLATE.copy()
+    def create_cursor(self, chunk_size=0, zero_offset=0):
+        my_req = json.loads(self.REQUEST_TEMPLATE)
         my_req['request']['name'] = "create_cursor"
         my_req['request']['parameters']['chunk_size'] = chunk_size
+        my_req['request']['parameters']['zero_offset'] = zero_offset
         return json.dumps(my_req)
 
     def close_cursor(self, cursor_id):
-        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req = json.loads(self.REQUEST_TEMPLATE)
         my_req['request']['name'] = "close_cursor"
         my_req['request']['parameters']['cursor_id'] = cursor_id
         return json.dumps(my_req)
 
     def read(self, cursor_id):
-        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req = json.loads(self.REQUEST_TEMPLATE)
         my_req['request']['name'] = "read"
         my_req['request']['parameters']['cursor_id'] = cursor_id
         return json.dumps(my_req)
 
     def count_all_records(self):
-        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req = json.loads(self.REQUEST_TEMPLATE)
         my_req['request']['name'] = "count_all_records"
         return json.dumps(my_req)
 
@@ -99,15 +98,13 @@ if __name__ == "__main__":
     https_client.establishConnection("", "", uri)
     web_service_request = BepfBuildRequestString()
 
-    request = web_service_request.create_cursor(0)
-    print(request)
+    request = web_service_request.create_cursor(0,1)
     print("Request: {0}".format(request))
     response = https_client.sendRequest(request)
     print("Response: {0}".format(response))
     response = json.loads(str(response, 'utf-8'))
     status = response['response']['status']
     cursor = response['response']['parameters']['cursor_id']
-    print(status, cursor)
 
     request = web_service_request.read(cursor)
     print("Request: {0}".format(request))
