@@ -65,6 +65,7 @@ if __name__ == "__main__":
 
     service = BepfService
 
+    print(sys.argv)
     if len(sys.argv) == 1:
         host = "127.0.0.1"
         port = 8001
