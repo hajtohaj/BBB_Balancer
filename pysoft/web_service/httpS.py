@@ -65,18 +65,17 @@ if __name__ == "__main__":
 
     service = BepfService
 
-    print(sys.argv)
     if len(sys.argv) == 1:
         host = "127.0.0.1"
         port = 8001
-        httpd = socketserver.TCPServer((host, port), service)
-        print("Starting Service {0}:{1}".format(host,port))
-        httpd.serve_forever()
     elif len(sys.argv) == 3:
         host = sys.argv[1]
         port = int(sys.argv[2])
-        httpd = socketserver.TCPServer((host, port), service)
-        print("Starting Service {0}:{1}".format(host,port))
-        httpd.serve_forever()
     else:
-        print("wrong number of parameters")
+        print("Usage: httpS.py")
+        print("Usage: httpS.py 192.168.0.6 8001")
+        sys.exit(1)
+
+    httpd = socketserver.TCPServer((host, port), service)
+    print("Starting Service {0}:{1}".format(host, port))
+    httpd.serve_forever()
