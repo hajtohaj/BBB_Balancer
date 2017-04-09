@@ -1,10 +1,7 @@
 #author: tomasz.gabrys@nokia.com
-import base64, http.client
+import http.client
 import re
 import json
-
-#example URI: https://clab299lbwas.netact.nsn-rdnet.net:443/netact/cm/oes/CMAdvanceResolver
-
 
 class WebServiceClient:
     URI_PATTERN = re.compile('(http|https)://(.*?)(:[0-9]*)*(/.*)')
@@ -12,7 +9,7 @@ class WebServiceClient:
     def __init__(self):
         pass
     
-    def establishConnection (self,user,password,uri):
+    def establishConnection (self, user, password, uri):
         self.user = user
         self.password = password
         self.protocol = self.__extractProtocol(uri)
@@ -63,18 +60,60 @@ class WebServiceClient:
         else: 
             assert False, 'Unknown protocol: %s' % self.protocol
 
+
+class BepfBuildRequestString:
+
+    REQUEST_TEMPLATE = {"request": {"name": "", "parameters": {}}}
+    READING_MODE_DELTA = 'delta'
+    READING_MODE_FULL = 'full'
+
+    def create_cursor(self, chunk_size=0):
+        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req['request']['name'] = "create_cursor"
+        my_req['request']['parameters']['chunk_size'] = chunk_size
+        return json.dumps(my_req)
+
+    def close_cursor(self, cursor_id):
+        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req['request']['name'] = "close_cursor"
+        my_req['request']['parameters']['cursor_id'] = cursor_id
+        return json.dumps(my_req)
+
+    def read(self, cursor_id):
+        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req['request']['name'] = "read"
+        my_req['request']['parameters']['cursor_id'] = cursor_id
+        return json.dumps(my_req)
+
+    def count_all_records(self):
+        my_req = self.REQUEST_TEMPLATE.copy()
+        my_req['request']['name'] = "count_all_records"
+        return json.dumps(my_req)
+
 if __name__ == "__main__":
 
-    uri = 'http://127.0.0.1:8001/aaa'
-    uri = 'http://192.168.0.6:8001/aaa'
-
-    username = 'Tomasz'
-    password = 'Pass'
+    # uri = 'http://192.168.0.6:8001/bepf/data'
+    uri = 'http://127.0.0.1:8001/bepf/data'
 
     https_client = WebServiceClient()
-    https_client.establishConnection(username, password, uri)
-    request = {"request": "get_data"}
-    request_s = json.dumps(request)
-    print("Request: {0}".format(request_s))
-    response = https_client.sendRequest(request_s)
+    https_client.establishConnection("", "", uri)
+    web_service_request = BepfBuildRequestString()
+
+    request = web_service_request.create_cursor(0)
+    print(request)
+    print("Request: {0}".format(request))
+    response = https_client.sendRequest(request)
     print("Response: {0}".format(response))
+    response = json.loads(str(response, 'utf-8'))
+    status = response['response']['status']
+    cursor = response['response']['parameters']['cursor_id']
+    print(status, cursor)
+
+    request = web_service_request.read(cursor)
+    print("Request: {0}".format(request))
+
+    response = https_client.sendRequest(request)
+    print("Response: {0}".format(response))
+
+    request = web_service_request.close_cursor(cursor)
+    response = https_client.sendRequest(request)
