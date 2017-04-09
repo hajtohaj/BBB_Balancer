@@ -66,6 +66,8 @@ class WebServiceClient:
 if __name__ == "__main__":
 
     uri = 'http://127.0.0.1:8001/aaa'
+    uri = 'http://192.168.0.6:8001/aaa'
+
     username = 'Tomasz'
     password = 'Pass'
 

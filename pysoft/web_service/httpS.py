@@ -3,6 +3,7 @@ import socketserver
 import urllib.parse
 import json
 from itertools import islice
+import sys
 
 data_file_name = 'data.txt'
 meta_data_file = 'meta.txt'
@@ -61,10 +62,20 @@ class BepfService(http.server.SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    host = "127.0.0.1"
-    port = 8001
+
     service = BepfService
 
-    httpd = socketserver.TCPServer((host, port), service)
-    print("Starting Service {0}:{1}".format(host,port))
-    httpd.serve_forever()
+    if len(sys.argv) == 1:
+        host = "127.0.0.1"
+        port = 8001
+        httpd = socketserver.TCPServer((host, port), service)
+        print("Starting Service {0}:{1}".format(host,port))
+        httpd.serve_forever()
+    elif len(sys.argv) == 3:
+        host = sys.argv[1]
+        port = sys.argv[2]
+        httpd = socketserver.TCPServer((host, port), service)
+        print("Starting Service {0}:{1}".format(host,port))
+        httpd.serve_forever()
+    else:
+        print("wrong number of parameters")
