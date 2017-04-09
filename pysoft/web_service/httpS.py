@@ -8,6 +8,7 @@ import sys
 data_file_name = 'data.txt'
 meta_data_file = 'meta.txt'
 
+
 class BepfService(http.server.SimpleHTTPRequestHandler):
 
     def get_next_line_number(self):
@@ -35,7 +36,6 @@ class BepfService(http.server.SimpleHTTPRequestHandler):
                 linesCounter += 1
 
         f.closed
-        # self.set_next_line_number(linesCounter)
         return (''.join(data), linesCounter)
 
     def do_GET(self):
