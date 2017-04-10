@@ -91,26 +91,29 @@ class BepfBuildRequestString:
 
 if __name__ == "__main__":
 
-    # uri = 'http://192.168.0.6:8001/bepf/data'
-    uri = 'http://127.0.0.1:8001/bepf/data'
+    # # uri = 'http://192.168.0.6:8001/bepf/data'
+    # uri = 'http://127.0.0.1:8001/bepf/data'
+    #
+    # https_client = WebServiceClient()
+    # https_client.establishConnection("", "", uri)
+    # web_service_request = BepfBuildRequestString()
+    #
+    # request = web_service_request.create_cursor(0,1)
+    # print("Request: {0}".format(request))
+    # response = https_client.sendRequest(request)
+    # print("Response: {0}".format(response))
+    # response = json.loads(str(response, 'utf-8'))
+    # status = response['response']['status']
+    # cursor = response['response']['parameters']['cursor_id']
+    #
+    # request = web_service_request.read(cursor)
+    # print("Request: {0}".format(request))
+    #
+    # response = https_client.sendRequest(request)
+    # print("Response: {0}".format(response))
+    #
+    # request = web_service_request.close_cursor(cursor)
+    # response = https_client.sendRequest(request)
 
-    https_client = WebServiceClient()
-    https_client.establishConnection("", "", uri)
-    web_service_request = BepfBuildRequestString()
-
-    request = web_service_request.create_cursor(0,1)
-    print("Request: {0}".format(request))
-    response = https_client.sendRequest(request)
-    print("Response: {0}".format(response))
-    response = json.loads(str(response, 'utf-8'))
-    status = response['response']['status']
-    cursor = response['response']['parameters']['cursor_id']
-
-    request = web_service_request.read(cursor)
-    print("Request: {0}".format(request))
-
-    response = https_client.sendRequest(request)
-    print("Response: {0}".format(response))
-
-    request = web_service_request.close_cursor(cursor)
-    response = https_client.sendRequest(request)
+    a = BepfBuildRequestString()
+    print(a.close_cursor('AJFDJ567JHKKHF'))
