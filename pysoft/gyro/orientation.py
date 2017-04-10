@@ -16,7 +16,7 @@ if __name__ == "__main__":
             data = mm.read()
             if data.size :
                 np.savetxt(sys.stdout.buffer, mm.read(), fmt='%i', delimiter=' ')
-            sleep(1)
+            sleep(0.1)
 
     except KeyboardInterrupt:
         mm.disable()
