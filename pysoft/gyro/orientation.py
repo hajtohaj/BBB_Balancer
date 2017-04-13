@@ -11,12 +11,20 @@ if __name__ == "__main__":
     mm = Minimu(buss_id, fifo_address)
     mm.enable()
 
+    import os
+    file_name = '../web_service/data.txt'
+    try:
+        os.remove(file_name)
+    except OSError:
+        pass
+
+    f_handle = open(file_name, 'ab')
     try:
         while 1:
-            data = mm.read()
-            if data.size :
-                np.savetxt(sys.stdout.buffer, mm.read(), fmt='%i', delimiter=' ')
-            sleep(0.1)
+
+            with open(file_name, 'ab') as f_handle:
+                np.savetxt(f_handle, mm.read(), fmt='%d', delimiter=' ')
+            sleep(0.07)
 
     except KeyboardInterrupt:
         mm.disable()
