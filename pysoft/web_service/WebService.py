@@ -8,7 +8,7 @@ import bottle
 
 class BepfFileHandler:
 
-    DEFAULT_FILE = 'data.txt'
+    DEFAULT_FILE = '../data/data.txt'
 
     def __init__(self, file_name=None):
         self.file_name = self.DEFAULT_FILE

@@ -12,7 +12,7 @@ if __name__ == "__main__":
     mm.enable()
 
     import os
-    file_name = '../web_service/data.txt'
+    file_name = '../data/data.txt'
     try:
         os.remove(file_name)
     except OSError:
