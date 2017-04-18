@@ -8,6 +8,7 @@ import sys
 
 
 class Minimu:
+    VERSION = 'minimu9v5'
 
     def __init__(self, buss_id, address):
         self.gyro = Gyroscope(buss_id, address)

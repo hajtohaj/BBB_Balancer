@@ -3,6 +3,7 @@ import time
 
 
 class Fifo:
+    VERSION = 'minimu9v5'
 
     MODE = {'Bypass': '00000000', 'FIFO': '00000001', 'Continuous': '00000110'}
     OUTPUT_DATA_RATE_HZ = {0: '00000000', 13: '00001000', 26: '00010000', 52: '00011000', 104: '00100000',
