@@ -49,16 +49,12 @@ class Fifo:
         bits = self.GYRO_DECIMATION_FACTOR[decimation]  # DEC_FIFO_GYRO_[2:0]
         mask = '00111000'
         self.__set_bits(register, mask, bits)
-        self.decimation_factors[0] = decimation
-        self._calculate_fifo_pattern()
 
     def set_acc_decimation_factor(self, decimation=1):
         register = 0x08  # FIFO_CTRL3
         bits = self.ACC_DECIMATION_FACTOR[decimation]  # DEC_FIFO_XL[2:0]
         mask = '00000111'
         self.__set_bits(register, mask, bits)
-        self.decimation_factors[1] = decimation
-        self._calculate_fifo_pattern()
 
     def set_odr_hz(self, fifo_odr=104):
         register = 0x0A  # FIFO_CTRL5
