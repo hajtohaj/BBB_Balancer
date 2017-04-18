@@ -45,6 +45,7 @@ if __name__ == "__main__":
     try:
         while 1:
             np.savetxt(sys.stdout.buffer, mm.read_fifo(), fmt='%i', delimiter='; ')
+            print(mm.read_temperature())
             sleep(1)
 
     except KeyboardInterrupt:
