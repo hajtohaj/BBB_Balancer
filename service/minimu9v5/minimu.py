@@ -20,7 +20,6 @@ class Minimu:
         self.acc.enable(odr)
         self.fifo.enable(odr)
 
-
     def disable(self):
         self.gyro.disable()
         self.acc.disable()
