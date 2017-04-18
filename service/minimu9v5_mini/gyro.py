@@ -16,18 +16,18 @@ class Gyro:
         self.bus = smbus.SMBus(self.bus_id)
 
     def enable(self, odr=104, f_scale=245):
-        g.set_full_scale_selection(f_scale)
-        g.enable_axes('XYZ')
-        g.set_odr_hz(odr)
-        g.set_hp_filter_hz(2.07)
-        g.enable_hp_filter()
-        g.reset_hp_filter()
+        self.set_full_scale_selection(f_scale)
+        self.enable_axes('XYZ')
+        self.set_odr_hz(odr)
+        self.set_hp_filter_hz(2.07)
+        self.enable_hp_filter()
+        self.reset_hp_filter()
 
     def disable(self):
-        g.disable_hp_filter()
-        g.set_hp_filter_hz(0.0081)
-        g.set_odr_hz(0)
-        g.disable_axes('XYZ')
+        self.disable_hp_filter()
+        self.set_hp_filter_hz(0.0081)
+        self.set_odr_hz(0)
+        self.disable_axes('XYZ')
 
     @staticmethod
     def __twos_complement_to_dec16(raw_value):
@@ -147,12 +147,12 @@ if __name__ == "__main__":
     buss_id = 2
     address = 0x6b
 
-    g = Gyro(buss_id, address)
-    g.enable(13)
+    self = Gyro(buss_id, address)
+    self.enable(13)
 
     try:
         while 1:
-            print("X: {0}, Y: {1}, Z: {2}".format(g.get_x(), g.get_y(), g.get_z()))
+            print("X: {0}, Y: {1}, Z: {2}".format(self.get_x(), self.get_y(), self.get_z()))
             time.sleep(0.035)
     except KeyboardInterrupt:
-        g.disable()
+        self.disable()
