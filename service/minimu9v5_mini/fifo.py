@@ -13,7 +13,6 @@ class Fifo:
     ACC_DECIMATION_FACTOR = {0: '00000000', 1: '00000001', 2: '00000010', 3: '00000011',
                              4: '00000100', 8: '00000101', 16: '00000110', 32: '00000111'}
 
-
     def __init__(self, bus_id, address):
         self.bus_id = bus_id
         self.address = address
