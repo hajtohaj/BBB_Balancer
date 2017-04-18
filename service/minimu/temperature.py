@@ -3,7 +3,7 @@ import time
 
 
 class Temperature:
-    VERSION = 'minimu9v5'
+    VERSION = 'minimu'
 
     OFFSET = 25  # Degrees
     RESOLUTION = 16.0  # 1/16 degree

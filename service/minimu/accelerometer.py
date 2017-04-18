@@ -3,7 +3,7 @@ import time
 
 
 class Accelerometer:
-    VERSION = 'minimu9v5'
+    VERSION = 'minimu'
 
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'YZ': '00110000', 'XYZ': '00111000'}
     OUTPUT_DATA_RATE_HZ = {0: '00000000', 13: '00010000', 26: '00100000', 52: '00110000', 104: '01000000',
