@@ -8,7 +8,7 @@ if __name__ == "__main__":
     fifo_address = 0x6b
 
     mm = Minimu(buss_id, fifo_address)
-    mm.enable()
+    mm.enable(104)
 
     import os
     file_name = '../data/data.txt'
