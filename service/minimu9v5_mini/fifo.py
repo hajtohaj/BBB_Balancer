@@ -20,16 +20,16 @@ class Fifo:
         self.bus = smbus.SMBus(self.bus_id)
 
     def enable(self, odr=104):
-        f.set_gyro_decimation_factor(1)
-        f.set_acc_decimation_factor(1)
-        f.set_odr_hz(odr)
-        f.set_mode('Continuous')
+        self.set_gyro_decimation_factor(1)
+        self.set_acc_decimation_factor(1)
+        self.set_odr_hz(odr)
+        self.set_mode('Continuous')
 
     def disable(self):
-        f.set_mode('Bypass')
-        f.set_gyro_decimation_factor(0)
-        f.set_acc_decimation_factor(0)
-        f.set_odr_hz(0)
+        self.set_mode('Bypass')
+        self.set_gyro_decimation_factor(0)
+        self.set_acc_decimation_factor(0)
+        self.set_odr_hz(0)
 
     @staticmethod
     def __twos_complement_to_dec16(raw_value):
@@ -133,12 +133,12 @@ if __name__ == "__main__":
     buss_id = 2
     fifo_address = 0x6b
 
-    f = Fifo(buss_id, fifo_address)
-    f.enable(13)
+    self = Fifo(buss_id, fifo_address)
+    self.enable(13)
 
     try:
         while 1:
-            print(f.get_data())
+            print(self.get_data())
             time.sleep(1)
     except KeyboardInterrupt:
-        f.disable()
+        self.disable()
