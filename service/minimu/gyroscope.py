@@ -20,13 +20,13 @@ class Gyroscope:
         self.set_full_scale_selection(f_scale)
         self.enable_axes('XYZ')
         self.set_odr_hz(odr)
-        self.set_hp_filter_hz(2.07)
-        self.enable_hp_filter()
-        self.reset_hp_filter()
+        # self.set_hp_filter_hz(2.07)
+        # self.enable_hp_filter()
+        # self.reset_hp_filter()
 
     def disable(self):
-        self.disable_hp_filter()
-        self.set_hp_filter_hz(0.0081)
+        # self.disable_hp_filter()
+        # self.set_hp_filter_hz(0.0081)
         self.set_odr_hz(0)
         self.disable_axes('XYZ')
 
