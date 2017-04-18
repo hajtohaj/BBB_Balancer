@@ -23,7 +23,7 @@ if __name__ == "__main__":
         while 1:
 
             with open(file_name, 'ab') as f_handle:
-                np.savetxt(f_handle, mm.read(), fmt='%d', delimiter=' ')
+                np.savetxt(f_handle, mm.read_fifo(), fmt='%d', delimiter=' ')
             sleep(0.07)
 
     except KeyboardInterrupt:

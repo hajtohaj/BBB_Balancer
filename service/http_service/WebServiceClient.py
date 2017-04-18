@@ -24,7 +24,7 @@ class WebServiceClient:
         self.connection.request('POST', self.endpoint, request, headers)
         responseObject = self.connection.getresponse()
         self.connectionstate = vars(responseObject)
-        return (responseObject.read())
+        return (responseObject.read_fifo())
 
     def closeConnection(self):
         return self.connection.close()
