@@ -121,7 +121,7 @@ class Fifo:
             if next_sample_idx == len(fifo_record):
                 fifo_data.append(fifo_record)
                 fifo_record = [None, None, None, None, None, None]  # Gx Gy Gz Ax Ay Az
-            next_sample_idx = (next_sample_idx + 1) % 7
+            next_sample_idx = (next_sample_idx + 1) % 6
             print(next_sample_idx)
         return fifo_data
 
