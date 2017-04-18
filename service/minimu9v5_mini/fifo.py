@@ -112,6 +112,7 @@ class Fifo:
 
         next_sample_idx = self.get_fifo_pattern_index() #Gx Gy Gz Ax Ay Az [0 1 2 3 4 5]
 
+        print(next_sample_idx)
         fifo_data = []
         fifo_record = [None, None, None, None, None, None] #Gx Gy Gz Ax Ay Az
 
@@ -121,7 +122,7 @@ class Fifo:
                 fifo_data.append(fifo_record)
                 fifo_record = [None, None, None, None, None, None]  # Gx Gy Gz Ax Ay Az
             next_sample_idx = (next_sample_idx + 1) % 7
-
+            print(next_sample_idx)
         return fifo_data
 
 if __name__ == "__main__":
