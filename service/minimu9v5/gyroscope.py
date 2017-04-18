@@ -2,7 +2,7 @@ import smbus
 import time
 
 
-class Gyro:
+class Gyroscope:
 
     AXES = {'X': '00001000', 'Y': '00010000', 'Z': '00100000', 'XYZ': '00111000'}
     OUTPUT_DATA_RATE_HZ = {0: '00000000', 13: '00010000', 26: '00100000', 52: '00110000', 104: '01000000',
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     buss_id = 2
     address = 0x6b
 
-    self = Gyro(buss_id, address)
+    self = Gyroscope(buss_id, address)
     self.enable(13)
 
     try:

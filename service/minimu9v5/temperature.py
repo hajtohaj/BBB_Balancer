@@ -2,7 +2,7 @@ import smbus
 import time
 
 
-class Temp:
+class Temperature:
 
     OFFSET = 25  # Degrees
     RESOLUTION = 16.0  # 1/16 degree
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     buss_id = 2
     address = 0x6b
 
-    t = Temp(buss_id, address)
+    t = Temperature(buss_id, address)
 
     try:
         print("\nINFO: Temperature sensor is off if both the accelerometer "

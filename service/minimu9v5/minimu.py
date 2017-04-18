@@ -1,7 +1,7 @@
-from gyro import Gyro
-from acc import Acc
+from gyroscope import Gyroscope
+from accelerometer import Accelerometer
 from fifo import Fifo
-from temp import Temp
+from temperature import Temperature
 from time import sleep
 import numpy as np
 import sys
@@ -10,10 +10,10 @@ import sys
 class Minimu:
 
     def __init__(self, buss_id, address):
-        self.gyro = Gyro(buss_id, address)
-        self.acc = Acc(buss_id, address)
+        self.gyro = Gyroscope(buss_id, address)
+        self.acc = Accelerometer(buss_id, address)
         self.fifo = Fifo(buss_id, address)
-        self.temp = Temp(buss_id, address)
+        self.temp = Temperature(buss_id, address)
 
     def enable(self, odr=104):
         self.gyro.enable(odr)
