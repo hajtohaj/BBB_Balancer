@@ -1,4 +1,4 @@
-# BBB_Balancer
+# BBBalancer
 
 Może kiedyś tu posprzątam...
 
