@@ -10,6 +10,7 @@ if __name__ == "__main__":
     mm = Minimu(buss_id, fifo_address)
     mm.enable(104)
 
+
     try:
         while 1:
             n = mm.read_fifo()

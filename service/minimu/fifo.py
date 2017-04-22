@@ -117,7 +117,8 @@ class Fifo:
         fifo_record = [None, None, None, None, None, None] #Gx Gy Gz Ax Ay Az
 
         for i in range(numb_of_samples):
-            fifo_record[next_sample_idx] = self.__twos_complement_to_dec16(self.bus.read_word_data(self.address, register))
+            val = self.__twos_complement_to_dec16(self.bus.read_word_data(self.address, register))
+            fifo_record[next_sample_idx] = val
             if next_sample_idx == len(fifo_record) - 1:
                 fifo_data.append(fifo_record)
                 fifo_record = [None, None, None, None, None, None]
