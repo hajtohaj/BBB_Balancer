@@ -5,15 +5,20 @@ from eqep import Eqep
 
 class Motor:
 
-    MAX_SPEED = 100
-    MIN_SPEED = 0
+    MAX_VOLTAGE_LEVEL = 100
+    MIN_VOLTAGE_LEVEL = 0
 
-    __SPEED_FACTOR = 10000
+    ENCODER_RESOLUTION = 1200
 
-    DIRECTION = {'01': 'cw', '10': 'ccw', '00': 'stop', '11': 'stop_high'}
+    ___VOLTAGE_FACTOR = 10000
 
-    def __init__(self, motor_id):
+    DIRECTION_POLARITY = 1
+
+    def __init__(self, motor_id, polarity=1):
         self.motor_id = motor_id
+
+        if polarity < 0:
+            self.DIRECTION_POLARITY = -1
 
         if self.motor_id:
             self.pwm = Pwm(1)
@@ -27,7 +32,7 @@ class Motor:
             self.encoder = Eqep(1)
 
         self.pwm.export()
-        self.pwm.set_period(self.MAX_SPEED * self.__SPEED_FACTOR)
+        self.pwm.set_period(self.MAX_VOLTAGE_LEVEL * self.___VOLTAGE_FACTOR)
         self.pwm.set_duty_cycle(0)
         self.pwm.enable()
 
@@ -39,67 +44,95 @@ class Motor:
         self.pin_b.set_direction_out()
         self.pin_b.set_low()
 
-        self.encoder.set_position(0)
+        self.set_encoder_zero()
         self.encoder.enable()
 
-    def set_speed(self, speed):
-        if speed > self.MAX_SPEED:
-            speed = self.MAX_SPEED
-        elif speed < 0:
-            speed = self.MIN_SPEED
-        speed *= self.__SPEED_FACTOR
-        self.pwm.set_duty_cycle(speed)
+    def set_voltage_level(self, new_level):
+        if new_level > self.MAX_VOLTAGE_LEVEL:
+            new_level = self.MAX_VOLTAGE_LEVEL
+        elif new_level < 0:
+            new_level = self.MIN_VOLTAGE_LEVEL
+        new_level *= self.___VOLTAGE_FACTOR
+        self.pwm.set_duty_cycle(new_level)
 
-    def get_speed(self):
-        return int(self.pwm.get_duty_cycle() / self.__SPEED_FACTOR)
+    def get_voltage_level(self):
+        return int(self.pwm.get_duty_cycle() / self.___VOLTAGE_FACTOR)
 
     def set_direction(self, direction):
-        if direction == 'cw':
+        direction *= self.DIRECTION_POLARITY
+        if direction > 0:
             self.pin_a.set_low()
             self.pin_b.set_high()
-        elif direction == 'ccw':
+        elif direction < 0:
             self.pin_a.set_high()
             self.pin_b.set_low()
-        elif direction == 'stop':
-            self.set_speed(0)
+        else:
             self.pin_a.set_low()
             self.pin_b.set_low()
-        elif direction == 'stop_high':
-            self.set_speed(0)
-            self.pin_a.set_high()
-            self.pin_b.set_high()
 
     def get_direction(self):
-        a = self.pin_a.get_value()
-        b = self.pin_b.get_value()
-        return self.DIRECTION[a+b]
+        a = int(self.pin_a.get_value())
+        b = int(self.pin_b.get_value())
+        return (b - a) * self.DIRECTION_POLARITY
+
+    def reverse_direction(self):
+        new_direction = self.get_direction() * -1
+        self.set_direction(new_direction)
 
     def is_direction_cw(self):
-        return self.get_direction() == 'cw'
+        return self.get_direction() > 0
 
     def is_direction_ccw(self):
-        return self.get_direction() == 'ccw'
+        return self.get_direction() < 0
 
     def is_stopped(self):
-        return self.get_direction() == 'stop' or self.get_direction() == 'stop_high'
+        return self.get_direction() == 0
 
     def set_direction_cw(self):
-        self.set_direction('cw')
+        self.set_direction(1)
 
     def set_direction_ccw(self):
-        self.set_direction('ccw')
+        self.set_direction(-1)
 
     def stop(self):
-        self.set_direction('stop')
+        self.set_direction(0)
 
-    def set_position(self, position):
-        self.encoder.set_position(position)
+    def set_position(self, value):
+        self.encoder.set_position(value)
 
-    def set_position_zero(self):
+    def set_encoder_zero(self):
         self.set_position(0)
 
     def get_position(self):
         return self.encoder.get_position()
+
+    def get_encoder_resolution(self):
+        return self.ENCODER_RESOLUTION
+
+    def set_velocity(self, value):
+        if value > 0:
+            if not self.is_direction_cw():
+                self.set_direction_cw()
+        elif value < 0:
+            if not self.is_direction_ccw():
+                self.set_direction_ccw()
+        else:
+            if not self.is_stopped():
+                self.stop()
+        self.set_voltage_level(int(abs(value)))
+
+    def get_velocity(self):
+        voltage_level = self.get_voltage_level()
+        direction = self.get_direction()
+        if direction > 0:
+            return voltage_level
+        elif direction < 0:
+            return -1 * voltage_level
+        return 0
+
+    def change_rotation(self, change):
+        current_rotation = self.get_velocity()
+        self.set_velocity(current_rotation + change)
 
     def close(self):
         self.pwm.set_duty_cycle(0)
@@ -109,30 +142,6 @@ class Motor:
         self.pin_b.unexport()
         self.encoder.disable()
 
-    def set_velocity(self, new_speed):
-        if new_speed > 0:
-            if not self.is_direction_cw():
-                self.set_direction_cw()
-        elif new_speed < 0:
-            if not self.is_direction_ccw():
-                self.set_direction_ccw()
-        else:
-            if not self.is_stopped():
-                self.stop()
-        self.set_speed(int(abs(new_speed)))
-
-    def get_velocity(self):
-        speed = self.get_speed()
-        direction = self.get_direction()
-        if direction == 'cw':
-            return speed
-        elif direction == 'ccw':
-            return -1 * speed
-        return 0
-
-    def change_velocity(self, increment):
-        current_speed = self.get_velocity()
-        self.set_velocity(current_speed + increment)
 
 if __name__ == "__main__":
 
@@ -140,9 +149,11 @@ if __name__ == "__main__":
 
     delay = 1
     speeed = 10
+    cw = 1
+    ccw = -1
 
-    m0.set_speed(speeed)
-    m0.set_direction('cw')
+    m0.set_voltage_level(speeed)
+    m0.set_direction(cw)
     import time
     time.sleep(delay)
 
@@ -150,8 +161,8 @@ if __name__ == "__main__":
     print(m0.get_position())
     time.sleep(delay)
 
-    m0.set_speed(speeed)
-    m0.set_direction('ccw')
+    m0.set_voltage_level(speeed)
+    m0.set_direction(ccw)
     time.sleep(delay)
     m0.stop()
 
