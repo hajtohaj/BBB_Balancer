@@ -17,7 +17,7 @@ if __name__ == "__main__":
             acc_data = mm.read_fifo()[-av_length:, -3:]
             acc_data_av = np.average(acc_data, 0)
             print(np.arctan2(acc_data_av[0], acc_data_av[2]), np.arctan2(acc_data_av[1], acc_data_av[2]))
-            sleep(0.01)
+            sleep(0.02)
 
     except KeyboardInterrupt:
         mm.disable()
