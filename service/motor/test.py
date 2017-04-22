@@ -1,4 +1,4 @@
-from motor import Motor
+from motor2 import Motor
 import time
 
 if __name__ == "__main__":
