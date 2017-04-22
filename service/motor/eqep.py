@@ -41,5 +41,5 @@ if __name__ == "__main__":
     print(eqep1.get_counter())
     eqep1.set_counter(12345)
     print(eqep1.get_counter())
-    eqep1.set_counter()
+    eqep1.set_counter(0)
     eqep1.disable()
