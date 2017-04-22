@@ -12,13 +12,17 @@ class Minimu:
 
     def __init__(self, buss_id, address):
         self.gyro = Gyroscope(buss_id, address)
+        self.gyro_full_scale = 245
         self.acc = Accelerometer(buss_id, address)
+        self.acc_full_scale = 2
         self.fifo = Fifo(buss_id, address)
         self.temp = Temperature(buss_id, address)
 
     def enable(self, odr=104):
         self.gyro.enable(odr)
+        self.gyro_full_scale = self.gyro.get_full_scale_selection()
         self.acc.enable(odr)
+        self.acc_full_scale = self.acc.get_full_scale_selection()
         self.fifo.enable(odr)
 
     def disable(self):
@@ -26,8 +30,16 @@ class Minimu:
         self.acc.disable()
         self.fifo.disable()
 
-    def read_fifo(self):
+    def read_fifo_raw(self):
         data = np.array(self.fifo.get_data(), dtype=np.int)
+        return data
+
+    def read_fifo(self):
+        data = np.array(self.fifo.get_data(), dtype=np.double)
+        data[:, :3] *= self.gyro_full_scale
+        data[:, -3:] *= self.acc_full_scale
+        data[data > 0] /= 32767
+        data[data < 0] /= 32768
         return data
 
     def read_temperature(self):
