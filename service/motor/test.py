@@ -1,12 +1,12 @@
-from motor import Motor
+from motor2 import Motor
 import time
 
 if __name__ == "__main__":
 
-    speed = -10
+    speed = 10
 
     m0 = Motor(0)
-    m1 = Motor(1)
+    m1 = Motor(1,-1)
 
     try:
         while 1:
