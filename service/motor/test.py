@@ -13,5 +13,5 @@ if __name__ == "__main__":
         time.sleep(0.25)
         m0.set_direction('cw')
         m1.set_direction('cw')
-        m0.set_voltage_level(speed)
-        m1.set_voltage_level(speed)
+        m0.set_speed(speed)
+        m1.set_speed(speed)
