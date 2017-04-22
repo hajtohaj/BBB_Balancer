@@ -39,7 +39,7 @@ class Minimu:
         try:
             data[:, :3] *= 1
         except IndexError:
-            print("aaaaaa")
+            sleep(0.1)
             data = np.array(self.fifo.get_data(), dtype=np.double)
 
         data[:, :3] *= self.gyro_full_scale
