@@ -3,7 +3,7 @@ import time
 
 if __name__ == "__main__":
 
-    speed = 10
+    speed = 20
 
     m0 = Motor(0)
     m1 = Motor(1)
