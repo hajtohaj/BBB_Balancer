@@ -13,7 +13,7 @@ if __name__ == "__main__":
             print(m0.get_position(), m1.get_position())
             time.sleep(0.25)
             m0.set_direction('cw')
-            m1.set_direction('cw')
+            m1.set_direction('ccw')
             m0.set_speed(speed)
             m1.set_speed(speed)
 
