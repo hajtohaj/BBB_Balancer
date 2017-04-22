@@ -97,13 +97,13 @@ class Motor:
     def stop(self):
         self.set_direction(0)
 
-    def set_encoder(self, value):
+    def set_position(self, value):
         self.encoder.set_position(value)
 
     def set_encoder_zero(self):
-        self.set_encoder(0)
+        self.set_position(0)
 
-    def get_encoder(self):
+    def get_position(self):
         return self.encoder.get_position()
 
     def get_encoder_resolution(self):
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     time.sleep(delay)
 
     m0.stop()
-    print(m0.get_encoder())
+    print(m0.get_position())
     time.sleep(delay)
 
     m0.set_voltage_level(speeed)
@@ -166,5 +166,5 @@ if __name__ == "__main__":
     time.sleep(delay)
     m0.stop()
 
-    print(m0.get_encoder())
+    print(m0.get_position())
     m0.close()

@@ -75,9 +75,9 @@ while c != 'q' and c != 'Q':
     m0.set_encoder_zero()
     m1.set_encoder_zero()
     time.sleep(0.2)
-    enc = m0.get_encoder()
-    m0_enc = m0.get_encoder()
-    m1_enc = m1.get_encoder()
+    enc = m0.get_position()
+    m0_enc = m0.get_position()
+    m1_enc = m1.get_position()
     print("left: {0}/{1}, right: {2}/{3}".format(m0_enc,m0.get_rotation(), m1_enc,m1.get_rotation()))
 
     if m0_enc > m1_enc:
