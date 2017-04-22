@@ -63,13 +63,13 @@ while c != 'q' and c != 'Q':
                     m0.change_rotation(- speed_step)
                     m1.change_rotation(- speed_step)
                 if key_map[ord(c)] == 'right':
-                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'left':
-                    print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
+                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     elif ord(c) == 32:
-        m0.set_rotation(0)
-        m1.set_rotation(0)
-        print("left: {0}, right: {1}".format(m0.get_rotation(), m1.get_rotation()))
+        m0.set_velocity(0)
+        m1.set_velocity(0)
+        print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     else:
        print(ord(c))
     m0.set_encoder_zero()
@@ -78,7 +78,7 @@ while c != 'q' and c != 'Q':
     enc = m0.get_position()
     m0_enc = m0.get_position()
     m1_enc = m1.get_position()
-    print("left: {0}/{1}, right: {2}/{3}".format(m0_enc,m0.get_rotation(), m1_enc,m1.get_rotation()))
+    print("left: {0}/{1}, right: {2}/{3}".format(m0_enc, m0.get_velocity(), m1_enc, m1.get_velocity()))
 
     if m0_enc > m1_enc:
         m1.change_rotation(1)

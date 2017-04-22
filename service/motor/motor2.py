@@ -109,7 +109,7 @@ class Motor:
     def get_encoder_resolution(self):
         return self.ENCODER_RESOLUTION
 
-    def set_rotation(self, value):
+    def set_velocity(self, value):
         if value > 0:
             if not self.is_direction_cw():
                 self.set_direction_cw()
@@ -121,7 +121,7 @@ class Motor:
                 self.stop()
         self.set_voltage_level(int(abs(value)))
 
-    def get_rotation(self):
+    def get_velocity(self):
         voltage_level = self.get_voltage_level()
         direction = self.get_direction()
         if direction > 0:
@@ -131,8 +131,8 @@ class Motor:
         return 0
 
     def change_rotation(self, change):
-        current_rotation = self.get_rotation()
-        self.set_rotation(current_rotation + change)
+        current_rotation = self.get_velocity()
+        self.set_velocity(current_rotation + change)
 
     def close(self):
         self.pwm.set_duty_cycle(0)
