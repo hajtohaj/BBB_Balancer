@@ -39,7 +39,7 @@ class Motor:
         self.pin_b.set_direction_out()
         self.pin_b.set_low()
 
-        self.encoder.get_position(0)
+        self.encoder.set_position(0)
         self.encoder.enable()
 
     def set_speed(self, speed):
