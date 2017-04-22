@@ -10,11 +10,13 @@ if __name__ == "__main__":
     mm = Minimu(buss_id, fifo_address)
     mm.enable(104)
 
+    av_length = 10
 
     try:
         while 1:
-            n = mm.read_fifo()
-            print(np.average(n[-10:, -3:], 0))
+            acc_data = mm.read_fifo()[-av_length:, -3:]
+            acc_data_av = np.average(acc_data, 0)
+            print(np.arctan2(acc_data_av[1], acc_data_av[2]))  # fi = np.arctan2(y, z)
             sleep(0.1)
 
     except KeyboardInterrupt:
