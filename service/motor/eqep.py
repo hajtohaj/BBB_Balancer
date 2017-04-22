@@ -26,10 +26,10 @@ class Eqep:
     def disable(self):
         self._write_interface('enabled', 0)
 
-    def set_counter(self, position):
+    def set_position(self, position):
         self._write_interface('position', position)
 
-    def get_counter(self):
+    def get_position(self):
         return self._read_interface('position')
 
 if __name__ == "__main__":
@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     if not eqep1.is_enabled():
         eqep1.enable()
-    print(eqep1.get_counter())
-    eqep1.set_counter(12345)
-    print(eqep1.get_counter())
-    eqep1.set_counter(0)
+    print(eqep1.get_position())
+    eqep1.set_position(12345)
+    print(eqep1.get_position())
+    eqep1.set_position(0)
     eqep1.disable()

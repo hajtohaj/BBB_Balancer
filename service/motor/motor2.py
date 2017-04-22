@@ -98,13 +98,13 @@ class Motor:
         self.set_direction(0)
 
     def set_encoder(self, value):
-        self.encoder.set_counter(value)
+        self.encoder.set_position(value)
 
     def set_encoder_zero(self):
         self.set_encoder(0)
 
     def get_encoder(self):
-        return self.encoder.get_counter()
+        return self.encoder.get_position()
 
     def get_encoder_resolution(self):
         return self.ENCODER_RESOLUTION
