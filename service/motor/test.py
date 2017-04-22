@@ -19,4 +19,4 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         m0.close()
-        m0.close()
+        m1.close()
