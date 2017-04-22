@@ -37,16 +37,17 @@ class _GetchWindows:
 def sign(a):
     return (a >= 0) - (a < 0)
 
-from motor import Motor
+from motor2 import Motor
 
-m0 = Motor(0)
+m0 = Motor(0, -1)
 m1 = Motor(1)
-speed_step = 6
+speed_step = 10
 
 getch = _Getch()
-key_map = {65:'up', 66:'down', 67:'right', 68:'left', }
+key_map = {65: 'up', 66: 'down', 67: 'right', 68: 'left', }
 c = 'a'
-
+import datetime
+import time
 while c != 'q' and c != 'Q':
     c = getch()
     if ord(c) == 27:
@@ -56,20 +57,14 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    m0.change_velocity(- speed_step)
-                    m1.change_velocity(speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    m0.change_rotation(speed_step)
+                    m1.change_rotation(speed_step)
                 elif key_map[ord(c)] == 'down':
-                    m0.change_velocity(speed_step)
-                    m1.change_velocity(- speed_step)
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    m0.change_rotation(- speed_step)
+                    m1.change_rotation(- speed_step)
                 if key_map[ord(c)] == 'right':
-                    m0_vel = m0.get_velocity()
-                    m0.change_velocity(sign(m0_vel) * speed_step)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
                 elif key_map[ord(c)] == 'left':
-                    m0_vel = m0.get_velocity()
-                    m0.change_velocity(-sign(m0_vel) * speed_step)
                     print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     elif ord(c) == 32:
         m0.set_velocity(0)
@@ -77,6 +72,18 @@ while c != 'q' and c != 'Q':
         print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
     else:
        print(ord(c))
+    m0.set_encoder_zero()
+    m1.set_encoder_zero()
+    time.sleep(0.2)
+    enc = m0.get_position()
+    m0_enc = m0.get_position()
+    m1_enc = m1.get_position()
+    print("left: {0}/{1}, right: {2}/{3}".format(m0_enc, m0.get_velocity(), m1_enc, m1.get_velocity()))
+
+    if m0_enc > m1_enc:
+        m1.change_rotation(1)
+    if m0_enc < m1_enc:
+        m1.change_rotation(-1)
 
 m0.close()
 m1.close()
