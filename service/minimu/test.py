@@ -13,7 +13,7 @@ if __name__ == "__main__":
     try:
         while 1:
             n = mm.read_fifo()
-            print(np.average(n[-9:][-3:]))
+            print(np.average(n[-9:][-3:], 2))
             sleep(0.1)
 
     except KeyboardInterrupt:
