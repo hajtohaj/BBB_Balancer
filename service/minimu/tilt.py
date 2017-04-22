@@ -8,7 +8,7 @@ if __name__ == "__main__":
     fifo_address = 0x6b
 
     mm = Minimu(buss_id, fifo_address)
-    mm.enable(208)
+    mm.enable(416)
 
     av_length = 10
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         while 1:
             acc_data = mm.read_fifo()[-av_length:, -3:]
             acc_data_av = np.average(acc_data, 0)
-            print(np.arctan2(acc_data_av[1], acc_data_av[2])*180/np.pi)  # fi = np.arctan2(y, z)
+            print(np.arctan2(acc_data_av[0], acc_data_av[2]), np.arctan2(acc_data_av[1], acc_data_av[2]))
             sleep(0.01)
 
     except KeyboardInterrupt:
