@@ -35,7 +35,9 @@ class Minimu:
         return data
 
     def read_fifo(self):
-        data = np.array(self.fifo.get_data(), dtype=np.double)
+        data = np.array(self.fifo.get_data(), dtype=np.flat64)
+        if not data:
+            data = np.array([None, None, None, None, None, None])
         data[:, :3] *= self.gyro_full_scale
         data[:, -3:] *= self.acc_full_scale
         data[data > 0] /= 32767
