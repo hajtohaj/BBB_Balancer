@@ -112,6 +112,5 @@ if __name__ == "__main__":
             m0.set_voltage(voltage_level)
             time.sleep(0.25)
 
-
     except KeyboardInterrupt:
         m0.close()
