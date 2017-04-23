@@ -26,7 +26,7 @@ class Motor:
             self.pin_a = Gpio(26)
             self.pin_b = Gpio(47)
             self.encoder = Eqep(2)
-
+        else:
             self.pwm = Pwm(0)
             self.pin_a = Gpio(36)
             self.pin_b = Gpio(62)
