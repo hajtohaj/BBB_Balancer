@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from motor2 import Motor
+from motor import Motor
 import time
 
 if __name__ == "__main__":
