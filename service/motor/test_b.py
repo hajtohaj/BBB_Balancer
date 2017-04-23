@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from motor import Motor
 import time
 
