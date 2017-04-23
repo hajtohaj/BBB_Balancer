@@ -91,7 +91,6 @@ class Motor:
         return self.encoder.get_position()
 
     def get_radians(self):
-        print(self.get_encoder())
         return float(self.get_encoder()) * 2 * 3.14159265359 / self.ENCODER_RESOLUTION
 
     def set_voltage(self, level):
@@ -110,7 +109,7 @@ if __name__ == "__main__":
     try:
         while 1:
             print(m0.get_radians())
-            m0.set_velocity(voltage_level)
+            m0.set_voltage(voltage_level)
             time.sleep(0.25)
 
 
