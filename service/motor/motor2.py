@@ -92,7 +92,7 @@ class Motor:
 
     def get_radians(self):
         print(self.get_encoder())
-        return self.get_encoder() * 2 * 3.14159265359 / self.ENCODER_RESOLUTION
+        return float(self.get_encoder()) * 2 * 3.14159265359 / self.ENCODER_RESOLUTION
 
     def set_voltage(self, level):
         self.__set_direction(level)
