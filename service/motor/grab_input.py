@@ -61,7 +61,7 @@ while c != 'q' and c != 'Q':
                     voltage -= voltage_step
     elif ord(c) == 32:
         m0.set_velocity(0)
-        print("{0}".format(m0.get_velocity()))
+        print("{0}".format(m0.get_radians()))
     else:
         print(ord(c))
     if voltage > 100:
