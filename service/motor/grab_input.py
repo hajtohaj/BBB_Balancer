@@ -41,13 +41,12 @@ from motor import Motor
 
 m0 = Motor(0)
 
-speed_step = 10
+voltage_step = 10
+voltage = 0
 
 getch = _Getch()
 key_map = {65: 'up', 66: 'down', 67: 'right', 68: 'left', }
 c = 'a'
-
-import time
 while c != 'q' and c != 'Q':
     c = getch()
     if ord(c) == 27:
@@ -57,14 +56,19 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    m0.set_voltage(speed_step)
+                    voltage += voltage_step
                 elif key_map[ord(c)] == 'down':
-                    m0.set_voltage(- speed_step)
+                    voltage -= voltage_step
     elif ord(c) == 32:
         m0.set_velocity(0)
         print("{0}".format(m0.get_velocity()))
     else:
         print(ord(c))
+    if voltage > 100:
+        volate = 100
+    if voltage < -100:
+        voltage = -100
+    m0.set_voltage(voltage)
 
 m0.set_encoder(0)
 m0.close()
