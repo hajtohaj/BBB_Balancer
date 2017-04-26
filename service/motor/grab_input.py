@@ -60,7 +60,7 @@ while c != 'q' and c != 'Q':
                 elif key_map[ord(c)] == 'down':
                     voltage -= voltage_step
     elif ord(c) == 32:
-        m0.set_velocity(0)
+        m0.set_encoder(0)
         print("{0}".format(m0.get_radians()))
     else:
         print(ord(c))
