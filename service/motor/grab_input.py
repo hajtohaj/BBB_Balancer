@@ -20,7 +20,7 @@ class _GetchUnix:
         old_settings = termios.tcgetattr(fd)
         try:
             tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
+            ch = sys.stdin.readit(1)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
@@ -60,28 +60,11 @@ while c != 'q' and c != 'Q':
                     m0.set_voltage(speed_step)
                 elif key_map[ord(c)] == 'down':
                     m0.set_voltage(- speed_step)
-                if key_map[ord(c)] == 'right':
-                    print("{0}".format(m0.get_radians()))
-                elif key_map[ord(c)] == 'left':
-                    print("{0}".format(m0.get_velocity()))
     elif ord(c) == 32:
         m0.set_velocity(0)
         print("{0}".format(m0.get_velocity()))
     else:
-       print(ord(c))
-    m0.set_encoder_zero()
-    m1.set_encoder_zero()
-    time.sleep(0.2)
-    enc = m0.get_position()
-    m0_enc = m0.get_position()
-    m1_enc = m1.get_position()
-    print("left: {0}/{1}, right: {2}/{3}".format(m0_enc, m0.get_velocity(), m1_enc, m1.get_velocity()))
+        print(ord(c))
 
-    if m0_enc > m1_enc:
-        m1.change_rotation(1)
-    if m0_enc < m1_enc:
-        m1.change_rotation(-1)
-
+m0.set_encoder(0)
 m0.close()
-m1.close()
-
