@@ -37,7 +37,7 @@ class _GetchWindows:
 def sign(a):
     return (a >= 0) - (a < 0)
 
-from motor2 import Motor
+from motor import Motor
 
 m0 = Motor(0, -1)
 m1 = Motor(1)
