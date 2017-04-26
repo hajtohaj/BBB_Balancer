@@ -39,14 +39,14 @@ def sign(a):
 
 from motor import Motor
 
-m0 = Motor(0, -1)
-m1 = Motor(1)
+m0 = Motor(0)
+
 speed_step = 10
 
 getch = _Getch()
 key_map = {65: 'up', 66: 'down', 67: 'right', 68: 'left', }
 c = 'a'
-import datetime
+
 import time
 while c != 'q' and c != 'Q':
     c = getch()
@@ -57,19 +57,16 @@ while c != 'q' and c != 'Q':
             if ord(c) in key_map.keys():
                 print(key_map[ord(c)])
                 if key_map[ord(c)] == 'up':
-                    m0.change_rotation(speed_step)
-                    m1.change_rotation(speed_step)
+                    m0.set_voltage(speed_step)
                 elif key_map[ord(c)] == 'down':
-                    m0.change_rotation(- speed_step)
-                    m1.change_rotation(- speed_step)
+                    m0.set_voltage(- speed_step)
                 if key_map[ord(c)] == 'right':
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("{0}".format(m0.get_radians()))
                 elif key_map[ord(c)] == 'left':
-                    print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+                    print("{0}".format(m0.get_velocity()))
     elif ord(c) == 32:
         m0.set_velocity(0)
-        m1.set_velocity(0)
-        print("left: {0}, right: {1}".format(m0.get_velocity(), m1.get_velocity()))
+        print("{0}".format(m0.get_velocity()))
     else:
        print(ord(c))
     m0.set_encoder_zero()
