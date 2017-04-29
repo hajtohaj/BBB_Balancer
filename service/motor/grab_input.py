@@ -38,6 +38,7 @@ def sign(a):
     return (a >= 0) - (a < 0)
 
 from motor import Motor
+import time
 
 m0 = Motor(0)
 
@@ -48,7 +49,12 @@ getch = _Getch()
 key_map = {65: 'up', 66: 'down', 67: 'right', 68: 'left', }
 c = 'a'
 while c != 'q' and c != 'Q':
+    t0 = time.time()
+    r0 = m0.get_radians()
     c = getch()
+    t1 = time.time()
+    r1 = m0.get_radians()
+    print("{0}, {1}".format(voltage, r1 - r0))
     if ord(c) == 27:
         c = getch()
         if ord(c) == 91:
@@ -60,13 +66,14 @@ while c != 'q' and c != 'Q':
                 elif key_map[ord(c)] == 'down':
                     voltage -= voltage_step
     elif ord(c) == 32:
-        print("{0}".format(m0.get_radians()))
+        pass
     else:
         print(ord(c))
     if voltage > 100:
         volate = 100
     if voltage < -100:
         voltage = -100
+    m0.get_radians()
     m0.set_voltage(voltage)
 
 m0.set_encoder(0)
