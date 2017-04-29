@@ -25,6 +25,7 @@ if __name__ == "__main__":
             v = dr / dt
             u = pid.step(v)
 
+            print(u)
             m0.set_voltage(u)
             r0 = m0.get_radians()
             t0 = time.time()
