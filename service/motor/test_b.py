@@ -5,7 +5,7 @@ import time
 
 if __name__ == "__main__":
 
-    voltage_level = 10
+    voltage_level = 20
     step_size = 0.1
 
     m0 = Motor(0)
