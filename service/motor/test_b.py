@@ -7,6 +7,7 @@ import time
 if __name__ == "__main__":
 
     voltage_level = 20
+
     given_speed = 6
     step_size = 0.5
 
