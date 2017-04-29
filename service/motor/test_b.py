@@ -24,7 +24,8 @@ if __name__ == "__main__":
             dt = (t1-t0) % step_size
             dr = r1-r0
             v = dr / dt
-            u = pid.step(given_speed - v)
+            e = given_speed - v
+            u = pid.step(e, dt)
 
             print(u)
             m0.set_voltage(u)
