@@ -7,6 +7,7 @@ import time
 if __name__ == "__main__":
 
     voltage_level = 20
+    given_speed = 6
     step_size = 0.1
 
     m0 = Motor(0)
@@ -23,7 +24,7 @@ if __name__ == "__main__":
             dt = (t1-t0) % step_size
             dr = r1-r0
             v = dr / dt
-            u = pid.step(v)
+            u = pid.step(given_speed - v)
 
             print(u)
             m0.set_voltage(u)
