@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from motor import Motor
-from pid_controllr import PID
+from pid_cotroller import PID
 import time
 
 if __name__ == "__main__":
