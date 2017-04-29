@@ -2,7 +2,7 @@
 class PID:
 
     def __init__(self, kp=0.0, ki=0.0, kd=0.0, dt=0.1):
-        self.pk = kp
+        self.kp = kp
         self.ki = ki
         self.kd = kd
         self.e0 = 0.0
