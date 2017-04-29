@@ -7,7 +7,7 @@ import time
 if __name__ == "__main__":
 
     speed = 6.0
-    step_size = 0.5
+    step_size = 0.1
 
     m0 = Motor(0)
     pid = PID(10.0, 100.0, 0.0, 0.1)
