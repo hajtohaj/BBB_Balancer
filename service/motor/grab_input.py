@@ -54,7 +54,7 @@ while c != 'q' and c != 'Q':
     c = getch()
     t1 = time.time()
     r1 = m0.get_radians()
-    print("{0}, {1}".format(voltage, r1 - r0))
+    print("{0}, {1}".format(voltage, (r1 - r0)/(t1 - t0)))
     if ord(c) == 27:
         c = getch()
         if ord(c) == 91:
