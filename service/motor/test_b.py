@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     voltage_level = 20
     given_speed = 6
-    step_size = 0.1
+    step_size = 0.5
 
     m0 = Motor(0)
     pid = PID(5.0, 200.0, 0.0, 0.1)
