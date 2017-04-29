@@ -20,7 +20,7 @@ if __name__ == "__main__":
             t1 = time.time()
             r1 = m0.get_radians()
 
-            dt = (t1 - t0) % step_size
+            dt = t1 - t0
             dr = r1 - r0
             v = dr / dt
             e = speed - v
