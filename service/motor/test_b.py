@@ -10,7 +10,7 @@ if __name__ == "__main__":
     step_size = 0.1
 
     m0 = Motor(0)
-    pid = PID(10.0, 100.0, 0.1, 0.1)
+    pid = PID(1.0, 10.0, 0.1, 0.1)
 
     t0 = time.time()
     r0 = m0.get_radians()
@@ -27,7 +27,7 @@ if __name__ == "__main__":
             u = pid.step(e, dt)
 
             print("{0}, {1}, {2}, {3}, {4}".format(dt, dr, v, e, u))
-            m0.set_voltage(-u)
+            m0.set_voltage(u)
             r0 = m0.get_radians()
             t0 = time.time()
 
