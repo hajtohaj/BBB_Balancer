@@ -11,7 +11,7 @@ if __name__ == "__main__":
     step_size = 0.5
 
     m0 = Motor(0)
-    pid = PID(5.0, 200.0, 0.0, 0.1)
+    pid = PID(5.0, 10.0, 0.0, 0.1)
 
     t0 = time.time()
     r0 = m0.get_radians()
