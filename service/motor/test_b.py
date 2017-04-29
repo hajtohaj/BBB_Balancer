@@ -26,7 +26,7 @@ if __name__ == "__main__":
             e = given_speed - v
             u = pid.step(e, dt)
 
-            print("{0:5d}, {1:5d}, {2:5d}, {3:5d}, {4:5d}".format(dt, dr, v, e, u))
+            print("{0:5}, {1:5}, {2:5}, {3:5}, {4:5}".format(dt, dr, v, e, u))
             m0.set_voltage(u)
             r0 = m0.get_radians()
             t0 = time.time()
