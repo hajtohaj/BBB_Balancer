@@ -6,12 +6,11 @@ import time
 
 if __name__ == "__main__":
 
-    voltage_level = 20
     given_speed = 6
     step_size = 0.5
 
     m0 = Motor(0)
-    pid = PID(5.0, 10.0, 0.0, 0.1)
+    pid = PID(1.0, 10.0, 0.0, 0.1)
 
     t0 = time.time()
     r0 = m0.get_radians()
@@ -27,7 +26,7 @@ if __name__ == "__main__":
             e = given_speed - v
             u = pid.step(e, dt)
 
-            print(e, u)
+            print(e, dt, dr, v, u)
             m0.set_voltage(u)
             r0 = m0.get_radians()
             t0 = time.time()
