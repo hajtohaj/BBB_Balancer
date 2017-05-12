@@ -15,16 +15,17 @@ class Rcradio:
 
 if __name__ == "__main__":
 
-    # m0 = Motor(0)
+    m0 = Motor(0)
     rc = Rcradio(2, 0x10)
+    offset = 698
 
     try:
         while 1:
-            # print(m0.get_radians())
-            # m0.set_voltage(voltage_level)
-            print(rc.red_chanel(0))
-            time.sleep(0.25)
+            speed = offset - rc.red_chanel(0)
+            print(speed)
+            m0.set_voltage(speed)
+            time.sleep(0.1)
 
     except KeyboardInterrupt:
-        # m0.close()
+        m0.close()
         pass
