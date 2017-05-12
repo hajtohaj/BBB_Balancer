@@ -23,7 +23,7 @@ if __name__ == "__main__":
         while 1:
             speed = offset - rc.red_chanel(0)
             print(speed)
-            m0.set_voltage(speed)
+            # m0.set_voltage(speed)
             time.sleep(0.1)
 
     except KeyboardInterrupt:
