@@ -10,7 +10,7 @@ class Rcradio:
         self.bus = smbus.SMBus(self.bus_id)
 
     def red_chanel(self, ch_id):
-        w = self.bus.read_word_data(self.radio_id, self.ch_id)
+        w = self.bus.read_word_data(self.radio_id, ch_id)
         return w
 
 if __name__ == "__main__":
