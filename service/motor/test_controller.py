@@ -22,6 +22,8 @@ if __name__ == "__main__":
     try:
         while 1:
             speed = offset - rc.red_chanel(0)
+            if abs(speed) < 3:
+                speed = 0
             print(speed)
             m0.set_voltage(speed)
             time.sleep(0.1)
