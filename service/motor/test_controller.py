@@ -16,6 +16,8 @@ class Rcradio:
 if __name__ == "__main__":
 
     m0 = Motor(0)
+    m1 = Motor(1, -1)
+
     rc = Rcradio(2, 0x10)
     offset = 698
 
@@ -26,8 +28,10 @@ if __name__ == "__main__":
                 speed = 0
             print(speed)
             m0.set_voltage(speed)
+            m1.set_voltage(speed)
             time.sleep(0.1)
 
     except KeyboardInterrupt:
         m0.close()
+        m1.close()
         pass
