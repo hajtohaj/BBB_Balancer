@@ -16,7 +16,8 @@ capemgr: v4.1.x+
                 ./update_kernel.sh --lts --bone-channel
                 zcat /proc/config.gz | grep CONFIG_BONE_CAPEMGR
                 CONFIG_BONE_CAPEMGR=y
-                --------
+                reboot
+		
                 cd ~/
                 git clone https://github.com/beagleboard/bb.org-overlays
                 cd ./bb.org-overlays
